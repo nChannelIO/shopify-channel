@@ -1,0 +1,72 @@
+{
+  "name": "Shopify Put Product Quantity",
+  "schemaDef": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Shopify Put Product Quantity",
+    "type": "object",
+    "properties": {
+      "variant": {
+        "title": "Variant",
+        "description": "Put Product Quantity to Item.Variant",
+        "type": "object",
+        "properties": {
+          "sku": {
+            "title": "sku",
+            "description": "A unique identifier for the product in the shop.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "inventory_quantity": {
+            "title": "inventory_quantity",
+            "description": "The number of items in stock for this product variant. Default value: 1",
+            "type": "integer"
+          },
+          "old_inventory_quantity": {
+            "title": "old_inventory_quantity",
+            "description": "The original stock level the client believes the product variant has. This should be sent to avoid a race condition when the item being adjusted is simultaneously sold online.",
+            "type": "integer"
+          },
+          "inventory_quantity_adjustment": {
+            "title": "inventory_quantity_adjustment",
+            "description": "Instead of sending a new and old value for inventory an adjustment value can be sent. If an adjustment value is sent it will take priority.",
+            "type": "integer"
+          },
+          "inventory_management": {
+            "title": "inventory_management",
+            "description": "Specifies whether Shopify tracks the number of items in stock for this product variant. Valid values are shopify or the name of a fulfillment service provider with inventory management enabled. See FulfillmentService for more information. For fulfillment service providers, must be the same provider that fulfills the product variant.",
+            "type": "string"
+          },
+          "inventory_policy": {
+            "title": "inventory_policy",
+            "description": "Specifies whether or not customers are allowed to place an order for a product variant when it's out of stock. Valid values are: continue, deny (default).",
+            "type": "string",
+            "enum": [
+              "continue",
+              "deny"
+            ]
+          },
+          "price": {
+            "title": "price",
+            "description": "The price of the product variant.",
+            "type": "string"
+          }
+        },
+        "minProperties": 1,
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "variant"
+    ],
+    "additionalProperties": false
+  },
+  "tags": [
+    "Shopify",
+    "Product",
+    "Quantity",
+    "Put"
+  ],
+  "audit": {}
+}

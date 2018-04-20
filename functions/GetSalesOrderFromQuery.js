@@ -1,8 +1,9 @@
 let GetSalesOrderFromQuery = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+                                       channelProfile,
+                                       flowContext,
+                                       payload,
+                                       callback) {
+
 
   log("Building response object...", ncUtil);
   let out = {
@@ -18,6 +19,9 @@ let GetSalesOrderFromQuery = function (ncUtil,
   if (!ncUtil) {
     invalid = true;
     invalidMsg = "ncUtil was not provided"
+  } else if (!ncUtil.request) {
+    invalid = true;
+    invalidMsg = "ncUtil.request was not provided"
   }
 
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
@@ -33,6 +37,12 @@ let GetSalesOrderFromQuery = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.salesOrderBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
@@ -51,6 +61,32 @@ let GetSalesOrderFromQuery = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
+  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+    invalid = true;
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
+  } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
+    invalid = true;
+    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
+  } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
+    invalid = true;
+    invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
+  } else if (payload.doc.searchFields && (!Array.isArray(payload.doc.searchFields) || payload.doc.searchFields.length === 0)) {
+    invalid = true;
+    invalidMsg = "payload.doc.searchFields must be an Array with at least 1 key value pair: {searchField: 'key', searchValues: ['value_1']}"
+  } else if (payload.doc.searchFields) {
+    for (let i = 0; i < payload.doc.searchFields.length; i++) {
+      if (!payload.doc.searchFields[i].searchField || !Array.isArray(payload.doc.searchFields[i].searchValues) || payload.doc.searchFields[i].searchValues.length === 0) {
+        invalid = true;
+        invalidMsg = "payload.doc.searchFields[" + i + "] must be a key value pair: {searchField: 'key', searchValues: ['value_1']}";
+        break;
+      }
+    }
+  } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
+  } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "startDateGMT must have a date before endDateGMT";
   }
 
   //If callback is not a function
@@ -61,26 +97,89 @@ let GetSalesOrderFromQuery = function (ncUtil,
   }
 
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+
     let request = require('request');
 
-    let url = "https://localhost/";
+    let queryParams = [];
 
-    // Add any headers for the request
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/orders.json";
+
+
+    if (payload.doc.searchFields) {
+      let query = "query=";
+      let fields = [];
+      // Loop through each field
+      payload.doc.searchFields.forEach(function (searchField) {
+        let values = [];
+        // Loop through each value
+        searchField.searchValues.forEach(function (searchValue) {
+          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
+        });
+        // Multiple values use OR
+        fields.push(values.join(" OR "));
+      });
+      // Multiple fields use AND
+      query += fields.join(" AND ");
+      queryParams.push(query);
+
+      // admin/orders/search.json endpoint for using the query
+      url = url.substring(0, url.indexOf(".json")) + "/search.json";
+
+    } else if (payload.doc.remoteIDs) {
+      /*
+       Add remote IDs as a query parameter
+       */
+      queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
+
+    } else if (payload.doc.modifiedDateRange) {
+      /*
+       Add modified date ranges to the query
+       Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
+       */
+      if (payload.doc.modifiedDateRange.startDateGMT) {
+        queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
+      }
+      if (payload.doc.modifiedDateRange.endDateGMT) {
+        queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
+      }
+
+      if (flowContext && flowContext.orderStatus) {
+        queryParams.push(`status=${flowContext.orderStatus}`);
+      }
+    }
+
+    /*
+     Add page to the query
+     */
+    if (payload.doc.page) {
+      queryParams.push("page=" + payload.doc.page);
+    }
+
+    /*
+     Add pageSize (limit) to the query
+     */
+    if (payload.doc.pageSize) {
+      queryParams.push("limit=" + payload.doc.pageSize);
+    }
+
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
 
-    // Log URL
+    url += "?" + queryParams.join('&');
+
     log("Using URL [" + url + "]", ncUtil);
 
-    // Set options
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
-      method: "GET",
       headers: headers,
-      body: payload.doc,
       json: true
     };
 
@@ -88,7 +187,6 @@ let GetSalesOrderFromQuery = function (ncUtil,
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If no errors, process results here
           log("Do GetSalesOrderFromQuery Callback", ncUtil);
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
@@ -98,6 +196,7 @@ let GetSalesOrderFromQuery = function (ncUtil,
           let data = body;
 
           if (response.statusCode === 200) {
+            // If we have an array of orders, set out.payload to be the array of orders returned
             if (data.orders && data.orders.length > 0) {
               for (let i = 0; i < data.orders.length; i++) {
                 let order = {
@@ -106,7 +205,7 @@ let GetSalesOrderFromQuery = function (ncUtil,
                 docs.push({
                   doc: order,
                   salesOrderRemoteID: order.order.id,
-                  salesOrderBusinessReference: order.order.id
+                  salesOrderBusinessReference: extractBusinessReference(channelProfile.salesOrderBusinessReferences, order)
                 });
               }
               if (docs.length === payload.doc.pageSize) {
@@ -132,7 +231,6 @@ let GetSalesOrderFromQuery = function (ncUtil,
 
           callback(out);
         } else {
-          // If an error occurs, log the error here
           logError("Do GetSalesOrderFromQuery Callback error - " + error, ncUtil);
           out.ncStatusCode = 500;
           out.payload.error = error;
@@ -140,19 +238,18 @@ let GetSalesOrderFromQuery = function (ncUtil,
         }
       });
     } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in GetSalesOrderFromQuery - " + err, ncUtil);
+      logError("Exception occurred in GetSalesOrderFromQuery - err" + err, ncUtil);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
     log("Callback with an invalid request - " + invalidMsg, ncUtil);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
+
 };
 
 function logError(msg, ncUtil) {

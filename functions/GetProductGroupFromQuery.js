@@ -1,8 +1,8 @@
-let GetFulfillmentFromQuery = function (ncUtil,
-                                        channelProfile,
-                                        flowContext,
-                                        payload,
-                                        callback) {
+let GetProductGroupFromQuery = function (ncUtil,
+                                     channelProfile,
+                                     flowContext,
+                                     payload,
+                                     callback) {
   
   log("Building response object...", ncUtil);
   let out = {
@@ -23,7 +23,7 @@ let GetFulfillmentFromQuery = function (ncUtil,
     invalidMsg = "ncUtil.request was not provided"
   }
   
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or fulfillmentBusinessReferences, the request can't be sent
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productGroupBusinessReference, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -42,24 +42,21 @@ let GetFulfillmentFromQuery = function (ncUtil,
   } else if (!channelProfile.channelAuthValues.shop) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
-  } else if (!channelProfile.fulfillmentBusinessReferences) {
+  } else if (!channelProfile.productGroupBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.fulfillmentBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.fulfillmentBusinessReferences)) {
+    invalidMsg = "channelProfile.productGroupBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productGroupBusinessReferences)) {
     invalid = true;
-    invalidMsg = "channelProfile.fulfillmentBusinessReferences is not an array"
-  } else if (channelProfile.fulfillmentBusinessReferences.length === 0) {
+    invalidMsg = "channelProfile.productGroupBusinessReferences is not an array"
+  } else if (channelProfile.productGroupBusinessReferences.length === 0) {
     invalid = true;
-    invalidMsg = "channelProfile.fulfillmentBusinessReferences is empty"
+    invalidMsg = "channelProfile.productGroupBusinessReferences is empty"
   }
   
-  //If a fulfillment document was not passed in, the request is invalid
+  //If a product document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
-  } else if (!payload.salesOrderRemoteID) {
-    invalid = true;
-    invalidMsg = "payload.salesOrderRemoteID was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
@@ -101,18 +98,33 @@ let GetFulfillmentFromQuery = function (ncUtil,
   if (!invalid) {
     const extractBusinessReference = require('../util/extractBusinessReference');
     
-    let endPoint = "/admin/orders/" + payload.salesOrderRemoteID + "/fulfillments.json";
-    
-    //Request - Simplified HTTP client
     let request = require('request');
     
     let queryParams = [];
-    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
     
-    /*
-     Create query string for searching fulfillments by specific fields
-     */
-    if (payload.doc.remoteIDs) {
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/products.json";
+    
+    if (payload.doc.searchFields) {
+      let query = "query=";
+      let fields = [];
+      // Loop through each field
+      payload.doc.searchFields.forEach(function (searchField) {
+        let values = [];
+        // Loop through each value
+        searchField.searchValues.forEach(function (searchValue) {
+          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
+        });
+        // Multiple values use OR
+        fields.push(values.join(" OR "));
+      });
+      // Multiple fields use AND
+      query += fields.join(" AND ");
+      queryParams.push(query);
+      
+      // admin/products/search.json endpoint for using the query
+      url = url.substring(0, url.indexOf(".json")) + "/search.json";
+      
+    } else if (payload.doc.remoteIDs) {
       /*
        Add remote IDs as a query parameter
        */
@@ -123,6 +135,7 @@ let GetFulfillmentFromQuery = function (ncUtil,
        Add modified date ranges to the query
        Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
        */
+      
       if (payload.doc.modifiedDateRange.startDateGMT) {
         queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
       }
@@ -169,8 +182,9 @@ let GetFulfillmentFromQuery = function (ncUtil,
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
+        
         if (!error) {
-          log("Do GetFulfillmentFromQuery Callback", ncUtil);
+          log("Do GetProductGroupFromQuery Callback", ncUtil);
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
           
@@ -179,17 +193,16 @@ let GetFulfillmentFromQuery = function (ncUtil,
           let data = body;
           
           if (response.statusCode === 200) {
-            // If we have an array of fulfillments, set out.payload to be the array of fulfillment returned
-            if (data.fulfillments && data.fulfillments.length > 0) {
-              for (let i = 0; i < data.fulfillments.length; i++) {
-                let fulfillment = {
-                  fulfillment: data.fulfillments[i]
+            // If we have an array of products, set out.payload to be the array of products returned
+            if (data.products && data.products.length > 0) {
+              for (let i = 0; i < data.products.length; i++) {
+                let product = {
+                  product: body.products[i]
                 };
                 docs.push({
-                  doc: fulfillment,
-                  fulfillmentRemoteID: fulfillment.fulfillment.id,
-                  fulfillmentBusinessReference: extractBusinessReference(channelProfile.fulfillmentBusinessReferences, fulfillment),
-                  salesOrderRemoteID: payload.salesOrderRemoteID
+                  doc: product,
+                  productGroupRemoteID: product.product.id,
+                  productGroupBusinessReference: extractBusinessReference(channelProfile.productGroupBusinessReferences, product)
                 });
               }
               if (docs.length === payload.doc.pageSize) {
@@ -215,16 +228,16 @@ let GetFulfillmentFromQuery = function (ncUtil,
           
           callback(out);
         } else {
-          logError("Do GetFulfillmentFromQuery Callback error - " + error, ncUtil);
-          out.payload.error = error;
+          logError("Do GetProductGroupFromQuery Callback error - " + error, ncUtil);
           out.ncStatusCode = 500;
+          out.payload.error = {err: error};
           callback(out);
         }
       });
     } catch (err) {
-      logError("Exception occurred in GetFulfillmentFromQuery - " + err, ncUtil);
-      out.payload.error = {err: err, stack: err.stackTrace};
+      logError("Exception occurred in GetProductGroupFromQuery - " + err, ncUtil);
       out.ncStatusCode = 500;
+      out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
@@ -243,4 +256,4 @@ function log(msg, ncUtil) {
   console.log("[info] " + msg);
 }
 
-module.exports.GetFulfillmentFromQuery = GetFulfillmentFromQuery;
+module.exports.GetProductGroupFromQuery = GetProductGroupFromQuery;

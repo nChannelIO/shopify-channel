@@ -1,8 +1,15 @@
+'use strict';
+
+let Promise = require('bluebird');
+let request = require('request-promise');
+let errors = require('request-promise/errors');
+let extractBusinessReference = require('../util/extractBusinessReference');
+
 let UpdateProductSimple = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+                              channelProfile,
+                              flowContext,
+                              payload,
+                              callback) {
 
   log("Building response object...", ncUtil);
   let out = {
@@ -18,6 +25,9 @@ let UpdateProductSimple = function (ncUtil,
   if (!ncUtil) {
     invalid = true;
     invalidMsg = "ncUtil was not provided"
+  } else if (!ncUtil.request) {
+    invalid = true;
+    invalidMsg = "ncUtil.request was not provided"
   }
 
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
@@ -33,6 +43,12 @@ let UpdateProductSimple = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.productBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.productBusinessReferences was not provided"
@@ -44,13 +60,16 @@ let UpdateProductSimple = function (ncUtil,
     invalidMsg = "channelProfile.productBusinessReferences is empty"
   }
 
-  //If a sales order document was not passed in, the request is invalid
+  //If a product document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
+  } else if (!payload.productRemoteID) {
+    invalid = true;
+    invalidMsg = "payload.productRemoteID was not provided";
   }
 
   //If callback is not a function
@@ -61,75 +80,250 @@ let UpdateProductSimple = function (ncUtil,
   }
 
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
-    let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
+    // Set base uri and options
+    let baseURI = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop;
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
-
-    // Set options
     let options = {
-      url: url,
-      method: "PUT",
       headers: headers,
-      body: payload.doc,
       json: true
     };
 
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        if (!error) {
-          // If no errors, process results here
-          if (response.statusCode === 200 && body.product) {
-            out.payload = {
-              doc: body,
-              productBusinessReference: body.product.sku
-            };
+    // Get the variant id
+    options.method = 'GET';
+    options.uri = baseURI + `/admin/products/${payload.productRemoteID}/variants.json`;
 
-            out.ncStatusCode = 200;
-          } else if (response.statusCode == 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = body;
-          } else if (response.statusCode == 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = body;
-          } else {
-            out.ncStatusCode = 400;
-            out.payload.error = body;
-          }
-          callback(out);
-        } else {
-          // If an error occurs, log the error here
-          logError("Do UpdateProductSimple Callback error - " + error, ncUtil);
-          out.ncStatusCode = 500;
-          out.payload.error = error;
-          callback(out);
-        }
+    log(`Requesting [${options.method} ${options.uri}]`);
+
+    request(options).then(body => {
+      payload.doc.product.variants[0].id = body.variants[0].id;
+    }).then(() => {
+      return Promise.all([
+        updateProductMetafields(payload, options, baseURI),
+        updateVariantMetafields(payload, options, baseURI)
+      ]).then(() => {
+        // Update the product
+        payload.doc.product.id = payload.productRemoteID;
+
+        // Remove all metafields
+        delete payload.doc.product.metafields;
+        payload.doc.product.variants.forEach(variant => {
+          delete variant.metafields;
+        });
+
+        options.uri = baseURI + `/admin/products/${payload.productRemoteID}.json`;
+        options.method = 'PUT';
+        options.body = payload.doc;
+        options.resolveWithFullResponse = true;
+
+        log(`Requesting [${options.method} ${options.uri}]`, ncUtil);
+
+        return request(options).then(response => {
+          log("Do UpdateProduct Callback", ncUtil);
+
+          let body = response.body;
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+          out.payload = {
+            doc: body,
+            productBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
+          };
+
+          out.ncStatusCode = 200;
+        });
       });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in UpdateProductSimple - " + err, ncUtil);
+    }).catch(errors.StatusCodeError, reason => {
+      out.response.endpointStatusCode = reason.statusCode;
+      out.response.endpointStatusMessage = reason.response.statusMessage;
+      if (reason.statusCode === 429) {
+        out.ncStatusCode = 429;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode >= 500) {
+        out.ncStatusCode = 500;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 404) {
+        out.ncStatusCode = 404;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 422) {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      } else {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      }
+      logError(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
+    }).catch(errors.RequestError, reason => {
+      out.response.endpointStatusCode = 'N/A';
+      out.response.endpointStatusMessage = 'N/A';
       out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
+      out.payload.error = reason.error;
+      logError(`The request failed: ${reason.error}`);
+    }).finally(() => {
+      // Prevent an unhandled promise rejection if an exception occurs in the callback TODO basic driver to support promises
+      try {
+        callback(out);
+      } catch(err) {
+        console.log(err);
+      }
+    });
+
   } else {
-    // Invalid Request
     log("Callback with an invalid request - " + invalidMsg, ncUtil);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
+
+function getMetafieldsWithPaging(options, uri, page = 1, result = []) {
+  let pageSize = 250; //Max page size supported
+  options.method = 'GET';
+  options.uri = `${uri}?page=${page}&limit=${pageSize}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  return request(options).then(body => {
+    result = result.concat(body.metafields);
+
+    if (body.metafields.length === pageSize) {
+      return getMetafieldsWithPaging(options, uri, ++page, result);
+    } else {
+      return result;
+    }
+  });
+}
+
+function updateProductMetafields(payload, options, baseURI) {
+  // Update product metafields
+  if (payload.doc.product.metafields && payload.doc.product.metafields.length > 0) {
+    // Get existing product metafields
+    let uri = baseURI + `/admin/products/${payload.productRemoteID}/metafields.json`;
+
+    return getMetafieldsWithPaging(options, uri).then(metafields => {
+      // Determine which metafields need updated/inserted
+      return payload.doc.product.metafields.reduce((metafieldsForUpdate, metafield) => {
+        let match = false;
+
+        // Loop through all existing metafields looking for a match
+        for (let i = 0; i < metafields.length; i++) {
+          let existingMetafield = metafields[i];
+          if (metafield.namespace === existingMetafield.namespace && metafield.key === existingMetafield.key) {
+            // It's a match
+            match = true;
+            // Remove it to speed up future iterations
+            metafields.splice(i, 1);
+
+            if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || metafield.description !== existingMetafield.description) {
+              // It needs updated
+              metafield.id = existingMetafield.id;
+              metafieldsForUpdate.push(metafield);
+            }
+            break;
+          }
+        }
+
+        if (!match) {
+          // It needs inserted
+          metafieldsForUpdate.push(metafield);
+        }
+
+        return metafieldsForUpdate;
+      }, []);
+    }).then(metafields => {
+      // Update the metafields
+      return Promise.all(metafields.map(metafield => {
+        if (metafield.id) {
+          // Update existing metafield
+          options.uri = baseURI + `/admin/products/${payload.productRemoteID}/metafields/${metafield.id}.json`;
+          options.method = 'PUT';
+          options.body = {metafield: metafield};
+
+          log(`Requesting [${options.method} ${options.uri}]`);
+
+          return request(options);
+        } else {
+          // Insert new metafield
+          options.uri = baseURI + `/admin/products/${payload.productRemoteID}/metafields.json`;
+          options.method = 'POST';
+          options.body = {metafield: metafield};
+
+          log(`Requesting [${options.method} ${options.uri}]`);
+
+          return request(options);
+        }
+      }));
+    });
+  } else {
+    return Promise.resolve();
+  }
+}
+
+function updateVariantMetafields(payload, options, baseURI) {
+  // Update variant metafields
+  let variant = payload.doc.product.variants[0];
+  if (variant.metafields && variant.metafields.length > 0) {
+    // Get existing variant metafields
+    let uri = baseURI + `/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`;
+
+    return getMetafieldsWithPaging(options, uri).then(metafields => {
+      // Determine which metafields need updated/inserted
+      return payload.doc.product.variants[0].metafields.reduce((metafieldsForUpdate, metafield) => {
+        let match = false;
+
+        // Loop through all existing metafields looking for a match
+        for (let i = 0; i < metafields.length; i++) {
+          let existingMetafield = metafields[i];
+          if (metafield.namespace === existingMetafield.namespace && metafield.key === existingMetafield.key) {
+            // It's a match
+            match = true;
+            // Remove it to speed up future iterations
+            metafields.splice(i, 1);
+
+            if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || metafield.description !== existingMetafield.description) {
+              // It needs updated
+              metafield.id = existingMetafield.id;
+              metafieldsForUpdate.push(metafield);
+            }
+            break;
+          }
+        }
+
+        if (!match) {
+          // It needs inserted
+          metafieldsForUpdate.push(metafield);
+        }
+
+        return metafieldsForUpdate;
+      }, []);
+    }).then(metafields => {
+      // Update the metafields
+      return Promise.all(metafields.map(metafield => {
+        if (metafield.id) {
+          // Update existing metafield
+          options.uri = baseURI + `/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields/${metafield.id}.json`;
+          options.method = 'PUT';
+          options.body = {metafield: metafield};
+
+          log(`Requesting [${options.method} ${options.uri}]`);
+
+          return request(options);
+        } else {
+          // Insert new metafield
+          options.uri = baseURI + `/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`;
+          options.method = 'POST';
+          options.body = {metafield: metafield};
+
+          log(`Requesting [${options.method} ${options.uri}]`);
+
+          return request(options);
+        }
+      }));
+    });
+  } else {
+    return Promise.resolve();
+  }
+}
 
 function logError(msg, ncUtil) {
   console.log("[error] " + msg);

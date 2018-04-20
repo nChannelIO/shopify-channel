@@ -3,23 +3,26 @@ let CheckForProductGroup = function (ncUtil,
                                  flowContext,
                                  payload,
                                  callback) {
-
+  
   log("Building response object...", ncUtil);
   let out = {
     ncStatusCode: null,
-    response: {},
-    payload: {}
+    payload: {},
+    response: {}
   };
-
+  
   let invalid = false;
   let invalidMsg = "";
-
+  
   //If ncUtil does not contain a request object, the request can't be sent
   if (!ncUtil) {
     invalid = true;
     invalidMsg = "ncUtil was not provided"
+  } else if (!ncUtil.request) {
+    invalid = true;
+    invalidMsg = "ncUtil.request was not provided"
   }
-
+  
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or productGroupBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
@@ -33,6 +36,12 @@ let CheckForProductGroup = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.productGroupBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.productGroupBusinessReferences was not provided"
@@ -43,8 +52,8 @@ let CheckForProductGroup = function (ncUtil,
     invalid = true;
     invalidMsg = "channelProfile.productGroupBusinessReferences is empty"
   }
-
-  //If a sales order document was not passed in, the request is invalid
+  
+  //If a product document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
@@ -52,49 +61,78 @@ let CheckForProductGroup = function (ncUtil,
     invalid = true;
     invalidMsg = "payload.doc was not provided";
   }
-
+  
   //If callback is not a function
   if (!callback) {
     throw new Error("A callback function was not provided");
   } else if (typeof callback !== 'function') {
     throw new TypeError("callback is not a function")
   }
-
+  
+  
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+    const jsonata = require('jsonata');
+    
+    let endPoint = "/admin/products/search.json";
+    
     let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
+    
+    let queryParams = [];
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
+    
+    let busRefValues = [];
+    let values = [];
+    channelProfile.productGroupBusinessReferences.forEach(function (businessReference) {
+      let expression = jsonata(businessReference);
+      let value = expression.evaluate(payload.doc) || '';
+      let lookup = businessReference.split('.').pop() + ":" + encodeURIComponent(value);
+      values.push(lookup);
+      busRefValues.push(value);
+    });
+    if (values.length > 0) {
+      let query = values.join(" AND ");
+      let lookup = "query=" + query;
+      queryParams.push(lookup);
+    }
+    
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    // Log URL
+    
+    url += "?" + queryParams.join('&');
+    
     log("Using URL [" + url + "]", ncUtil);
-
-    // Set options
+    
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
-      method: "GET",
       headers: headers,
-      body: payload.doc,
       json: true
     };
-
+    
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If no errors, process results here
-          if (response.statusCode == 200) {
-            if (body.products && body.products.length == 1) {
+          log("Do CheckForProductGroup Callback", ncUtil);
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+          
+          if (response.statusCode === 200) {
+            if (body.products && body.products.length === 1) {
+              let product = {
+                product: body.products[0]
+              };
               out.ncStatusCode = 200;
               out.payload = {
-                productGroupRemoteID: "1",
-                productGroupBusinessReference: "sku"
+                productGroupRemoteID: product.product.id,
+                productGroupBusinessReference: extractBusinessReference(channelProfile.productGroupBusinessReferences, product)
               };
             } else if (body.products.length > 1) {
               out.ncStatusCode = 409;
@@ -102,10 +140,10 @@ let CheckForProductGroup = function (ncUtil,
             } else {
               out.ncStatusCode = 204;
             }
-          } else if (response.statusCode == 429) {
+          } else if (response.statusCode === 429) {
             out.ncStatusCode = 429;
             out.payload.error = body;
-          } else if (response.statusCode == 500) {
+          } else if (response.statusCode === 500) {
             out.ncStatusCode = 500;
             out.payload.error = body;
           } else {
@@ -114,22 +152,19 @@ let CheckForProductGroup = function (ncUtil,
           }
           callback(out);
         } else {
-          // If an error occurs, log the error here
           logError("Do CheckForProductGroup Callback error - " + error, ncUtil);
           out.ncStatusCode = 500;
           out.payload.error = error;
           callback(out);
         }
       });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in CheckForProductGroup - " + err, ncUtil);
+    } catch (error) {
+      logError("Exception occurred in CheckForProductGroup - " + error, ncUtil);
+      out.payload.error = {err: error, stack: error.stackTrace};
       out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
     log("Callback with an invalid request - " + invalidMsg, ncUtil);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
