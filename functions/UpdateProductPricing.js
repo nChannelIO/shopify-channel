@@ -140,7 +140,7 @@ let UpdateProductPricing = function (ncUtil,
         }
       });
     } catch (err) {
-      logError("Exception occurred in UpdateProductPricing - " + err, ncUtil);;
+      logError("Exception occurred in UpdateProductPricing - " + err, ncUtil);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
