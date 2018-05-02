@@ -4,7 +4,7 @@ let UpdateSalesOrder = function (ncUtil,
                                  payload,
                                  callback) {
   
-  log("Building response object...", ncUtil);
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -13,15 +13,6 @@ let UpdateSalesOrder = function (ncUtil,
   
   let invalid = false;
   let invalidMsg = "";
-  
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  } else if (!ncUtil.request) {
-    invalid = true;
-    invalidMsg = "ncUtil.request was not provided"
-  }
   
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
   if (!channelProfile) {
@@ -88,7 +79,7 @@ let UpdateSalesOrder = function (ncUtil,
       "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
     
-    log("Using URL [" + url + "]", ncUtil);
+    log("Using URL [" + url + "]");
   
     payload.doc.order.id = payload.salesOrderRemoteID;
     
@@ -107,7 +98,7 @@ let UpdateSalesOrder = function (ncUtil,
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          log("Do UpdateSalesOrder Callback", ncUtil);
+          log("Do UpdateSalesOrder Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
           
@@ -132,31 +123,31 @@ let UpdateSalesOrder = function (ncUtil,
           
           callback(out);
         } else {
-          logError("Do UpdateSalesOrder Callback error - " + error, ncUtil);
+          logError("Do UpdateSalesOrder Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = error;
           callback(out);
         }
       });
     } catch (err) {
-      logError("Exception occurred in UpdateSalesOrder - " + err, ncUtil);
+      logError("Exception occurred in UpdateSalesOrder - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

@@ -6,7 +6,7 @@ let ExtractCustomerFromSalesOrder = function(
     callback)
 {
 
-    log("Building callback object...", ncUtil);
+    log("Building callback object...");
     let out = {
         ncStatusCode: null,
         payload: {}
@@ -80,13 +80,13 @@ let ExtractCustomerFromSalesOrder = function(
           callback(out);
         } else if (!invalid && notFound){
           // Customer Not Found
-          log(invalidMsg, ncUtil);
+          log(invalidMsg);
           out.ncStatusCode = 204;
 
           callback(out);
         } else {
           // Invalid Request (payload or payload.doc was not passed in)
-          log(invalidMsg, ncUtil);
+          log(invalidMsg);
           out.ncStatusCode = 400;
           out.payload.error = { err: invalidMsg };
 
@@ -94,7 +94,7 @@ let ExtractCustomerFromSalesOrder = function(
         }
     }
     catch (err){
-        logError("Exception occurred in ExtractCustomerFromSalesOrder - " + err, ncUtil);
+        logError("Exception occurred in ExtractCustomerFromSalesOrder - " + err);
         out.ncStatusCode = 500;
         out.payload.error = { err: err.message, stackTrace: err.stackTrace };
         callback(out);
@@ -102,11 +102,11 @@ let ExtractCustomerFromSalesOrder = function(
 
 }
 
-function logError(msg, ncUtil) {
+function logError(msg) {
     console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
     console.log("[info] " + msg);
 }
 module.exports.ExtractCustomerFromSalesOrder = ExtractCustomerFromSalesOrder;
