@@ -72,9 +72,7 @@
             "location": "product.variants",
             "remoteID": "id",
             "businessReferences": ["sku"]
-          }
-        ],
-        "peers": [
+          },
           {
             "name": "PRODUCTQUANTITY",
             "location": "product.variants",
@@ -146,9 +144,7 @@
             "location": "product.variants",
             "remoteID": "id",
             "businessReferences": ["sku"]
-          }
-        ],
-        "peers": [
+          },
           {
             "name": "PRODUCTQUANTITY",
             "location": "product.variants",
@@ -247,9 +243,7 @@
             "location": "product.variants",
             "remoteID": "id",
             "businessReferences": ["sku"]
-          }
-        ],
-        "peers": [
+          },
           {
             "name": "PRODUCTQUANTITY",
             "location": "product.variants",
@@ -407,7 +401,27 @@
         "schema": {},
         "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
         "remoteID": "id",
-        "businessReferences": ["order.name"]
+        "businessReferences": ["order.name"],
+        "peers": [
+          {
+            "name": "CUSTOMER",
+            "location": "order.customer",
+            "remoteID": "id",
+            "businessReferences": ["email", "phone"]
+          },
+          {
+            "name": "FULFILLMENT",
+            "location": "order.fulfillments",
+            "remoteID": "id",
+            "businessReference": ["order_id"]
+          },
+          {
+            "name": "PRODUCT",
+            "location": "order.line_items",
+            "remoteID": "product_id",
+            "businessReferences": ["title"]
+          }
+        ]
       }
     },
     {
