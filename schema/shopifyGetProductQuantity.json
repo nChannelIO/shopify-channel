@@ -21,7 +21,7 @@
         "title": "inventory_levels",
         "type": "array",
         "items": {
-          "$ref": "#/definitions/inventory_item"
+          "$ref": "#/definitions/inventory_level"
         }
       },
       "created_at": {
@@ -34,7 +34,9 @@
       }
     },
     "required": [
-      "inventory_item_ids"
+      "inventory_item_ids",
+      "sku",
+      "id"
     ],
     "additionalProperties": false,
     "definitions": {

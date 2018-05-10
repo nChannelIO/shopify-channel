@@ -16,12 +16,13 @@
       "inventory_levels": {
         "type": "array",
         "items": {
-          "$ref": "#/definitions/inventory_item"
+          "$ref": "#/definitions/inventory_level"
         }
       }
     },
     "required": [
-      "inventory_item_ids"
+      "inventory_item_ids",
+      "sku"
     ],
     "additionalProperties": false,
     "definitions": {
