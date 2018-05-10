@@ -1,10 +1,14 @@
 {
-  "name": "Shopify Put Product Quantity",
+  "name": "Shopify Get Product Quantity",
   "schemaDef": {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Shopify Put Product Quantity",
+    "description": "Shopify Get Product Quantity",
     "type": "object",
     "properties": {
+      "id": {
+        "title": "id",
+        "type": ["string", "number"]
+      },
       "sku": {
         "title": "location_id",
         "type": "string"
@@ -14,10 +18,19 @@
         "type": ["boolean", "null"]
       },
       "inventory_levels": {
+        "title": "inventory_levels",
         "type": "array",
         "items": {
           "$ref": "#/definitions/inventory_item"
         }
+      },
+      "created_at": {
+        "title": "created_at",
+        "type": "string"
+      },
+      "updated_at": {
+        "title": "updated_at",
+        "type": "string"
       }
     },
     "required": [
@@ -43,6 +56,10 @@
           "disconnect_if_necessary": {
             "title": "disconnect_if_necessary",
             "type": ["boolean", "null"]
+          },
+          "updated_at": {
+            "title": "updated_at",
+            "type": "string"
           }
         },
         "required": [
@@ -57,7 +74,7 @@
     "Shopify",
     "Product",
     "Quantity",
-    "Put"
+    "Get"
   ],
   "audit": {}
 }

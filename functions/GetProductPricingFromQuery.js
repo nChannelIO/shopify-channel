@@ -1,5 +1,11 @@
+'use strict';
+
+let Promise = require('bluebird');
 let moment = require('moment');
+let request = require('request-promise');
+let errors = require('request-promise/errors');
 let _ = require('lodash');
+const extractBusinessReference = require('../util/extractBusinessReference');
 
 let GetProductPricingFromQuery = function (ncUtil,
                                           channelProfile,
@@ -7,7 +13,6 @@ let GetProductPricingFromQuery = function (ncUtil,
                                           payload,
                                           callback) {
   
-  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -54,26 +59,18 @@ let GetProductPricingFromQuery = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+  } else if (payload.doc.searchFields) {
     invalid = true;
-    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
+    invalidMsg = "Searching for product pricings is not supported";
+  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange) {
+    invalid = true;
+    invalidMsg = "either payload.doc.remoteIDs or or payload.doc.modifiedDateRange must be provided"
   } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
     invalid = true;
     invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
   } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
     invalid = true;
     invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
-  } else if (payload.doc.searchFields && (!Array.isArray(payload.doc.searchFields) || payload.doc.searchFields.length === 0)) {
-    invalid = true;
-    invalidMsg = "payload.doc.searchFields must be an Array with at least 1 key value pair: {searchField: 'key', searchValues: ['value_1']}"
-  } else if (payload.doc.searchFields) {
-    for (let i = 0; i < payload.doc.searchFields.length; i++) {
-      if (!payload.doc.searchFields[i].searchField || !Array.isArray(payload.doc.searchFields[i].searchValues) || payload.doc.searchFields[i].searchValues.length === 0) {
-        invalid = true;
-        invalidMsg = "payload.doc.searchFields[" + i + "] must be a key value pair: {searchField: 'key', searchValues: ['value_1']}";
-        break;
-      }
-    }
   } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
     invalid = true;
     invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
@@ -90,202 +87,216 @@ let GetProductPricingFromQuery = function (ncUtil,
   }
   
   if (!invalid) {
-    const extractBusinessReference = require('../util/extractBusinessReference');
-    
-    let request = require('request');
-    
-    let queryParams = [];
-    
-    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/products.json";
-    
-    if (payload.doc.searchFields) {
-      let query = "query=";
-      let fields = [];
-      // Loop through each field
-      payload.doc.searchFields.forEach(function (searchField) {
-        let values = [];
-        // Loop through each value
-        searchField.searchValues.forEach(function (searchValue) {
-          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
-        });
-        // Multiple values use OR
-        fields.push(values.join(" OR "));
-      });
-      // Multiple fields use AND
-      query += fields.join(" AND ");
-      queryParams.push(query);
-      
-      // admin/products/search.json endpoint for using the query
-      url = url.substring(0, url.indexOf(".json")) + "/search.json";
-      
-    } else if (payload.doc.remoteIDs) {
-      /*
-       Add remote IDs as a query parameter
-       */
-      queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
-      
-    } else if (payload.doc.modifiedDateRange) {
-      /*
-       Add modified date ranges to the query
-       Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
-       */
-      
-      if (payload.doc.modifiedDateRange.startDateGMT) {
-        queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
-      }
-      if (payload.doc.modifiedDateRange.endDateGMT) {
-        queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
-      }
-    }
-    
-    /*
-     Add page to the query
-     */
-    if (payload.doc.page) {
-      queryParams.push("page=" + payload.doc.page);
-    }
-    
-    /*
-     Add pageSize (limit) to the query
-     */
-    if (payload.doc.pageSize) {
-      if (payload.doc.pageSize === 0) {
-        payload.doc.pageSize = 25;
-      } else if (payload.doc.pageSize > 250) {
-        payload.doc.pageSize = 250;
-      }
-      queryParams.push("limit=" + payload.doc.pageSize);
-    }
-    
-    
-    /*
-     Format url
-     */
+    // Set base uri and options
+    let baseURI = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop;
     let headers = {
       "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-    
-    url += "?" + queryParams.join('&');
-    
-    log("Using URL [" + url + "]");
-    
-    /*
-     Set URL and headers
-     */
     let options = {
-      url: url,
       headers: headers,
       json: true
     };
-    
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        
-        if (!error) {
-          log("Do GetProductPricingFromQuery Callback");
-          out.response.endpointStatusCode = response.statusCode;
-          out.response.endpointStatusMessage = response.statusMessage;
-          
-          // Parse data
-          let docs = [];
-          let data = body;
-          
-          if (response.statusCode === 200) {
-            // If we have an array of products, set out.payload to be the array of products returned
-            if (data.products && data.products.length > 0) {
-              let startDate, endDate;
-              if (payload.doc.modifiedDateRange) {
-                startDate = moment(payload.doc.modifiedDateRange.startDateGMT);
-                endDate = moment(payload.doc.modifiedDateRange.endDateGMT);
-              }
 
-              for (let i = 0; i < data.products.length; i++) {
-                let productPricings = data.products[i].variants;
+    let promise;
 
-                // Filter product pricing by modified date
-                if (startDate && endDate) {
-                  productPricings = productPricings.filter(element => moment(element.updated_at).isBetween(startDate, endDate, null, '[]'));
-                }
+    if (payload.doc.remoteIDs) {
+      promise = getProductPricingByIDs(channelProfile, options, baseURI, payload.doc.remoteIDs);
+    } else {
+      promise = getProductPricingByTimeRange(channelProfile, options, baseURI, payload.doc.modifiedDateRange.startDateGMT, payload.doc.modifiedDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize);
+    }
 
-                productPricings.forEach(productPricing => {
-                  // Pricing is a subset of variant
-                  let pricing = {
-                    id: productPricing.id,
-                    sku: productPricing.sku,
-                    price: productPricing.price
-                  };
+    promise.then(result => {
+      out = result;
+    }).catch(errors.StatusCodeError, reason => {
+      out.response.endpointStatusCode = reason.statusCode;
+      out.response.endpointStatusMessage = reason.response.statusMessage;
+      if (reason.statusCode === 429) {
+        out.ncStatusCode = 429;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode >= 500) {
+        out.ncStatusCode = 500;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 404) {
+        out.ncStatusCode = 404;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 422) {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      } else {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      }
+      logError(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
 
-                  // Set the remoteID
-                  // TODO update the channelProfileUtility to pull the remoteID path up to a higher level
-                  //_.set(pricing, channelProfile.productPricingRemoteID, _.get(productPricing, channelProfile.productPricingRemoteID));
+    }).catch(errors.RequestError, reason => {
+      out.response.endpointStatusCode = 'N/A';
+      out.response.endpointStatusMessage = 'N/A';
+      out.ncStatusCode = 500;
+      out.payload.error = reason.error;
+      logError(`The request failed: ${reason.error}`);
 
-                  //Set the BR fields
-                  channelProfile.productPricingBusinessReferences.forEach(businessReference => {
-                    _.set(pricing, businessReference, _.get(productPricing, businessReference));
-                  });
+    }).catch(error => {
+      out.ncStatusCode = 500;
+      out.payload.error = error;
 
-                  docs.push({
-                    doc: pricing,
-                    productPricingRemoteID: pricing.id,
-                    productPricingBusinessReference: extractBusinessReference(channelProfile.productPricingBusinessReferences, pricing)
-                  });
-                });
-              }
-              if (data.products.length === payload.doc.pageSize) {
-                out.ncStatusCode = 206;
-              } else {
-                out.ncStatusCode = 200;
-              }
-
-              if (docs.length > payload.doc.pageSize) {
-                for (let i = 0; i < docs.length; i += payload.doc.pageSize) {
-                  let obj = _.cloneDeep(out);
-                  obj.payload = docs.slice(i, i+payload.doc.pageSize);
-                  callback(obj);
-                }
-              } else {
-                out.payload = docs;
-                callback(out);
-              }
-            } else {
-              out.ncStatusCode = 204;
-              out.payload = data;
-              callback(out);
+    }).finally(() => {
+      try {
+        if (out.ncStatusCode === 200 || out.ncStatusCode === 206) {
+          // Split the payload into chunks of size pageSize
+          if (out.payload.length > payload.doc.pageSize) {
+            let productPricings = out.payload;
+            delete out.payload;
+            for (let i = 0; i < productPricings.length; i += payload.doc.pageSize) {
+              let obj = _.cloneDeep(out);
+              obj.payload = productPricings.slice(i, i + payload.doc.pageSize);
+              callback(obj);
             }
-          } else if (response.statusCode === 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = data;
-            callback(out);
-          } else if (response.statusCode === 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = data;
-            callback(out);
           } else {
-            out.ncStatusCode = 400;
-            out.payload.error = data;
             callback(out);
           }
         } else {
-          logError("Do GetProductPricingFromQuery Callback error - " + error);
-          out.ncStatusCode = 500;
-          out.payload.error = {err: error};
           callback(out);
         }
-      });
-    } catch (err) {
-      logError("Exception occurred in GetProductPricingFromQuery - " + err);
-      out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
+      } catch (err) {
+        logError(err);
+      }
+    });
   } else {
-    log("Callback with an invalid request - " + invalidMsg);
+    logError("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
+
+function getProductPricingByIDs(channelProfile, options, baseURI, remoteIDs) {
+  return Promise.all(remoteIDs.map(remoteID => {
+    options.method = 'GET';
+    options.uri = `${baseURI}/admin/variants/${remoteID}.json`;
+
+    log(`Requesting [${options.method} ${options.uri}]`);
+
+    return request(options).then(body => body.variant);
+  })).then(productPricings => {
+    let out = {
+      ncStatusCode: productPricings.length > 0 ? 200 : 204,
+      response: {},
+      payload: []
+    };
+
+    productPricings.forEach(variant => {
+      let pricing = {
+        id: variant.id,
+        sku: variant.sku,
+        price: variant.price,
+        taxable: variant.taxable,
+        compare_at_price: variant.compare_at_price,
+        updated_at: variant.updated_at
+      };
+
+      out.payload.push({
+        doc: pricing,
+        productPricingRemoteID: pricing.id,
+        productPricingBusinessReference: extractBusinessReference(channelProfile.productPricingBusinessReferences, pricing)
+      });
+    });
+
+    return out;
+  });
+}
+
+function getProductPricingByTimeRange(channelProfile, options, baseURI, startTime, endTime, page=1, pageSize=50) {
+  let queryParams = [];
+  //Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
+  if (startTime) {
+    queryParams.push("updated_at_min=" + new Date(Date.parse(startTime) - 1).toISOString());
+  }
+  if (endTime) {
+    queryParams.push("updated_at_max=" + new Date(Date.parse(endTime) + 1).toISOString());
+  }
+
+  //Add page and pageSize to the query
+  queryParams.push("page=" + page);
+  queryParams.push("limit=" + pageSize);
+
+  /**
+   * We cant query variants by their updated_at field. But when
+   * a variant is updated the associated product is also updated.
+   *
+   * So we'll do this instead.
+   * 1) Get all products which were modified in the time range
+   * 2) Filter out variants which were updated in the time range
+   */
+
+  // 1) Get all products which were modified in the time range
+  options.method = 'GET';
+  options.uri = baseURI + `/admin/products.json?${queryParams.join('&')}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  let out = {
+    ncStatusCode: null,
+    response: {},
+    payload: []
+  };
+
+  return request(options).then(body => {
+    if (body.products && body.products.length > 0) {
+      if (body.products.length === pageSize) {
+        out.ncStatusCode = 206;
+      }
+
+      // 2) Filter out variants which were updated in the time range
+      return Promise.all(body.products.map(product => {
+        return Promise.all(product.variants.filter(variant => {
+          return withinTimeRange(variant.updated_at, startTime, endTime);
+        }));
+      })).then(variants => {
+        return variants.reduce((flattened, array) => {
+          return flattened.concat(array);
+        }, []);
+      });
+    } else {
+      return [];
+    }
+  }).then(variants => {
+    if (out.ncStatusCode !== 206) {
+      out.ncStatusCode = variants.length > 0 ? 200 : 204;
+    }
+
+    variants.forEach(variant => {
+      let pricing = {
+        id: variant.id,
+        sku: variant.sku,
+        price: variant.price,
+        taxable: variant.taxable,
+        compare_at_price: variant.compare_at_price,
+        updated_at: variant.updated_at
+      };
+
+      out.payload.push({
+        doc: pricing,
+        productPricingRemoteID: pricing.id,
+        productPricingBusinessReference: extractBusinessReference(channelProfile.productPricingBusinessReferences, pricing)
+      });
+    });
+
+    return out;
+  })
+}
+
+function withinTimeRange(time, start, end) {
+  if (!time || !(start || end)) {
+    return false;
+  }
+  if (start && end) {
+    return moment(time).isBetween(start, end, null, '[]');
+  } else if (start) {
+    return moment(time).isSameOrAfter(start);
+  } else {
+    return moment(time).isSameOrBefore(end);
+  }
+}
 
 function logError(msg) {
   console.log("[error] " + msg);

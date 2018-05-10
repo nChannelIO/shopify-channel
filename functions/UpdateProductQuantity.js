@@ -1,10 +1,17 @@
+'use strict';
+
+let Promise = require('bluebird');
+let request = require('request-promise');
+let errors = require('request-promise/errors');
+let extractBusinessReference = require('../util/extractBusinessReference');
+
 let UpdateProductQuantity = function (ncUtil,
                                channelProfile,
                                flowContext,
                                payload,
                                callback) {
-  
-  log("Building response object...");
+
+  log("Do UpdateProductQuantity");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -51,9 +58,9 @@ let UpdateProductQuantity = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.productRemoteID) {
+  } else if (!payload.productQuantityRemoteID) {
     invalid = true;
-    invalidMsg = "payload.productRemoteID was not provided";
+    invalidMsg = "payload.productQuantityRemoteID was not provided";
   }
   
   //If callback is not a function
@@ -64,86 +71,108 @@ let UpdateProductQuantity = function (ncUtil,
   }
   
   if (!invalid) {
-    const extractBusinessReference = require('../util/extractBusinessReference');
-    
-    let endPoint = "/admin/variants/" + payload.productRemoteID + ".json";
-    
-    //Request - Simplified HTTP client
-    let request = require('request');
-    
-    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
-    
-    /*
-     Format url
-     */
+    let baseURI = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop;
     let headers = {
       "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-    
-    log("Using URL [" + url + "]");
-    
-    payload.doc.variant.id = payload.productRemoteID;
-    
-    /*
-     Set URL and headers
-     */
     let options = {
-      url: url,
-      method: "PUT",
       headers: headers,
-      body: payload.doc,
       json: true
     };
-    
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        if (!error) {
-          log("Do UpdateProductQuantity Callback");
-          out.response.endpointStatusCode = response.statusCode;
-          out.response.endpointStatusMessage = response.statusMessage;
-          
-          // If we have a product object, set out.payload.doc to be the product document
-          if (response.statusCode === 200 && body.variant) {
-            out.payload = {
-              doc: body,
-              productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, body)
-            };
-            
-            out.ncStatusCode = 200;
-          } else if (response.statusCode == 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = body;
-          } else if (response.statusCode == 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = body;
-          } else {
-            out.ncStatusCode = 400;
-            out.payload.error = body;
-          }
-          
-          callback(out);
-        } else {
-          logError("Do UpdateProductQuantity Callback error - " + error);
-          out.ncStatusCode = 500;
-          out.payload.error = error;
-          callback(out);
-        }
+
+    return updateInventoryLevels(payload.doc.inventory_item.inventory_levels, options, baseURI).then(updatedInventoryLevels => {
+      // Enrich the id
+      payload.doc.inventory_item.id = payload.productQuantityRemoteID;
+
+      return updateInventoryItem(payload.doc, options, baseURI).then(response => {
+        out.response.endpointStatusCode = response.statusCode;
+        out.response.endpointStatusMessage = response.statusMessage;
+
+        // Add the updated inventory levels to the inventory item
+        response.body.inventory_item.inventory_levels = updatedInventoryLevels;
+
+        out.payload = {
+          doc: response.body,
+          productQuantityRemoteID: payload.productQuantityRemoteID,
+          productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, response.body)
+        };
+
+        out.ncStatusCode = 200;
+
       });
-    } catch (err) {
-      logError("Exception occurred in UpdateProductQuantity - " + err);
+    }).catch(errors.StatusCodeError, reason => {
+      out.response.endpointStatusCode = reason.statusCode;
+      out.response.endpointStatusMessage = reason.response.statusMessage;
+      if (reason.statusCode === 429) {
+        out.ncStatusCode = 429;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode >= 500) {
+        out.ncStatusCode = 500;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 404) {
+        out.ncStatusCode = 404;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 422) {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      } else {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      }
+      logError(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
+    }).catch(errors.RequestError, reason => {
+      out.response.endpointStatusCode = 'N/A';
+      out.response.endpointStatusMessage = 'N/A';
       out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
-    
+      out.payload.error = reason.error;
+      logError(`The request failed: ${reason.error}`);
+    }).finally(() => {
+      // Prevent an unhandled promise rejection if an exception occurs in the callback TODO basic driver to support promises
+      try {
+        callback(out);
+      } catch(err) {
+        logError(err);
+      }
+    });
   } else {
-    log("Callback with an invalid request - " + invalidMsg);
+    logError(`Function arguments are invalid: ${invalidMsg}`);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
+
+function updateInventoryItem(inventoryItem, options, baseURI) {
+  // Delete the inventory levels
+  delete inventoryItem.inventory_item.inventory_levels;
+
+  options.method = 'PUT';
+  options.uri = `${baseURI}/admin/inventory_items/${inventoryItem.inventory_item.id}.json`;
+  options.body = inventoryItem;
+  options.resolveWithFullResponse = true;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  return request(options);
+}
+
+function updateInventoryLevels(inventoryLevels, options, baseURI) {
+  if (inventoryLevels) {
+    options.method = 'POST';
+    options.uri = `${baseURI}/admin/inventory_levels/set.json`;
+
+    log(`Updating ${inventoryLevels.length} inventory levels`);
+    log(`Requesting [${options.method} ${options.uri}]`);
+
+    return Promise.all(inventoryLevels.map(inventoryLevel => {
+      options.body = inventoryLevel;
+
+      return request(options).then(body => body.inventory_level);
+    }));
+  } else {
+    return Promise.resolve([]);
+  }
+}
 
 function logError(msg) {
   console.log("[error] " + msg);

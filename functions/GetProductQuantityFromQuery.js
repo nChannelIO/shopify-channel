@@ -1,7 +1,11 @@
+'use strict';
+
 let Promise = require('bluebird');
 let moment = require('moment');
 let request = require('request-promise');
+let errors = require('request-promise/errors');
 let _ = require('lodash');
+const extractBusinessReference = require('../util/extractBusinessReference');
 
 let GetProductQuantityFromQuery = function (ncUtil,
                                           channelProfile,
@@ -9,7 +13,6 @@ let GetProductQuantityFromQuery = function (ncUtil,
                                           payload,
                                           callback) {
   
-  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -56,7 +59,10 @@ let GetProductQuantityFromQuery = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+  } else if (payload.doc.searchFields) {
+    invalid = true;
+    invalidMsg = "Searching for product quantities is not supported";
+  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange) {
     invalid = true;
     invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
   } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
@@ -65,17 +71,6 @@ let GetProductQuantityFromQuery = function (ncUtil,
   } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
     invalid = true;
     invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
-  } else if (payload.doc.searchFields && (!Array.isArray(payload.doc.searchFields) || payload.doc.searchFields.length === 0)) {
-    invalid = true;
-    invalidMsg = "payload.doc.searchFields must be an Array with at least 1 key value pair: {searchField: 'key', searchValues: ['value_1']}"
-  } else if (payload.doc.searchFields) {
-    for (let i = 0; i < payload.doc.searchFields.length; i++) {
-      if (!payload.doc.searchFields[i].searchField || !Array.isArray(payload.doc.searchFields[i].searchValues) || payload.doc.searchFields[i].searchValues.length === 0) {
-        invalid = true;
-        invalidMsg = "payload.doc.searchFields[" + i + "] must be a key value pair: {searchField: 'key', searchValues: ['value_1']}";
-        break;
-      }
-    }
   } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
     invalid = true;
     invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
@@ -92,67 +87,6 @@ let GetProductQuantityFromQuery = function (ncUtil,
   }
   
   if (!invalid) {
-    const extractBusinessReference = require('../util/extractBusinessReference');
-    
-    let queryParams = [];
-    
-    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/products.json";
-    
-    if (payload.doc.searchFields) {
-      let query = "query=";
-      let fields = [];
-      // Loop through each field
-      payload.doc.searchFields.forEach(function (searchField) {
-        let values = [];
-        // Loop through each value
-        searchField.searchValues.forEach(function (searchValue) {
-          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
-        });
-        // Multiple values use OR
-        fields.push(values.join(" OR "));
-      });
-      // Multiple fields use AND
-      query += fields.join(" AND ");
-      queryParams.push(query);
-      
-      // admin/products/search.json endpoint for using the query
-      url = url.substring(0, url.indexOf(".json")) + "/search.json";
-      
-    } else if (payload.doc.remoteIDs) {
-      /*
-       Add remote IDs as a query parameter
-       */
-      queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
-      
-    } else if (payload.doc.modifiedDateRange) {
-      /*
-       Add modified date ranges to the query
-       Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
-       */
-      
-      if (payload.doc.modifiedDateRange.startDateGMT) {
-        queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
-      }
-      if (payload.doc.modifiedDateRange.endDateGMT) {
-        queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
-      }
-    }
-    
-    /*
-     Add page to the query
-     */
-    if (payload.doc.page) {
-      queryParams.push("page=" + payload.doc.page);
-    }
-    
-    /*
-     Add pageSize (limit) to the query
-     */
-    if (payload.doc.pageSize) {
-      queryParams.push("limit=" + payload.doc.pageSize);
-    }
-    
-    
     // Set base uri and options
     let baseURI = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop;
     let headers = {
@@ -160,76 +94,35 @@ let GetProductQuantityFromQuery = function (ncUtil,
     };
     let options = {
       headers: headers,
-      json: true,
-      resolveWithFullResponse: true
+      json: true
     };
 
-    // Get the variant id
-    options.method = 'GET';
-    options.uri = baseURI + `/admin/products.json?${queryParams.join('&')}`;
+    let promise;
 
-    log(`Requesting [${options.method} ${options.uri}]`);
-    
-    let productQuantities = [];
+    if (payload.doc.remoteIDs) {
+      promise = getProductQuantityByIDs(options, baseURI, payload.doc.remoteIDs, payload.doc.page, payload.doc.pageSize).then(productQuantities => {
+        let out = {
+          ncStatusCode: productQuantities.length > 0 ? 200 : 204,
+          response: {},
+          payload: []
+        };
 
-    request(options).then(response => {
-      log("Do GetProductQuantityFromQuery Callback");
-      out.response.endpointStatusCode = response.statusCode;
-      out.response.endpointStatusMessage = response.statusMessage;
-
-      let body = response.body;
-
-      // If we have an array of products, set out.payload to be the array of products returned
-      if (body.products && body.products.length > 0) {
-        if (body.products.length === payload.doc.pageSize) {
-          out.ncStatusCode = 206;
-        } else {
-          out.ncStatusCode = 200;
-        }
-
-        let startTime = moment(payload.doc.modifiedDateRange.startDateGMT);
-        let endTime = moment(payload.doc.modifiedDateRange.endDateGMT);
-
-        return Promise.all(body.products.map(product => {
-          return Promise.all(product.variants.map(variant => {
-            if (moment(variant.updated_at).isBetween(startTime, endTime, null, [])) {
-              return variant.inventory_item_id;
-            }
-          }));
-        })).then(inventory_item_ids =>{
-          inventory_item_ids = inventory_item_ids.reduce((flattened, array) => {
-            return flattened.concat(array);
-          }, []);
-
-          if (inventory_item_ids > 0) {
-            inventory_item_ids = inventory_item_ids.join(',');
-
-            return Promise.all([
-              getInventoryItems(options, baseURI, inventory_item_ids),
-              getInventoryLevels(options, baseURI, inventory_item_ids)
-            ]).then(([inventoryItems, inventoryLevels]) => {
-              inventoryItems.forEach(inventoryItem => {
-                inventoryItem.inventory_levels = _.filter(inventoryLevels, {inventory_item_id: inventoryItem.id});
-                if (inventoryItem.inventory_levels.some(element => moment(element.updated_at).isBetween(startTime, endTime, null, []))) {
-                  productQuantities.push({
-                    doc: inventoryItem,
-                    productQuantityRemoteID: inventoryItem.id,
-                    productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, inventoryItem)
-                  });
-                }
-              });
-            });
-
-          } else {
-            out.ncStatusCode = 204;
-            out.payload = [];
-          }
+        productQuantities.forEach(productQuantity => {
+          out.payload.push({
+            doc: productQuantity,
+            productQuantityRemoteID: productQuantity.id,
+            productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, productQuantity)
+          });
         });
-      } else {
-        out.ncStatusCode = 204;
-        out.payload = [];
-      }
 
+        return out;
+      });
+    } else {
+      promise = getProductQuantityByTimeRange(channelProfile, options, baseURI, payload.doc.modifiedDateRange.startDateGMT, payload.doc.modifiedDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize);
+    }
+
+    promise.then(result => {
+      out = result;
     }).catch(errors.StatusCodeError, reason => {
       out.response.endpointStatusCode = reason.statusCode;
       out.response.endpointStatusMessage = reason.response.statusMessage;
@@ -258,24 +151,30 @@ let GetProductQuantityFromQuery = function (ncUtil,
       out.payload.error = reason.error;
       logError(`The request failed: ${reason.error}`);
 
+    }).catch(error => {
+      out.ncStatusCode = 500;
+      out.payload.error = error;
+
     }).finally(() => {
       try {
         if (out.ncStatusCode === 200 || out.ncStatusCode === 206) {
-          if (productQuantities.length > payload.doc.pageSize) {
+          // Split the payload into chunks of size pageSize
+          if (out.payload.length > payload.doc.pageSize) {
+            let productQuantities = out.payload;
+            delete out.payload;
             for (let i = 0; i < productQuantities.length; i += payload.doc.pageSize) {
               let obj = _.cloneDeep(out);
               obj.payload = productQuantities.slice(i, i + payload.doc.pageSize);
               callback(obj);
             }
           } else {
-            out.payload = productQuantities;
             callback(out);
           }
         } else {
           callback(out);
         }
       } catch (err) {
-        logError(err);
+       logError(err);
       }
     });
   } else {
@@ -286,9 +185,125 @@ let GetProductQuantityFromQuery = function (ncUtil,
   }
 };
 
+function getProductQuantityByIDs(options, baseURI, remoteIDs) {
+  if (remoteIDs.length > 0) {
+    remoteIDs = remoteIDs.join(',');
+
+    return Promise.all([
+      getInventoryItems(options, baseURI, remoteIDs),
+      getInventoryLevels(options, baseURI, remoteIDs)
+    ]).then(([inventoryItems, inventoryLevels]) => {
+      inventoryItems.forEach(inventoryItem => {
+        inventoryItem.inventory_levels = _.filter(inventoryLevels, {inventory_item_id: inventoryItem.id});
+      });
+      return inventoryItems;
+    });
+
+  } else {
+    return [];
+  }
+}
+
+function getProductQuantityByTimeRange(channelProfile, options, baseURI, startTime, endTime, page=1, pageSize=50) {
+  let queryParams = [];
+  //Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
+  if (startTime) {
+    queryParams.push("updated_at_min=" + new Date(Date.parse(startTime) - 1).toISOString());
+  }
+  if (endTime) {
+    queryParams.push("updated_at_max=" + new Date(Date.parse(endTime) + 1).toISOString());
+  }
+
+  //Add page and pageSize to the query
+  queryParams.push("page=" + page);
+  queryParams.push("limit=" + pageSize);
+
+  /**
+   * We cant query inventory items by their updated_at field. But when an
+   * inventory item/level is updated the associated variant is also updated.
+   * And when a variant is updated the associated product is also updated.
+   *
+   * So we'll do this instead.
+   * 1) Get all products which were modified in the time range
+   * 2) Filter out variants which were updated in the time range
+   * 3) Get the associated inventory items and inventory levels
+   * 4) Filter out inventory levels which were updated in the time range
+   */
+
+  // 1) Get all products which were modified in the time range
+  options.method = 'GET';
+  options.uri = baseURI + `/admin/products.json?${queryParams.join('&')}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  let out = {
+    ncStatusCode: null,
+    response: {},
+    payload: []
+  };
+
+  return request(options).then(body => {
+    if (body.products && body.products.length > 0) {
+      if (body.products.length === pageSize) {
+        out.ncStatusCode = 206;
+      }
+
+      // 2) Filter out variants which were updated in the time range
+      return Promise.all(body.products.map(product => {
+        return Promise.all(product.variants.reduce((inventory_item_ids, variant) => {
+          if (withinTimeRange(variant.updated_at, startTime, endTime)) {
+            inventory_item_ids.push(variant.inventory_item_id);
+          }
+          return inventory_item_ids;
+        }, []));
+      })).then(inventory_item_ids => {
+        inventory_item_ids = inventory_item_ids.reduce((flattened, array) => {
+          return flattened.concat(array);
+        }, []);
+
+        // 3) Get the associated inventory items and inventory levels
+        return getProductQuantityByIDs(options, baseURI, inventory_item_ids).then(productQuantities => {
+          // 4) Filter out inventory levels which were updated in the time range
+          return productQuantities.filter(productQuantity => {
+            return productQuantity.inventory_levels.some(element => withinTimeRange(element.updated_at, startTime, endTime));
+          });
+        });
+      });
+    } else {
+      return [];
+    }
+  }).then(productQuantities => {
+    if (out.ncStatusCode !== 206) {
+      out.ncStatusCode = productQuantities.length > 0 ? 200 : 204;
+    }
+
+    productQuantities.forEach(productQuantity => {
+      out.payload.push({
+        doc: productQuantity,
+        productQuantityRemoteID: productQuantity.id,
+        productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, productQuantity)
+      });
+    });
+
+    return out;
+  });
+}
+
+function withinTimeRange(time, start, end) {
+  if (!time || !(start || end)) {
+    return false;
+  }
+  if (start && end) {
+    return moment(time).isBetween(start, end, null, '[]');
+  } else if (start) {
+    return moment(time).isSameOrAfter(start);
+  } else {
+    return moment(time).isSameOrBefore(end);
+  }
+}
+
 function getInventoryItems(options, baseURI, inventory_item_ids) {
   let newOptions = _.cloneDeep(options);
-  newOptions.resolveWithFullResponse = false;
   newOptions.method = 'GET';
   let uri = `${baseURI}/admin/inventory_items.json?ids=${inventory_item_ids}`;
   return getInventoryItemsWithPaging(newOptions, uri);
@@ -313,7 +328,6 @@ function getInventoryItemsWithPaging(options, uri, page = 1, result = []) {
 
 function getInventoryLevels(options, baseURI, inventory_item_ids) {
   let newOptions = _.cloneDeep(options);
-  newOptions.resolveWithFullResponse = false;
   newOptions.method = 'GET';
   let uri = `${baseURI}/admin/inventory_levels.json?inventory_item_ids=${inventory_item_ids}`;
   return getInventoryLevelsWithPaging(newOptions, uri);

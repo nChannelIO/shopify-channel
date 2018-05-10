@@ -83,7 +83,7 @@ let UpdateProductMatrix = function (ncUtil,
 
     // Get the variant id
     options.method = 'GET';
-    options.uri = baseURI + `/admin/products/${payload.productRemoteID}/variants.json`;
+    options.uri = `${baseURI}/admin/products/${payload.productRemoteID}/variants.json`;
 
     log(`Requesting [${options.method} ${options.uri}]`);
 
@@ -99,36 +99,36 @@ let UpdateProductMatrix = function (ncUtil,
       return Promise.all([
         updateProductMetafields(payload, options, baseURI),
         updateVariantMetafields(payload, options, baseURI)
-      ]).then(() => {
-        // Update the product
-        payload.doc.product.id = payload.productRemoteID;
+      ]);
+    }).then(() => {
+      // Update the product
+      payload.doc.product.id = payload.productRemoteID;
 
-        // Remove all metafields
-        delete payload.doc.product.metafields;
-        payload.doc.product.variants.forEach(variant => {
-          delete variant.metafields;
-        });
+      // Remove all metafields
+      delete payload.doc.product.metafields;
+      payload.doc.product.variants.forEach(variant => {
+        delete variant.metafields;
+      });
 
-        options.uri = baseURI + `/admin/products/${payload.productRemoteID}.json`;
-        options.method = 'PUT';
-        options.body = payload.doc;
-        options.resolveWithFullResponse = true;
+      options.uri = baseURI + `/admin/products/${payload.productRemoteID}.json`;
+      options.method = 'PUT';
+      options.body = payload.doc;
+      options.resolveWithFullResponse = true;
 
-        log(`Requesting [${options.method} ${options.uri}]`);
+      log(`Requesting [${options.method} ${options.uri}]`);
 
-        return request(options).then(response => {
-          log("Do UpdateProduct Callback");
+      return request(options).then(response => {
+        log("Do UpdateProduct Callback");
 
-          let body = response.body;
-          out.response.endpointStatusCode = response.statusCode;
-          out.response.endpointStatusMessage = response.statusMessage;
-          out.payload = {
-            doc: body,
-            productBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
-          };
+        let body = response.body;
+        out.response.endpointStatusCode = response.statusCode;
+        out.response.endpointStatusMessage = response.statusMessage;
+        out.payload = {
+          doc: body,
+          productBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
+        };
 
-          out.ncStatusCode = 200;
-        });
+        out.ncStatusCode = 200;
       });
     }).catch(errors.StatusCodeError, reason => {
       out.response.endpointStatusCode = reason.statusCode;
