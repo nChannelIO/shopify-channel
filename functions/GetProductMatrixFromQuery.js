@@ -1,26 +1,20 @@
 let GetProductMatrixFromQuery = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
-
-  log("Building response object...", ncUtil);
+                                          channelProfile,
+                                          flowContext,
+                                          payload,
+                                          callback) {
+  
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
     payload: {}
   };
-
+  
   let invalid = false;
   let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
+  
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productMatrixBusinessReference, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -33,70 +27,164 @@ let GetProductMatrixFromQuery = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
-  } else if (!channelProfile.productBusinessReferences) {
+  } else if (!channelProfile.channelAuthValues.access_token) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.productBusinessReferences)) {
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences is not an array"
-  } else if (channelProfile.productBusinessReferences.length === 0) {
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
+  } else if (!channelProfile.productMatrixBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences is empty"
+    invalidMsg = "channelProfile.productMatrixBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productMatrixBusinessReferences)) {
+    invalid = true;
+    invalidMsg = "channelProfile.productMatrixBusinessReferences is not an array"
+  } else if (channelProfile.productMatrixBusinessReferences.length === 0) {
+    invalid = true;
+    invalidMsg = "channelProfile.productMatrixBusinessReferences is empty"
   }
-
-  //If a sales order document was not passed in, the request is invalid
+  
+  //If a product document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
+  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+    invalid = true;
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
+  } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
+    invalid = true;
+    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
+  } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
+    invalid = true;
+    invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
+  } else if (payload.doc.searchFields && (!Array.isArray(payload.doc.searchFields) || payload.doc.searchFields.length === 0)) {
+    invalid = true;
+    invalidMsg = "payload.doc.searchFields must be an Array with at least 1 key value pair: {searchField: 'key', searchValues: ['value_1']}"
+  } else if (payload.doc.searchFields) {
+    for (let i = 0; i < payload.doc.searchFields.length; i++) {
+      if (!payload.doc.searchFields[i].searchField || !Array.isArray(payload.doc.searchFields[i].searchValues) || payload.doc.searchFields[i].searchValues.length === 0) {
+        invalid = true;
+        invalidMsg = "payload.doc.searchFields[" + i + "] must be a key value pair: {searchField: 'key', searchValues: ['value_1']}";
+        break;
+      }
+    }
+  } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
+  } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "startDateGMT must have a date before endDateGMT";
   }
-
+  
   //If callback is not a function
   if (!callback) {
     throw new Error("A callback function was not provided");
   } else if (typeof callback !== 'function') {
     throw new TypeError("callback is not a function")
   }
-
+  
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+    
     let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
+    
+    let queryParams = [];
+    
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/products.json";
+    
+    if (payload.doc.searchFields) {
+      let query = "query=";
+      let fields = [];
+      // Loop through each field
+      payload.doc.searchFields.forEach(function (searchField) {
+        let values = [];
+        // Loop through each value
+        searchField.searchValues.forEach(function (searchValue) {
+          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
+        });
+        // Multiple values use OR
+        fields.push(values.join(" OR "));
+      });
+      // Multiple fields use AND
+      query += fields.join(" AND ");
+      queryParams.push(query);
+      
+      // admin/products/search.json endpoint for using the query
+      url = url.substring(0, url.indexOf(".json")) + "/search.json";
+      
+    } else if (payload.doc.remoteIDs) {
+      /*
+       Add remote IDs as a query parameter
+       */
+      queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
+      
+    } else if (payload.doc.modifiedDateRange) {
+      /*
+       Add modified date ranges to the query
+       Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
+       */
+      
+      if (payload.doc.modifiedDateRange.startDateGMT) {
+        queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
+      }
+      if (payload.doc.modifiedDateRange.endDateGMT) {
+        queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
+      }
+    }
+    
+    /*
+     Add page to the query
+     */
+    if (payload.doc.page) {
+      queryParams.push("page=" + payload.doc.page);
+    }
+    
+    /*
+     Add pageSize (limit) to the query
+     */
+    if (payload.doc.pageSize) {
+      queryParams.push("limit=" + payload.doc.pageSize);
+    }
+    
+    
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
-
-    // Set options
+    
+    url += "?" + queryParams.join('&');
+    
+    log("Using URL [" + url + "]");
+    
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
-      method: "GET",
       headers: headers,
-      body: payload.doc,
       json: true
     };
-
+    
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
+        
         if (!error) {
-          // If no errors, process results here
-          log("Do GetProductMatrixFromQuery Callback", ncUtil);
+          log("Do GetProductMatrixFromQuery Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
-
+          
+          // Parse data
           let docs = [];
           let data = body;
-
+          
           if (response.statusCode === 200) {
+            // If we have an array of products, set out.payload to be the array of products returned
             if (data.products && data.products.length > 0) {
               for (let i = 0; i < data.products.length; i++) {
                 let product = {
@@ -104,8 +192,8 @@ let GetProductMatrixFromQuery = function (ncUtil,
                 };
                 docs.push({
                   doc: product,
-                  productRemoteID: product.product.id,
-                  productBusinessReference: product.product.id
+                  productMatrixRemoteID: product.product.id,
+                  productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, product)
                 });
               }
               if (docs.length === payload.doc.pageSize) {
@@ -128,37 +216,34 @@ let GetProductMatrixFromQuery = function (ncUtil,
             out.ncStatusCode = 400;
             out.payload.error = data;
           }
-
+          
           callback(out);
         } else {
-          // If an error occurs, log the error here
-          logError("Do GetProductMatrixFromQuery Callback error - " + error, ncUtil);
+          logError("Do GetProductMatrixFromQuery Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = {err: error};
           callback(out);
         }
       });
     } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in GetProductMatrixFromQuery - " + err, ncUtil);
+      logError("Exception occurred in GetProductMatrixFromQuery - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

@@ -1,29 +1,20 @@
-let InsertProductSimple = function (ncUtil,
-                              channelProfile,
-                              flowContext,
-                              payload,
-                              callback) {
-
-  log("Building response object...", ncUtil);
+let CheckForProductMatrix = function (ncUtil,
+                                 channelProfile,
+                                 flowContext,
+                                 payload,
+                                 callback) {
+  
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
-    response: {},
-    payload: {}
+    payload: {},
+    response: {}
   };
-
+  
   let invalid = false;
   let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  } else if (!ncUtil.request) {
-    invalid = true;
-    invalidMsg = "ncUtil.request was not provided"
-  }
-
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
+  
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productMatrixBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -42,17 +33,17 @@ let InsertProductSimple = function (ncUtil,
   } else if (!channelProfile.channelAuthValues.shop) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
-  } else if (!channelProfile.productBusinessReferences) {
+  } else if (!channelProfile.productMatrixBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.productBusinessReferences)) {
+    invalidMsg = "channelProfile.productMatrixBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productMatrixBusinessReferences)) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences is not an array"
-  } else if (channelProfile.productBusinessReferences.length === 0) {
+    invalidMsg = "channelProfile.productMatrixBusinessReferences is not an array"
+  } else if (channelProfile.productMatrixBusinessReferences.length === 0) {
     invalid = true;
-    invalidMsg = "channelProfile.productBusinessReferences is empty"
+    invalidMsg = "channelProfile.productMatrixBusinessReferences is empty"
   }
-
+  
   //If a product document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
@@ -60,67 +51,86 @@ let InsertProductSimple = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.doc.product) {
-    invalid = true;
-    invalidMsg = "payload.doc is not a valid product object";
   }
-
+  
   //If callback is not a function
   if (!callback) {
     throw new Error("A callback function was not provided");
   } else if (typeof callback !== 'function') {
     throw new TypeError("callback is not a function")
   }
-
+  
+  
   if (!invalid) {
     const extractBusinessReference = require('../util/extractBusinessReference');
-
-    // Insert the product as part of a new product group
-
-    let endPoint = "/admin/products.json";
-
-    //Request - Simplified HTTP client
+    const jsonata = require('jsonata');
+    
+    let endPoint = "/admin/products/search.json";
+    
     let request = require('request');
-
+    
+    let queryParams = [];
     let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
-
+    
+    let busRefValues = [];
+    let values = [];
+    channelProfile.productMatrixBusinessReferences.forEach(function (businessReference) {
+      let expression = jsonata(businessReference);
+      let value = expression.evaluate(payload.doc) || '';
+      let lookup = businessReference.split('.').pop() + ":" + encodeURIComponent(value);
+      values.push(lookup);
+      busRefValues.push(value);
+    });
+    if (values.length > 0) {
+      let query = values.join(" AND ");
+      let lookup = "query=" + query;
+      queryParams.push(lookup);
+    }
+    
     /*
      Format url
      */
     let headers = {
       "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    log("Using URL [" + url + "]", ncUtil);
-
+    
+    url += "?" + queryParams.join('&');
+    
+    log("Using URL [" + url + "]");
+    
     /*
      Set URL and headers
      */
     let options = {
       url: url,
-      method: "POST",
       headers: headers,
-      body: payload.doc,
       json: true
     };
-
+    
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          log("Do InsertProduct Callback", ncUtil);
+          log("Do CheckForProductMatrix Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
-
-          // If we have a product object, set out accordingly
-          if (response.statusCode === 201 && body.product) {
-            out.payload = {
-              doc: body,
-              productRemoteID: body.product.id,
-              productBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
-            };
-
-            out.ncStatusCode = 201;
+          
+          if (response.statusCode === 200) {
+            if (body.products && body.products.length === 1) {
+              let product = {
+                product: body.products[0]
+              };
+              out.ncStatusCode = 200;
+              out.payload = {
+                productMatrixRemoteID: product.product.id,
+                productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, product)
+              };
+            } else if (body.products.length > 1) {
+              out.ncStatusCode = 409;
+              out.payload.error = body;
+            } else {
+              out.ncStatusCode = 204;
+            }
           } else if (response.statusCode === 429) {
             out.ncStatusCode = 429;
             out.payload.error = body;
@@ -131,35 +141,34 @@ let InsertProductSimple = function (ncUtil,
             out.ncStatusCode = 400;
             out.payload.error = body;
           }
-
           callback(out);
         } else {
-          logError("Do InsertProduct Callback error - " + error, ncUtil);
+          logError("Do CheckForProductMatrix Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = error;
           callback(out);
         }
       });
-    } catch (err) {
-      logError("Exception occurred in InsertProduct - " + err, ncUtil);
+    } catch (error) {
+      logError("Exception occurred in CheckForProductMatrix - " + error);
+      out.payload.error = {err: error, stack: error.stackTrace};
       out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 
-module.exports.InsertProductSimple = InsertProductSimple;
+module.exports.CheckForProductMatrix = CheckForProductMatrix;

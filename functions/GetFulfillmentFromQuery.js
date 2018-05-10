@@ -4,7 +4,7 @@ let GetFulfillmentFromQuery = function (ncUtil,
                                         payload,
                                         callback) {
   
-  log("Building response object...", ncUtil);
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -13,15 +13,6 @@ let GetFulfillmentFromQuery = function (ncUtil,
   
   let invalid = false;
   let invalidMsg = "";
-  
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  } else if (!ncUtil.request) {
-    invalid = true;
-    invalidMsg = "ncUtil.request was not provided"
-  }
   
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or fulfillmentBusinessReferences, the request can't be sent
   if (!channelProfile) {
@@ -155,7 +146,7 @@ let GetFulfillmentFromQuery = function (ncUtil,
     
     url += "?" + queryParams.join('&');
     
-    log("Using URL [" + url + "]", ncUtil);
+    log("Using URL [" + url + "]");
     
     /*
      Set URL and headers
@@ -170,7 +161,7 @@ let GetFulfillmentFromQuery = function (ncUtil,
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          log("Do GetFulfillmentFromQuery Callback", ncUtil);
+          log("Do GetFulfillmentFromQuery Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
           
@@ -215,31 +206,31 @@ let GetFulfillmentFromQuery = function (ncUtil,
           
           callback(out);
         } else {
-          logError("Do GetFulfillmentFromQuery Callback error - " + error, ncUtil);
+          logError("Do GetFulfillmentFromQuery Callback error - " + error);
           out.payload.error = error;
           out.ncStatusCode = 500;
           callback(out);
         }
       });
     } catch (err) {
-      logError("Exception occurred in GetFulfillmentFromQuery - " + err, ncUtil);
+      logError("Exception occurred in GetFulfillmentFromQuery - " + err);
       out.payload.error = {err: err, stack: err.stackTrace};
       out.ncStatusCode = 500;
       callback(out);
     }
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

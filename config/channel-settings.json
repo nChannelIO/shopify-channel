@@ -51,21 +51,107 @@
           },
           "type" : "object"
         },
-        "configView": [
-          "doGetSimpleProducts"
-        ],
+        "configView": [],
         "configValues": {
-          "doGetMatrixProducts": false,
+          "doGetMatrixProducts": true,
           "doGetVirtualMatrixProducts": false,
-          "doGetSimpleProducts": true,
-          "canGetMatrixProducts": false,
+          "doGetSimpleProducts": false,
+          "canGetMatrixProducts": true,
           "canGetVirtualMatrixProducts": false,
-          "canGetSimpleProducts": true
+          "canGetSimpleProducts": false
         }
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["variant.sku"]}
+        "referenceLocation": {"productBusinessReferences": ["product.title"]},
+        "remoteID": "product.id",
+        "businessReferences": ["product.title"],
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "product.variants",
+            "remoteID": "id",
+            "businessReferences": ["sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "product.variants",
+            "remoteID": "inventory_item_id",
+            "businessReferences": ["sku"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "REFRESH PRODUCT",
+      "description": "REFRESH PRODUCT",
+      "channelVerb": "REFRESH",
+      "channelNoun": "PRODUCT",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {
+          "required" : [],
+          "properties" : {
+            "doGetMatrixProducts" : {
+              "type" : "boolean",
+              "title" : "GET Product Matrix, doGetMatrixProducts"
+            },
+            "doGetVirtualMatrixProducts" : {
+              "type" : "boolean",
+              "title" : "GET Product Virtual Matrix, doGetVirtualMatrixProducts"
+            },
+            "doGetSimpleProducts" : {
+              "type" : "boolean",
+              "title" : "GET Simple Product, doGetSimpleProducts"
+            },
+            "canGetMatrixProduct" : {
+              "type" : "boolean",
+              "title" : "GET Product Matrix, canGetMatrixProduct"
+            },
+            "canGetVirtualMatrixProducts" : {
+              "type" : "boolean",
+              "title" : "GET Product Virtual Matrix, canGetVirtualMatrixProducts"
+            },
+            "canGetSimpleProducts" : {
+              "type" : "boolean",
+              "title" : "GET Simple Product, canGetSimpleProducts"
+            }
+
+          },
+          "type" : "object"
+        },
+        "configView": [],
+        "configValues": {
+          "doGetMatrixProducts": true,
+          "doGetVirtualMatrixProducts": false,
+          "doGetSimpleProducts": false,
+          "canGetMatrixProducts": true,
+          "canGetVirtualMatrixProducts": false,
+          "canGetSimpleProducts": false
+        }
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"productBusinessReferences": ["product.title"]},
+        "remoteID": "product.id",
+        "businessReferences": ["product.title"],
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "product.variants",
+            "remoteID": "id",
+            "businessReferences": ["sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "product.variants",
+            "remoteID": "inventory_item_id",
+            "businessReferences": ["sku"]
+          }
+        ]
       }
     },
     {
@@ -85,10 +171,10 @@
           "canUpdateProductPricingFlag": false,
           "canUpdateProductQuantityFlag": false,
           "canUpdateProduct": true,
-          "canUpdateSimpleProduct": true,
-          "canUpdateMatrixProduct": false,
-          "canInsertSimpleProduct": true,
-          "canInsertMatrixProduct": false
+          "canUpdateSimpleProduct": false,
+          "canUpdateMatrixProduct": true,
+          "canInsertSimpleProduct": false,
+          "canInsertMatrixProduct": true
         },
         "configView" : [
           "doUpdateProduct"
@@ -148,7 +234,23 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["product.variants[0].sku"]}
+        "referenceLocation": {"productBusinessReferences": ["product.title"]},
+        "remoteID": "product.id",
+        "businessReferences": ["product.title"],
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "product.variants",
+            "remoteID": "id",
+            "businessReferences": ["sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "product.variants",
+            "remoteID": "inventory_item_id",
+            "businessReferences": ["sku"]
+          }
+        ]
       }
     },
     {
@@ -167,7 +269,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["variant.sku"]}
+        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "remoteID": "id",
+        "businessReferences": ["sku"]
       }
     },
     {
@@ -199,7 +303,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["variant.sku"]}
+        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "remoteID": "id",
+        "businessReferences": ["sku"]
       }
     },
     {
@@ -218,7 +324,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["variant.sku"]}
+        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "remoteID": "id",
+        "businessReferences": ["sku"]
       }
     },
     {
@@ -250,7 +358,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["variant.sku"]}
+        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "remoteID": "id",
+        "businessReferences": ["sku"]
       }
     },
     {
@@ -289,14 +399,36 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]}
+        "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
+        "remoteID": "id",
+        "businessReferences": ["order.name"],
+        "peers": [
+          {
+            "name": "CUSTOMER",
+            "location": "order.customer",
+            "remoteID": "id",
+            "businessReferences": ["email", "phone"]
+          },
+          {
+            "name": "FULFILLMENT",
+            "location": "order.fulfillments",
+            "remoteID": "id",
+            "businessReference": ["order_id"]
+          },
+          {
+            "name": "PRODUCT",
+            "location": "order.line_items",
+            "remoteID": "product_id",
+            "businessReferences": ["title"]
+          }
+        ]
       }
     },
     {
-      "channelNoun" : "SALESORDER",
-      "channelVerb" : "PUT",
-      "description" : "PUT SALESORDER",
       "name" : "PUT SALESORDER",
+      "description" : "PUT SALESORDER",
+      "channelVerb" : "PUT",
+      "channelNoun" : "SALESORDER",
       "configDef" : {
         "configValues" : {
           "canUpdateOrderFlag" : true,
@@ -374,7 +506,30 @@
         "referenceLocation": {
           "salesOrderBusinessReferences": ["order.name"],
           "customerBusinessReferences": ["customer.email", "customer.phone"]
-        }
+        },
+        "remoteID": "id",
+        "businessReferences": ["order.name"],
+        "peers": [
+          {
+            "name": "CUSTOMER",
+            "location": "order.customer",
+            "remoteID": "id",
+            "businessReferences": ["email", "phone"]
+          },
+          {
+            "name": "FULFILLMENT",
+            "location": "order.fulfillments",
+            "remoteID": "id",
+            "businessReference": ["order_id"]
+          },
+          {
+            "name": "PRODUCT",
+            "location": "order.line_items",
+            "remoteID": "product_id",
+            "businessReferences": ["title"]
+          }
+        ],
+        "refreshNouns": ["CUSTOMER", "PRODUCT"]
       }
     },
     {
@@ -411,7 +566,9 @@
         "referenceLocation": {
           "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
-        }
+        },
+        "remoteID": "fulfillment.id",
+        "businessReference": ["order_id"]
       }
     },
     {
@@ -430,9 +587,33 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]}
+        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "remoteID": "customer.id",
+        "businessReferences": ["customer.email", "customer.phone"]
       }
-    }, {
+    },
+    {
+      "name": "REFRESH CUSTOMER",
+      "description": "REFRESH CUSTOMER",
+      "channelVerb": "REFRESH",
+      "channelNoun": "CUSTOMER",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {},
+        "configView": [],
+        "configValues": {}
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "remoteID": "customer.id",
+        "businessReferences": ["customer.email", "customer.phone"]
+      }
+    },
+    {
       "name": "PUT CUSTOMER",
       "description": "PUT CUSTOMER",
       "channelVerb": "PUT",
@@ -463,89 +644,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]}
-      }
-    },
-    {
-      "name": "PUT CUSTOMERADDRESS",
-      "description": "PUT CUSTOMERADDRESS",
-      "channelVerb": "PUT",
-      "channelNoun": "CUSTOMERADDRESS",
-      "ruleDef": {
-        "ruleSchema": {},
-        "defaultRuleValues": {}
-      },
-      "configDef": {
-        "configModel": {
-          "type": "object",
-          "properties": {
-            "doPutCustomerAddressesFlag": {
-              "title": "PUT Customer Address, doPutCustomerAddressesFlag",
-              "type": "boolean"
-            },
-            "canUpdateCustomerAddressFlag": {
-              "title": "Update Customer Address, canUpdateCustomerAddressFlag",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "doPutCustomerAddressesFlag",
-            "canUpdateCustomerAddressFlag"
-          ]
-        },
-        "configView": [
-          "doPutCustomerAddressesFlag",
-          "canUpdateCustomerAddressFlag"
-        ],
-        "configValues": {
-          "doPutCustomerAddressesFlag": true,
-          "canUpdateCustomerAddressFlag": true
-        }
-      },
-      "documentDef": {
-        "schema": {},
-        "referenceLocation": {}
-      }
-    },
-    {
-      "name": "PUT CUSTOMERCONTACT",
-      "description": "PUT CUSTOMERCONTACT",
-      "channelVerb": "PUT",
-      "channelNoun": "CUSTOMERCONTACT",
-      "ruleDef": {
-        "ruleSchema": {},
-        "defaultRuleValues": {}
-      },
-      "configDef": {
-        "configModel": {
-          "type": "object",
-          "properties": {
-            "doPutCustomerContactsFlag": {
-              "title": "PUT Customer Contacts, doPutCustomerContactsFlag",
-              "type": "boolean"
-            },
-            "canUpdateCustomerContactFlag": {
-              "title": "Update Customer Contacts, canUpdateCustomerContactFlag",
-              "type": "boolean"
-            }
-          },
-          "required": [
-            "doPutCustomerContactsFlag",
-            "canUpdateCustomerContactFlag"
-          ]
-        },
-        "configView": [
-          "doPutCustomerContactsFlag",
-          "canUpdateCustomerContactFlag"
-        ],
-        "configValues": {
-          "doPutCustomerContactsFlag": false,
-          "canUpdateCustomerContactFlag": false
-        }
-      },
-      "documentDef": {
-        "schema": {},
-        "referenceLocation": {}
+        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "remoteID": "customer.id",
+        "businessReferences": ["customer.email", "customer.phone"]
       }
     }
   ],
@@ -608,7 +709,7 @@
       ],
       "configValues": {}
     },
-    "oauthAuthorizeUrl": "https://{{shop}}/admin/oauth/authorize?client_id={{client_id}}&scope=read_orders,read_products,read_customers,read_fulfillments,read_shipping,read_content,write_orders,write_products,write_customers,write_fulfillments,write_shipping,write_content&redirect_uri=https://localhost/account/v1/applications/getAccessToken&state={{state}}",
+    "oauthAuthorizeUrl": "https://{{shop}}/admin/oauth/authorize?client_id={{client_id}}&scope=read_orders,read_products,read_inventory,read_customers,read_fulfillments,read_shipping,read_content,write_orders,write_products,write_inventory,write_customers,write_fulfillments,write_shipping,write_content&redirect_uri=https://localhost/account/v1/applications/getAccessToken&state={{state}}",
     "oauthTokenRequest": {
       "verb": "POST",
       "url": "https://{{shop}}/admin/oauth/access_token",
