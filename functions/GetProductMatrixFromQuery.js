@@ -1,10 +1,16 @@
+'use strict';
+
+let Promise = require('bluebird');
+let request = require('request-promise');
+let errors = require('request-promise/errors');
+const extractBusinessReference = require('../util/extractBusinessReference');
+
 let GetProductMatrixFromQuery = function (ncUtil,
                                           channelProfile,
                                           flowContext,
                                           payload,
                                           callback) {
   
-  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -87,150 +93,82 @@ let GetProductMatrixFromQuery = function (ncUtil,
   }
   
   if (!invalid) {
-    const extractBusinessReference = require('../util/extractBusinessReference');
-    
-    let request = require('request');
-    
-    let queryParams = [];
-    
-    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + "/admin/products.json";
-    
-    if (payload.doc.searchFields) {
-      let query = "query=";
-      let fields = [];
-      // Loop through each field
-      payload.doc.searchFields.forEach(function (searchField) {
-        let values = [];
-        // Loop through each value
-        searchField.searchValues.forEach(function (searchValue) {
-          values.push(searchField.searchField + ":" + encodeURIComponent(searchValue));
-        });
-        // Multiple values use OR
-        fields.push(values.join(" OR "));
-      });
-      // Multiple fields use AND
-      query += fields.join(" AND ");
-      queryParams.push(query);
-      
-      // admin/products/search.json endpoint for using the query
-      url = url.substring(0, url.indexOf(".json")) + "/search.json";
-      
-    } else if (payload.doc.remoteIDs) {
-      /*
-       Add remote IDs as a query parameter
-       */
-      queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
-      
-    } else if (payload.doc.modifiedDateRange) {
-      /*
-       Add modified date ranges to the query
-       Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
-       */
-      
-      if (payload.doc.modifiedDateRange.startDateGMT) {
-        queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
-      }
-      if (payload.doc.modifiedDateRange.endDateGMT) {
-        queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
-      }
-    }
-    
-    /*
-     Add page to the query
-     */
-    if (payload.doc.page) {
-      queryParams.push("page=" + payload.doc.page);
-    }
-    
-    /*
-     Add pageSize (limit) to the query
-     */
-    if (payload.doc.pageSize) {
-      queryParams.push("limit=" + payload.doc.pageSize);
-    }
-    
-    
-    /*
-     Format url
-     */
+    let baseURI = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop;
     let headers = {
       "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-    
-    url += "?" + queryParams.join('&');
-    
-    log("Using URL [" + url + "]");
-    
-    /*
-     Set URL and headers
-     */
     let options = {
-      url: url,
+      method: 'GET',
       headers: headers,
       json: true
     };
-    
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        
-        if (!error) {
-          log("Do GetProductMatrixFromQuery Callback");
-          out.response.endpointStatusCode = response.statusCode;
-          out.response.endpointStatusMessage = response.statusMessage;
-          
-          // Parse data
-          let docs = [];
-          let data = body;
-          
-          if (response.statusCode === 200) {
-            // If we have an array of products, set out.payload to be the array of products returned
-            if (data.products && data.products.length > 0) {
-              for (let i = 0; i < data.products.length; i++) {
-                let product = {
-                  product: body.products[i]
-                };
-                docs.push({
-                  doc: product,
-                  productMatrixRemoteID: product.product.id,
-                  productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, product)
-                });
-              }
-              if (docs.length === payload.doc.pageSize) {
-                out.ncStatusCode = 206;
-              } else {
-                out.ncStatusCode = 200;
-              }
-              out.payload = docs;
-            } else {
-              out.ncStatusCode = 204;
-              out.payload = data;
-            }
-          } else if (response.statusCode === 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = data;
-          } else if (response.statusCode === 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = data;
-          } else {
-            out.ncStatusCode = 400;
-            out.payload.error = data;
-          }
-          
-          callback(out);
-        } else {
-          logError("Do GetProductMatrixFromQuery Callback error - " + error);
-          out.ncStatusCode = 500;
-          out.payload.error = {err: error};
-          callback(out);
-        }
-      });
-    } catch (err) {
-      logError("Exception occurred in GetProductMatrixFromQuery - " + err);
-      out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
+
+    let promise;
+
+    if (payload.doc.remoteIDs) {
+      promise = getProductMatrixByIDs(options, baseURI, payload.doc.remoteIDs, payload.doc.page, payload.doc.pageSize);
+    } else if (payload.doc.modifiedDateRange) {
+      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.modifiedDateRange.startDateGMT, payload.doc.modifiedDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize)
+    } else {
+      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.createdDateRange.startDateGMT, payload.doc.createdDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize)
     }
+
+    promise.then(products => {
+      return enrichWithMetafields(options, baseURI, products);
+
+    }).then(enrichedProducts => {
+      out.ncStatusCode = enrichedProducts.length === payload.doc.pageSize ? 206 : (enrichedProducts.length > 0 ? 200 : 204);
+      out.payload = [];
+
+      enrichedProducts.forEach(enrichedProduct => {
+        let product = {
+          product: enrichedProduct
+        };
+        out.payload.push({
+          doc: product,
+          productMatrixRemoteID: product.product.id,
+          productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, product)
+        });
+      })
+    }).catch(errors.StatusCodeError, reason => {
+      out.response.endpointStatusCode = reason.statusCode;
+      out.response.endpointStatusMessage = reason.response.statusMessage;
+      if (reason.statusCode === 429) {
+        out.ncStatusCode = 429;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode >= 500) {
+        out.ncStatusCode = 500;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 404) {
+        out.ncStatusCode = 404;
+        out.payload.error = reason.error;
+      } else if (reason.statusCode === 422) {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      } else {
+        out.ncStatusCode = 400;
+        out.payload.error = reason.error;
+      }
+      logError(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
+
+    }).catch(errors.RequestError, reason => {
+      out.response.endpointStatusCode = 'N/A';
+      out.response.endpointStatusMessage = 'N/A';
+      out.ncStatusCode = 500;
+      out.payload.error = reason.error;
+      logError(`The request failed: ${reason.error}`);
+
+    }).catch(error => {
+      out.ncStatusCode = 500;
+      out.payload.error = error;
+
+    }).finally(() => {
+      try {
+        callback(out);
+      } catch (err) {
+        logError(err);
+      }
+    });
   } else {
     log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
@@ -238,6 +176,62 @@ let GetProductMatrixFromQuery = function (ncUtil,
     callback(out);
   }
 };
+
+function getProductMatrixByIDs(options, baseURI, remoteIDs, page=1, pageSize=50) {
+  options.uri = `${baseURI}/admin/products.json?ids=${remoteIDs}&page=${page}&limit=${pageSize}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  return request(options).then(body => body.products);
+}
+
+function getProductMatrixByTimeRange(options, baseURI, startTime, endTime, page=1, pageSize=50) {
+  let queryParams =[];
+//Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
+  if (startTime) {
+    queryParams.push("updated_at_min=" + new Date(Date.parse(startTime) - 1).toISOString());
+  }
+  if (endTime) {
+    queryParams.push("updated_at_max=" + new Date(Date.parse(endTime) + 1).toISOString());
+  }
+
+  queryParams.push(`page=${page}`);
+  queryParams.push(`limit=${pageSize}`);
+
+  options.uri = `${baseURI}/admin/products.json?${queryParams.join('&')}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  return request(options).then(body => body.products);
+}
+
+function enrichWithMetafields(options, baseURI, products) {
+  return Promise.all(products.map(product => {
+    let uri = baseURI + `/admin/products/${product.id}/metafields.json`;
+
+    return getMetafieldsWithPaging(options, uri).then(metafields => {
+      product.metafields = metafields;
+      return product;
+    });
+  }))
+}
+
+function getMetafieldsWithPaging(options, uri, page = 1, result = []) {
+  let pageSize = 250; //Max page size supported
+  options.uri = `${uri}?page=${page}&limit=${pageSize}`;
+
+  log(`Requesting [${options.method} ${options.uri}]`);
+
+  return request(options).then(body => {
+    result = result.concat(body.metafields);
+
+    if (body.metafields.length === pageSize) {
+      return getMetafieldsWithPaging(options, uri, ++page, result);
+    } else {
+      return result;
+    }
+  });
+}
 
 function logError(msg) {
   console.log("[error] " + msg);
