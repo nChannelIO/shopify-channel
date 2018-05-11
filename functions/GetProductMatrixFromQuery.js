@@ -57,30 +57,28 @@ let GetProductMatrixFromQuery = function (ncUtil,
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+  } else if (payload.doc.searchFields) {
     invalid = true;
-    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
-  } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
+    invalidMsg = "Searching for products is not supported";
+  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange) {
     invalid = true;
-    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.modifiedDateRange must be provided"
+  } else if ((payload.doc.remoteIDs && (payload.doc.createdDateRange || payload.doc.modifiedDateRange)) || (payload.doc.createdDateRange && payload.doc.modifiedDateRange)) {
+    invalid = true;
+    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.createdDateRange or payload.doc.modifiedDateRange may be provided"
   } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
     invalid = true;
     invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
-  } else if (payload.doc.searchFields && (!Array.isArray(payload.doc.searchFields) || payload.doc.searchFields.length === 0)) {
-    invalid = true;
-    invalidMsg = "payload.doc.searchFields must be an Array with at least 1 key value pair: {searchField: 'key', searchValues: ['value_1']}"
-  } else if (payload.doc.searchFields) {
-    for (let i = 0; i < payload.doc.searchFields.length; i++) {
-      if (!payload.doc.searchFields[i].searchField || !Array.isArray(payload.doc.searchFields[i].searchValues) || payload.doc.searchFields[i].searchValues.length === 0) {
-        invalid = true;
-        invalidMsg = "payload.doc.searchFields[" + i + "] must be a key value pair: {searchField: 'key', searchValues: ['value_1']}";
-        break;
-      }
-    }
   } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
     invalid = true;
     invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
   } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "startDateGMT must have a date before endDateGMT";
+  } else if (payload.doc.createdDateRange && !(payload.doc.createdDateRange.startDateGMT || payload.doc.createdDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "at least one of payload.doc.createdDateRange.startDateGMT or payload.doc.createdDateRange.endDateGMT must be provided"
+  } else if (payload.doc.createdDateRange && payload.doc.createdDateRange.startDateGMT && payload.doc.createdDateRange.endDateGMT && (payload.doc.createdDateRange.startDateGMT > payload.doc.createdDateRange.endDateGMT)) {
     invalid = true;
     invalidMsg = "startDateGMT must have a date before endDateGMT";
   }
