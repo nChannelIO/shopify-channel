@@ -14,7 +14,7 @@ let InsertProductMatrix = function (ncUtil,
   let invalid = false;
   let invalidMsg = "";
   
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productMatrixBusinessReferences, the request can't be sent
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -33,15 +33,15 @@ let InsertProductMatrix = function (ncUtil,
   } else if (!channelProfile.channelAuthValues.shop) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
-  } else if (!channelProfile.productMatrixBusinessReferences) {
+  } else if (!channelProfile.productBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.productMatrixBusinessReferences)) {
+    invalidMsg = "channelProfile.productBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productBusinessReferences)) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences is not an array"
-  } else if (channelProfile.productMatrixBusinessReferences.length === 0) {
+    invalidMsg = "channelProfile.productBusinessReferences is not an array"
+  } else if (channelProfile.productBusinessReferences.length === 0) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences is empty"
+    invalidMsg = "channelProfile.productBusinessReferences is empty"
   }
   
   //If a product group document was not passed in, the request is invalid
@@ -101,8 +101,8 @@ let InsertProductMatrix = function (ncUtil,
           if (response.statusCode === 201 && body.product) {
             out.payload = {
               doc: body,
-              productMatrixRemoteID: body.product.id,
-              productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, body)
+              productRemoteID: body.product.id,
+              productMatrixBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
             };
             
             out.ncStatusCode = 201;

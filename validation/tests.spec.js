@@ -384,13 +384,13 @@ if (fs.existsSync('config/channel-settings.json')) {
                     break;
                   case 'POST':
                     errorTest === false ?
-                    fake.post(test.links[i].uri, test.payload.doc).reply(expectedStatusCode, test.links[i].responsePayload) :
-                    fake.post(test.links[i].uri, test.payload.doc).replyWithError({ message: "Internal Error" });
+                    fake.post(test.links[i].uri).reply(expectedStatusCode, test.links[i].responsePayload) :
+                    fake.post(test.links[i].uri).replyWithError({ message: "Internal Error" });
                     break;
                   case 'PUT':
                     errorTest === false ?
-                    fake.put(test.links[i].uri, test.payload.doc).reply(expectedStatusCode, test.links[i].responsePayload) :
-                    fake.put(test.links[i].uri, test.payload.doc).replyWithError({ message: "Internal Error" });
+                    fake.put(test.links[i].uri).reply(expectedStatusCode, test.links[i].responsePayload) :
+                    fake.put(test.links[i].uri).replyWithError({ message: "Internal Error" });
                     break;
                   case 'DELETE':
                     errorTest === false ?
@@ -503,7 +503,12 @@ if (fs.existsSync('config/channel-settings.json')) {
           function assertPackage(scope) {
             switch (docsFile.unitTestPackage.toLowerCase()) {
               case 'nock':
-                expect(scope.isDone()).to.be.true;
+                try {
+                  expect(scope.isDone()).to.be.true;
+                } catch (err) {
+                  console.log('pending mocks: %j', scope.pendingMocks());
+                  throw err;
+                }
                 break;
               default:
                 break;

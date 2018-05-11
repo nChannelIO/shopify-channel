@@ -39,15 +39,15 @@ let GetProductMatrixFromQuery = function (ncUtil,
   } else if (!channelProfile.channelAuthValues.shop) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
-  } else if (!channelProfile.productMatrixBusinessReferences) {
+  } else if (!channelProfile.productBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.productMatrixBusinessReferences)) {
+    invalidMsg = "channelProfile.productBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productBusinessReferences)) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences is not an array"
-  } else if (channelProfile.productMatrixBusinessReferences.length === 0) {
+    invalidMsg = "channelProfile.productBusinessReferences is not an array"
+  } else if (channelProfile.productBusinessReferences.length === 0) {
     invalid = true;
-    invalidMsg = "channelProfile.productMatrixBusinessReferences is empty"
+    invalidMsg = "channelProfile.productBusinessReferences is empty"
   }
   
   //If a product document was not passed in, the request is invalid
@@ -60,9 +60,9 @@ let GetProductMatrixFromQuery = function (ncUtil,
   } else if (payload.doc.searchFields) {
     invalid = true;
     invalidMsg = "Searching for products is not supported";
-  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange) {
+  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange && !payload.doc.createdDateRange) {
     invalid = true;
-    invalidMsg = "either payload.doc.remoteIDs or payload.doc.modifiedDateRange must be provided"
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.modifiedDateRange or payload.doc.createdDateRange must be provided"
   } else if ((payload.doc.remoteIDs && (payload.doc.createdDateRange || payload.doc.modifiedDateRange)) || (payload.doc.createdDateRange && payload.doc.modifiedDateRange)) {
     invalid = true;
     invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.createdDateRange or payload.doc.modifiedDateRange may be provided"
@@ -106,9 +106,9 @@ let GetProductMatrixFromQuery = function (ncUtil,
     if (payload.doc.remoteIDs) {
       promise = getProductMatrixByIDs(options, baseURI, payload.doc.remoteIDs, payload.doc.page, payload.doc.pageSize);
     } else if (payload.doc.modifiedDateRange) {
-      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.modifiedDateRange.startDateGMT, payload.doc.modifiedDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize)
+      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.modifiedDateRange.startDateGMT, payload.doc.modifiedDateRange.endDateGMT, 'updated', payload.doc.page, payload.doc.pageSize)
     } else {
-      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.createdDateRange.startDateGMT, payload.doc.createdDateRange.endDateGMT, payload.doc.page, payload.doc.pageSize)
+      promise = getProductMatrixByTimeRange(options, baseURI, payload.doc.createdDateRange.startDateGMT, payload.doc.createdDateRange.endDateGMT, 'created', payload.doc.page, payload.doc.pageSize)
     }
 
     promise.then(products => {
@@ -124,8 +124,8 @@ let GetProductMatrixFromQuery = function (ncUtil,
         };
         out.payload.push({
           doc: product,
-          productMatrixRemoteID: product.product.id,
-          productMatrixBusinessReference: extractBusinessReference(channelProfile.productMatrixBusinessReferences, product)
+          productRemoteID: product.product.id,
+          productMatrixBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, product)
         });
       })
     }).catch(errors.StatusCodeError, reason => {
@@ -183,14 +183,14 @@ function getProductMatrixByIDs(options, baseURI, remoteIDs, page=1, pageSize=50)
   return request(options).then(body => body.products);
 }
 
-function getProductMatrixByTimeRange(options, baseURI, startTime, endTime, page=1, pageSize=50) {
+function getProductMatrixByTimeRange(options, baseURI, startTime, endTime, updateOrCreate, page=1, pageSize=50) {
   let queryParams =[];
-//Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
+  //Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
   if (startTime) {
-    queryParams.push("updated_at_min=" + new Date(Date.parse(startTime) - 1).toISOString());
+    queryParams.push(`${updateOrCreate}_at_min=` + new Date(Date.parse(startTime) - 1).toISOString());
   }
   if (endTime) {
-    queryParams.push("updated_at_max=" + new Date(Date.parse(endTime) + 1).toISOString());
+    queryParams.push(`${updateOrCreate}_at_max=` + new Date(Date.parse(endTime) + 1).toISOString());
   }
 
   queryParams.push(`page=${page}`);
