@@ -1,347 +1,412 @@
 {
-    "name": "Shopify Put Product",
-    "schemaDef": {
-        "$schema": "http://json-schema.org/draft-04/schema#",
-        "description": "Shopify Put Product",
+  "name": "Shopify Put Product",
+  "schemaDef": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Shopify Put Product",
+    "type": "object",
+    "properties": {
+      "product": {
+        "title": "product",
+        "description": "Product Object",
         "type": "object",
         "properties": {
-            "product": {
-                "title": "product",
-                "description": "Product Object",
-                "type": "object",
-                "properties": {
-                    "body_html": {
-						"title": "body_html",
-                		"description": "Description of the product. Supports HTML formatting.",
-                        "type": "string"
-                    },
-                    "handle": {
-						"title": "handle",
-                		"description": "Human-friendly unique string for the product. Automatically generated from the product's title. Used by the Liquid templating language to refer to objects.",
-                        "type": "string"
-                    },
-                    "images": {
-						"title": "images",
-                		"description": "List of image objects, each one representing an image associated with the product.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/image"
-                        }
-                    },
-					"image": {
-						"title": "image",
-                		"description": "Main image for the Product",
-                        "$ref": "#/definitions/image"
-                    },
-                    "options": {
-						"title": "options",
-                		"description": "Custom product property names like Size, Color, and Material. Products are based on permutations of these options. (maximum: 3 options, 255 characters each)",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/option"
-                        },
-						"maxItems": 3
-                    },
-                    "product_type": {
-						"title": "product_type",
-                		"description": "Categorization that a product can be tagged with, commonly used for filtering and searching.",
-                        "type": "string"
-                    },
-					"published_at": {
-						"title": "published_at",
-                		"description": "Date and time when the product was published to the Online Store channel. The API returns this value in ISO 8601 format. A value of null indicates that the product is not published to Online Store.",
-                        "type": "string"
-                    },
-                    "published_scope": {
-						"title": "published_scope",
-                		"description": "Indicates whether the product is published to the Point of Sale channel. Valid values: web, global.",
-                        "type": "string",
-                        "enum": [
-                            "web",
-                            "global"
-                        ]
-                    },
-                    "tags": {
-						"title": "tags",
-                		"description": "Categorization that a product can be tagged with. Commonly used for filtering and searching. (maximum: 255 characters for each comma-separated tag)",
-                        "type": "string"
-                    },
-                    "template_suffix": {
-						"title": "template_suffix",
-                		"description": "Suffix of the Liquid template being used. By default, the original template is called product.liquid, without any suffix. Any additional templates will be: product.suffix.liquid.",
-                        "type": "string"
-                    },
-                    "title": {
-						"title": "title",
-                		"description": "Name of the product. In a shop's catalog, clicking on a product's title takes you to that product's page. On a product's page, the product's title typically appears in a large font.'",
-                        "type": "string"
-                    },
-                    "metafields_global_title_tag": {
-						"title": "metafields_global_title_tag",
-                		"description": "Name of the product used for SEO purposes. Generally added to the <meta name='title'> tag.",
-                        "type": "string"
-                    },
-                    "metafields_global_description_tag": {
-						"title": "metafields_global_description_tag",
-                		"description": "Description of the product used for SEO purposes. Generally added to the <meta name='description'> tag.",
-                        "type": "string"
-                    },
-                    "variants": {
-						"title": "variants",
-                		"description": "List of variant objects, each one representing a slightly different version of the product. For example, if a product comes in different sizes and colors, each size and color permutation (such as small black, medium black, large blue), would be a variant.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/variant"
-                        }
-                    },
-                    "vendor": {
-						"title": "vendor",
-                		"description": "Name of the vendor of the product.",
-                        "type": "string"
-                    },
-					"metafields": {
-						"title" : "metafields",
-						"description": "Attaches additional information to a shop's resources.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/metafield"
-                        }
-					}
-                },
-                "minProperties": 1,
-                "additionalProperties": false
+          "body_html": {
+            "title": "body_html",
+            "description": "Description of the product. Supports HTML formatting.",
+            "type": "string"
+          },
+          "handle": {
+            "title": "handle",
+            "description": "Human-friendly unique string for the product. Automatically generated from the product's title. Used by the Liquid templating language to refer to objects.",
+            "type": "string"
+          },
+          "images": {
+            "title": "images",
+            "description": "List of image objects, each one representing an image associated with the product.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/image"
             }
+          },
+          "image": {
+            "title": "image",
+            "description": "Main image for the Product",
+            "$ref": "#/definitions/image"
+          },
+          "options": {
+            "title": "options",
+            "description": "Custom product property names like Size, Color, and Material. Products are based on permutations of these options. (maximum: 3 options, 255 characters each)",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/option"
+            },
+            "maxItems": 3
+          },
+          "product_type": {
+            "title": "product_type",
+            "description": "Categorization that a product can be tagged with, commonly used for filtering and searching.",
+            "type": "string"
+          },
+          "published_at": {
+            "title": "published_at",
+            "description": "Date and time when the product was published to the Online Store channel. The API returns this value in ISO 8601 format. A value of null indicates that the product is not published to Online Store.",
+            "type": "string"
+          },
+          "published_scope": {
+            "title": "published_scope",
+            "description": "Indicates whether the product is published to the Point of Sale channel. Valid values: web, global.",
+            "type": "string",
+            "enum": [
+              "web",
+              "global"
+            ]
+          },
+          "tags": {
+            "title": "tags",
+            "description": "Categorization that a product can be tagged with. Commonly used for filtering and searching. (maximum: 255 characters for each comma-separated tag)",
+            "type": "string"
+          },
+          "template_suffix": {
+            "title": "template_suffix",
+            "description": "Suffix of the Liquid template being used. By default, the original template is called product.liquid, without any suffix. Any additional templates will be: product.suffix.liquid.",
+            "type": "string"
+          },
+          "title": {
+            "title": "title",
+            "description": "Name of the product. In a shop's catalog, clicking on a product's title takes you to that product's page. On a product's page, the product's title typically appears in a large font.'",
+            "type": "string"
+          },
+          "metafields_global_title_tag": {
+            "title": "metafields_global_title_tag",
+            "description": "Name of the product used for SEO purposes. Generally added to the <meta name='title'> tag.",
+            "type": "string"
+          },
+          "metafields_global_description_tag": {
+            "title": "metafields_global_description_tag",
+            "description": "Description of the product used for SEO purposes. Generally added to the <meta name='description'> tag.",
+            "type": "string"
+          },
+          "variants": {
+            "title": "variants",
+            "description": "List of variant objects, each one representing a slightly different version of the product. For example, if a product comes in different sizes and colors, each size and color permutation (such as small black, medium black, large blue), would be a variant.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/variant"
+            }
+          },
+          "vendor": {
+            "title": "vendor",
+            "description": "Name of the vendor of the product.",
+            "type": "string"
+          },
+          "metafields": {
+            "title": "metafields",
+            "description": "Attaches additional information to a shop's resources.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/metafield"
+            }
+          }
+        },
+        "minProperties": 1,
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "product"
+    ],
+    "additionalProperties": false,
+    "definitions": {
+      "image": {
+        "type": "object",
+        "properties": {
+          "src": {
+            "title": "src",
+            "description": "Specifies the location of the product image. This parameter supports URL filters that you can use to retrieve modified copies of the image. For example, add _small, to the filename to retrieve a scaled copy of the image at 100 x 100 px (for example, ipod-nano_small.png), or add _2048x2048 to retrieve a copy of the image constrained at 2048 x 2048 px resolution (for example, ipod-nano_2048x2048.png).",
+            "type": "string",
+            "format": "uri"
+          },
+          "position": {
+            "title": "position",
+            "description": "The order of the product image in the list. The first product image is at position 1 and is the main image for the product.",
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false
+      },
+      "option": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "title": "name",
+            "description": "Option Name, such as Size, Color, etc.",
+            "type": "string"
+          },
+          "position": {
+            "title": "position",
+            "description": "Position of the Option",
+            "type": "integer"
+          },
+          "values": {
+            "title": "values",
+            "description": "Option Values - array of strings, such as [ \"Black\", \"White\"]",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
         },
         "required": [
-            "product"
+          "name"
         ],
-        "additionalProperties": false,
-        "definitions": {
-            "image": {
-                "type": "object",
-                "properties": {
-                    "src": {
-						"title": "src",
-                		"description": "Specifies the location of the product image. This parameter supports URL filters that you can use to retrieve modified copies of the image. For example, add _small, to the filename to retrieve a scaled copy of the image at 100 x 100 px (for example, ipod-nano_small.png), or add _2048x2048 to retrieve a copy of the image constrained at 2048 x 2048 px resolution (for example, ipod-nano_2048x2048.png).",
-                        "type": "string",
-						"format": "uri"
-                    },
-					"position": {
-						"title": "position",
-                		"description": "The order of the product image in the list. The first product image is at position 1 and is the main image for the product.",
-                        "type": "integer"
-					}
-                },
-                "additionalProperties": false
-            },
-            "option": {
-                "type": "object",
-                "properties": {
-                    "name": {
-						"title": "name",
-                		"description": "Option Name, such as Size, Color, etc.",
-                        "type": "string"
-                    },
-                    "position": {
-						"title": "position",
-                		"description": "Position of the Option",
-                        "type": "integer"
-                    },
-                    "values": {
-						"title": "values",
-                		"description": "Option Values - array of strings, such as [ \"Black\", \"White\"]",
-                        "type": "array",
-                        "items": { "type" : "string" }
-                    }
-                },
-                "required": [
-                    "name"
-                ],
-                "additionalProperties": false
-            },
-            "variant": {
-                "title": "product variant",
-                "description": "Product Variant Object",
-                "type": "object",
-                "properties": {
-                    "product_id": {
-                        "title": "product_id",
-						"description": "Unique numeric identifier for the product.",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "title": "title",
-						"description": "Title of the product variant.",
-                        "type": ["string", "null"]
-                    },
-                    "price": {
-                        "title": "price",
-						"description": "Price of the product variant.",
-                        "type": ["string", "number"]
-                    },
-                    "sku": {
-                        "title": "sku",
-						"description": "Unique identifier for the product in the shop.",
-                        "type": ["string", "null"]
-                    },
-                    "position": {
-                        "title": "position",
-						"description": "The order of the product variant in the list of product variants. 1 is the first position. To reorder variants, update the product with the variants in the desired order. The position attribute on the variant will be ignored.",
-                        "type": ["integer", "null"]
-                    },
-                    "grams": {
-                        "title": "grams",
-						"description": "Weight of the product variant in grams.",
-                        "type": ["number", "string", "null"]
-                    },
-                    "compare_at_price": {
-                        "title": "compare_at_price",
-						"description": "Competitor's price for the same item.",
-                        "type": ["string", "number", "null"]
-                    },
-                    "fulfillment_service": {
-                        "title": "fulfillment_service",
-						"description": "Service that is handling fulfillment. Valid values: manual, gift_card, or the handle of a FulfillmentService resource.",
-                        "type": "string"
-                    },
-                    "option1": {
-                        "title": "option1",
-						"description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
-                        "type": ["string", "null"]
-                    },
-                    "option2": {
-                        "title": "option2",
-						"description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
-                        "type": ["string", "null"]
-                    },
-                    "option3": {
-                        "title": "option3",
-						"description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
-                        "type": ["string", "null"]
-                    },
-                    "taxable": {
-                        "title": "taxable",
-						"description": "Specifies whether a tax is charged when the product variant is sold.",
-                        "type": ["boolean", "null"]
-                    },
-                    "barcode": {
-                        "title": "barcode",
-						"description": "Barcode, UPC, or ISBN number for the product.",
-                        "type": ["string", "null"]
-                    },
-                    "image_id": {
-                        "title": "image_id",
-						"description": "Id of the image assigned to the variant.",
-                        "type": ["integer", "null"]
-                    },
-                    "inventory_policy": {
-                        "title": "inventory_policy",
-						"description": "Specifies whether customers are allowed to place an order for a product variant when it's out of stock.",
-                        "type": "string",
-                        "enum": ["deny", "continue"]
-                    },
-                    "inventory_management": {
-                        "title": "inventory_management",
-						"description": "Specifies whether Shopify tracks the number of items in stock for this product variant.",
-                        "type": ["string", "null"]
-                    },
-                    "inventory_quantity": {
-                        "title": "inventory_quantity",
-						"description": "Number of items in stock for this product variant.",
-                        "type": ["integer", "string"]
-                    },
-                    "old_inventory_quantity": {
-                        "title": "old_inventory_quantity",
-						"description": "",
-                        "type": ["integer", "string"]
-                    },
-                    "inventory_quantity_adjustment": {
-                        "title": "inventory_quantity_adjustment",
-						"description": "",
-                        "type": "integer"
-                    },
-                    "weight": {
-                        "title": "weight",
-						"description": "Weight of the product variant in the unit system specified with weight_unit.",
-                        "type": ["number", "string", "null"]
-                    },
-                    "weight_unit": {
-                        "title": "weight_unit",
-						"description": "Unit that the product variant's weight is measured in. Valid values: g, kg, oz, lb.",
-                        "type": ["string", "null"],
-                        "enum": [
-                            "g",
-                            "kg",
-                            "oz",
-                            "lb"
-                        ]
-                    },
-                    "requires_shipping": {
-                        "title": "requires_shipping",
-						"description": "Specifies whether a customer needs to provide a shipping address when placing an order for this product variant.",
-                        "type": ["boolean", "null"]
-                    },
-                    "metafields": {
-						"title" : "metafields",
-						"description": "Attaches additional information to a shop's resources.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/metafield"
-                        }
-                    }
-                },
-                "minProperties": 1,
-                "additionalProperties": false
-            },
-            "metafield": {
-                "type": "object",
-                "properties": {
-                    "key": {
-						"title": "key",
-						"description": "Identifier for the metafield (maximum of 30 characters).",
-                        "type": "string",
-                        "maxLength": 30
-                    },
-                    "namespace": {
-						"title": "namespace",
-						"description": "Container for a set of metafields. You need to define a custom namespace for your metafields to distinguish them from metafields used by other apps (maximum of 20 characters).",
-                        "type": "string",
-                        "maxLength": 20
-                    },
-                    "value": {
-						"title": "value",
-						"description": "Information to be stored as metadata.",
-                        "type": ["string", "integer"]
-                    },
-                    "value_type": {
-						"title": "value_type",
-						"description": "States whether the information in the value is stored as a 'string' or 'integer.'",
-                        "type": "string",
-						"enum": [
-							"string",
-							"integer"
-						]
-                    },
-                    "description": {
-						"title": "description",
-						"description": "Additional information about the metafield. This property is optional.",
-                        "type": "string"
-                    }
-                },
-                "required": [
-                    "key",
-                    "namespace",
-                    "value",
-                    "value_type"
-                ],
-                "additionalProperties": false
+        "additionalProperties": false
+      },
+      "variant": {
+        "title": "product variant",
+        "description": "Product Variant Object",
+        "type": "object",
+        "properties": {
+          "product_id": {
+            "title": "product_id",
+            "description": "Unique numeric identifier for the product.",
+            "type": "integer"
+          },
+          "title": {
+            "title": "title",
+            "description": "Title of the product variant.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "price": {
+            "title": "price",
+            "description": "Price of the product variant.",
+            "type": [
+              "string",
+              "number"
+            ]
+          },
+          "sku": {
+            "title": "sku",
+            "description": "Unique identifier for the product in the shop.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "position": {
+            "title": "position",
+            "description": "The order of the product variant in the list of product variants. 1 is the first position. To reorder variants, update the product with the variants in the desired order. The position attribute on the variant will be ignored.",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "grams": {
+            "title": "grams",
+            "description": "Weight of the product variant in grams.",
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          },
+          "compare_at_price": {
+            "title": "compare_at_price",
+            "description": "Competitor's price for the same item.",
+            "type": [
+              "string",
+              "number",
+              "null"
+            ]
+          },
+          "fulfillment_service": {
+            "title": "fulfillment_service",
+            "description": "Service that is handling fulfillment. Valid values: manual, gift_card, or the handle of a FulfillmentService resource.",
+            "type": "string"
+          },
+          "option1": {
+            "title": "option1",
+            "description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "option2": {
+            "title": "option2",
+            "description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "option3": {
+            "title": "option3",
+            "description": "Custom properties that a shop owner can use to define product variants. Multiple options can exist. Options are represented as: option1, option2, option3 etc.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "taxable": {
+            "title": "taxable",
+            "description": "Specifies whether a tax is charged when the product variant is sold.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "barcode": {
+            "title": "barcode",
+            "description": "Barcode, UPC, or ISBN number for the product.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "image_id": {
+            "title": "image_id",
+            "description": "Id of the image assigned to the variant.",
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "inventory_policy": {
+            "title": "inventory_policy",
+            "description": "Specifies whether customers are allowed to place an order for a product variant when it's out of stock.",
+            "type": "string",
+            "enum": [
+              "deny",
+              "continue"
+            ]
+          },
+          "inventory_management": {
+            "title": "inventory_management",
+            "description": "Specifies whether Shopify tracks the number of items in stock for this product variant.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "inventory_quantity": {
+            "title": "inventory_quantity",
+            "description": "Number of items in stock for this product variant.",
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "old_inventory_quantity": {
+            "title": "old_inventory_quantity",
+            "description": "",
+            "type": [
+              "integer",
+              "string"
+            ]
+          },
+          "inventory_quantity_adjustment": {
+            "title": "inventory_quantity_adjustment",
+            "description": "",
+            "type": "integer"
+          },
+          "weight": {
+            "title": "weight",
+            "description": "Weight of the product variant in the unit system specified with weight_unit.",
+            "type": [
+              "number",
+              "string",
+              "null"
+            ]
+          },
+          "weight_unit": {
+            "title": "weight_unit",
+            "description": "Unit that the product variant's weight is measured in. Valid values: g, kg, oz, lb.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "g",
+              "kg",
+              "oz",
+              "lb"
+            ]
+          },
+          "requires_shipping": {
+            "title": "requires_shipping",
+            "description": "Specifies whether a customer needs to provide a shipping address when placing an order for this product variant.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "metafields": {
+            "title": "metafields",
+            "description": "Attaches additional information to a shop's resources.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/metafield"
             }
-        }
-    },
-    "tags": [
-        "Shopify",
-        "Product",
-        "Put"
-    ],
-    "audit": {}
+          }
+        },
+        "minProperties": 1,
+        "additionalProperties": false
+      },
+      "metafield": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "title": "key",
+            "description": "Identifier for the metafield (maximum of 30 characters).",
+            "type": "string",
+            "maxLength": 30
+          },
+          "namespace": {
+            "title": "namespace",
+            "description": "Container for a set of metafields. You need to define a custom namespace for your metafields to distinguish them from metafields used by other apps (maximum of 20 characters).",
+            "type": "string",
+            "maxLength": 20
+          },
+          "value": {
+            "title": "value",
+            "description": "Information to be stored as metadata.",
+            "type": [
+              "string",
+              "integer"
+            ]
+          },
+          "value_type": {
+            "title": "value_type",
+            "description": "States whether the information in the value is stored as a 'string' or 'integer.'",
+            "type": "string",
+            "enum": [
+              "string",
+              "integer"
+            ]
+          },
+          "description": {
+            "title": "description",
+            "description": "Additional information about the metafield. This property is optional.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "namespace",
+          "value",
+          "value_type"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "tags": [
+    "Shopify",
+    "Product",
+    "Put"
+  ],
+  "audit": {}
 }

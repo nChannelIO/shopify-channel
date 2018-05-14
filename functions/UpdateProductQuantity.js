@@ -80,16 +80,16 @@ let UpdateProductQuantity = function (ncUtil,
       json: true
     };
 
-    return updateInventoryLevels(payload.doc.inventory_item.inventory_levels, options, baseURI).then(updatedInventoryLevels => {
+    return updateInventoryLevels(payload.doc.inventory_levels, options, baseURI).then(updatedInventoryLevels => {
       // Enrich the id
-      payload.doc.inventory_item.id = payload.productQuantityRemoteID;
+      payload.doc.id = payload.productQuantityRemoteID;
 
       return updateInventoryItem(payload.doc, options, baseURI).then(response => {
         out.response.endpointStatusCode = response.statusCode;
         out.response.endpointStatusMessage = response.statusMessage;
 
         // Add the updated inventory levels to the inventory item
-        response.body.inventory_item.inventory_levels = updatedInventoryLevels;
+        response.body.inventory_levels = updatedInventoryLevels;
 
         out.payload = {
           doc: response.body,
@@ -144,10 +144,10 @@ let UpdateProductQuantity = function (ncUtil,
 
 function updateInventoryItem(inventoryItem, options, baseURI) {
   // Delete the inventory levels
-  delete inventoryItem.inventory_item.inventory_levels;
+  delete inventoryItem.inventory_levels;
 
   options.method = 'PUT';
-  options.uri = `${baseURI}/admin/inventory_items/${inventoryItem.inventory_item.id}.json`;
+  options.uri = `${baseURI}/admin/inventory_items/${inventoryItem.id}.json`;
   options.body = inventoryItem;
   options.resolveWithFullResponse = true;
 
