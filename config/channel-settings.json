@@ -431,7 +431,7 @@
             "name": "FULFILLMENT",
             "location": "order.fulfillments",
             "remoteID": "id",
-            "businessReference": ["order_id"]
+            "businessReferences": ["order_id"]
           },
           {
             "name": "PRODUCT",
@@ -538,7 +538,7 @@
             "name": "FULFILLMENT",
             "location": "order.fulfillments",
             "remoteID": "id",
-            "businessReference": ["order_id"]
+            "businessReferences": ["order_id"]
           },
           {
             "name": "variant",
@@ -586,7 +586,7 @@
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
         "remoteID": "fulfillment.id",
-        "businessReference": ["order_id"]
+        "businessReferences": ["order_id"]
       }
     },
     {
