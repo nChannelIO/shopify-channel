@@ -1,25 +1,19 @@
 let UpdateFulfillment = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
-
-  log("Building response object...", ncUtil);
+                                  channelProfile,
+                                  flowContext,
+                                  payload,
+                                  callback) {
+  
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
     payload: {}
   };
-
+  
   let invalid = false;
   let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
+  
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or fulfillmentBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
@@ -33,6 +27,12 @@ let UpdateFulfillment = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.fulfillmentBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.fulfillmentBusinessReferences was not provided"
@@ -42,40 +42,76 @@ let UpdateFulfillment = function (ncUtil,
   } else if (channelProfile.fulfillmentBusinessReferences.length === 0) {
     invalid = true;
     invalidMsg = "channelProfile.fulfillmentBusinessReferences is empty"
+  } else if (!channelProfile.salesOrderBusinessReferences) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.salesOrderBusinessReferences)) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences is not an array"
+  } else if (channelProfile.salesOrderBusinessReferences.length === 0) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences is empty"
   }
-
-  //If a sales order document was not passed in, the request is invalid
+  
+  //If a fulfillment document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
+  } else if (!payload.salesOrderRemoteID) {
+    invalid = true;
+    invalidMsg = "payload.salesOrderRemoteID was not provided";
+  } else if (!payload.fulfillmentRemoteID) {
+    invalid = true;
+    invalidMsg = "payload.fulfillmentRemoteID was not provided";
   }
-
+  
   //If callback is not a function
   if (!callback) {
     throw new Error("A callback function was not provided");
   } else if (typeof callback !== 'function') {
     throw new TypeError("callback is not a function")
   }
-
+  
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    let endPoint = "/admin/orders/" + payload.salesOrderRemoteID + "/fulfillments/" + payload.fulfillmentRemoteID + ".json";
+    
     let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
+    
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
+    
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
-
-    // Set options
+    
+    log("Using URL [" + url + "]");
+  
+    payload.doc.fulfillment.order_id = payload.salesOrderRemoteID;
+    payload.doc.fulfillment.id = payload.fulfillmentRemoteID;
+  
+    //Remove the sales order synthetic business reference from the fulfillment
+    channelProfile.salesOrderBusinessReferences.forEach(function (businessReference) {
+      removeReference(businessReference, payload.doc);
+    });
+  
+    //Remove the fulfillment synthetic business reference from the fulfillment and store it so it can be returned
+    let values = [];
+    channelProfile.fulfillmentBusinessReferences.forEach(function (businessReference) {
+      values.push(removeReference(businessReference, payload.doc));
+    });
+    let fulfillmentBusinessReference = values.join('.');
+  
+    //Remove line_items since they can not be updated
+    removeReference('fulfillment.line_items', payload.doc);
+    
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
       method: "PUT",
@@ -83,18 +119,22 @@ let UpdateFulfillment = function (ncUtil,
       body: payload.doc,
       json: true
     };
-
+    
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If we have a customer object, set out.payload.doc to be the customer document
-          if (response.statusCode === 200 && body.fulfillment) {
+          log("Do UpdateFulfillment Callback");
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+          
+          // If we have a fulfillment object, set out.payload.doc to be the fulfillment document
+          if (body.fulfillment) {
             out.payload = {
               doc: body,
-              fulfillmentBusinessReference: body.fulfillment.id
+              fulfillmentBusinessReference: fulfillmentBusinessReference
             };
-
+            
             out.ncStatusCode = 200;
           } else if (response.statusCode == 429) {
             out.ncStatusCode = 429;
@@ -106,36 +146,49 @@ let UpdateFulfillment = function (ncUtil,
             out.ncStatusCode = 400;
             out.payload.error = body;
           }
+          
           callback(out);
         } else {
-          logError("Do UpdateFulfillment Callback error - " + error, ncUtil);
-          out.ncStatusCode = 500;
+          logError("Do UpdateFulfillment Callback error - " + error);
           out.payload.error = error;
+          out.ncStatusCode = 500;
           callback(out);
         }
       });
     } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in UpdateFulfillment - " + err, ncUtil);
-      out.ncStatusCode = 500;
+      logError("Exception occurred in UpdateFulfillment - " + err);
       out.payload.error = {err: err, stack: err.stackTrace};
+      out.ncStatusCode = 500;
       callback(out);
     }
   } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
+}
+
+function removeReference(path, doc) {
+  if (typeof path === 'string') {
+    return removeReference(path.split('.'), doc);
+  } else if (!doc) {
+    return undefined;
+  } else if (path.length === 1) {
+    let value = doc[path[0]];
+    delete doc[path[0]];
+    return value;
+  } else {
+    return removeReference(path.splice(1), doc[path[0]]);
+  }
 }
 
 module.exports.UpdateFulfillment = UpdateFulfillment;

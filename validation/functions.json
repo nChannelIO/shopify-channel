@@ -5,7 +5,7 @@
   "CheckForProduct": {
     "statusCodes": [200, 204, 409, 400, 429, 500]
   },
-  "CheckForProductGroup": {
+  "CheckForProductMatrix": {
     "statusCodes": [200, 204, 409, 400, 429, 500]
   },
   "CheckForProductPricing": {
@@ -29,7 +29,7 @@
   "ExtractShippingAddressFromSalesOrder": {
     "statusCodes": [200, 204]
   },
-  "ExtractProductFromProductGroup": {
+  "ExtractProductFromProductMatrix": {
     "statusCodes": [200, 204]
   },
   "GetCustomerFromQuery": {
@@ -38,13 +38,16 @@
   "GetFulfillmentFromQuery": {
     "statusCodes": [200, 204, 206, 400, 429, 500]
   },
+  "GetProductMatrixFromQuery": {
+    "statusCodes": [200, 204, 206, 400, 429, 500]
+  },
   "GetSalesOrderFromQuery": {
     "statusCodes": [200, 204, 206, 400, 429, 500]
   },
-  "InsertProduct": {
+  "InsertProductSimple": {
     "statusCodes": [201, 400, 429, 500]
   },
-  "InsertProductGroup": {
+  "InsertProductMatrix": {
     "statusCodes": [201, 400, 429, 500]
   },
   "InsertCustomer": {
@@ -56,10 +59,10 @@
   "InsertSalesOrder": {
     "statusCodes": [201, 400, 429, 500]
   },
-  "UpdateProduct": {
+  "UpdateProductSimple": {
     "statusCodes": [200, 400, 429, 500]
   },
-  "UpdateProductGroup": {
+  "UpdateProductMatrix": {
     "statusCodes": [200, 400, 429, 500]
   },
   "UpdateProductPricing": {

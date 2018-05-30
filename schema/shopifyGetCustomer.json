@@ -1,0 +1,326 @@
+{
+	"name": "Shopify Get Customer",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"title": "Shopify Get Customer",
+		"type": "object",
+		"properties": {
+			"customer": {
+				"$ref": "#/definitions/customer"
+			}
+		},
+		"required": [
+			"customer"
+		],
+		"additionalProperties": false,
+		"definitions": {
+			"address": {
+				"title": "address",
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "A unique numeric identifier for the address.",
+						"type": "integer"
+					},
+					"customer_id": {
+						"title": "customer_id",
+						"description": "A unique numeric identifier for the customer.",
+						"type": "integer"
+					},
+					"first_name": {
+						"title": "first_name",
+						"description": "The customer's first name.",
+						"type": "string"
+					},
+					"last_name": {
+						"title": "last_name",
+						"description": "The customer's last name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"company": {
+						"title": "company",
+						"description": "The customer's company.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"address1": {
+						"title": "address1",
+						"description": "The customer's mailing address.",
+						"type": "string"
+					},
+					"address2": {
+						"title": "address2",
+						"description": "An additional field for the customer's mailing address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"city": {
+						"title": "city",
+						"description": " The customer's city.",
+						"type": "string"
+					},
+					"province": {
+						"title": "province",
+						"description": "The customer's province or state name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"country": {
+						"title": "country",
+						"description": "The customer's country.",
+						"type": "string"
+					},
+					"zip": {
+						"title": "zip",
+						"description": "The customer's zip or postal code.",
+						"type": "string"
+					},
+					"phone": {
+						"title": "phone",
+						"description": "The customer's phone number for this mailing address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"name": {
+						"title": "name",
+						"description": "The customer's full name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"province_code": {
+						"title": "province_code",
+						"description": "The code for the customer's province or state.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"country_code": {
+						"title": "country_code",
+						"description": "The two-letter country code corresponding to the customer's country.",
+						"type": "string",
+						"minLength": 2,
+						"maxLength": 2
+					},
+					"country_name": {
+						"title": "country_name",
+						"description": "The customer's normalized country name.",
+						"type": "string"
+					},
+					"default": {
+						"title": "default",
+						"description": "Indicates whether this address is the default address for the customer. Valid values are true or false.",
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"customer_id",
+					"first_name",
+					"last_name",
+					"company",
+					"address1",
+					"city",
+					"country",
+					"zip",
+					"phone",
+					"name",
+					"country_code",
+					"country_name",
+					"default"
+				],
+				"additionalProperties": false
+			},
+			"customer": {
+				"title": "customer",
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "A unique numeric identifier for the customer.",
+						"type": "integer"
+					},
+					"email": {
+						"title": "email",
+						"description": "The unique email address of the customer. Attempting to assign the same email address to multiple customers will return an error.",
+						"type": "string",
+						"format": "email"
+					},
+					"accepts_marketing": {
+						"title": "accepts_marketing",
+						"description": "Indicates whether the customer has consented to be sent marketing material via email. Valid values are true or false.",
+						"type": "boolean"
+					},
+					"created_at": {
+						"title": "created_at",
+						"description": "The date and time when the customer was created. The API returns this value in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"title": "updated_at",
+						"description": "The date and time when the customer information was updated. The API returns this value in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"first_name": {
+						"title": "first_name",
+						"description": "The customer's first name.",
+						"type": "string"
+					},
+					"last_name": {
+						"title": "last_name",
+						"description": "The customer's last name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"orders_count": {
+						"title": "orders_count",
+						"description": "The number of orders associated with this customer.",
+						"type": [
+							"string",
+							"integer",
+							"null"
+						]
+					},
+					"state": {
+						"title": "state",
+						"description": "The state of the customer's account in a shop. The state can be changed in the shop admin or by the customer, but not through the API. Valid states are: disabled, invited, enabled, declined.",
+						"type": "string",
+						"enum": [
+							"disabled",
+							"invited",
+							"enabled",
+							"declined"
+						]
+					},
+					"total_spent": {
+						"title": "total_spent",
+						"description": "The total amount of money that the customer has spent at the shop.",
+						"type": [
+							"string",
+							"number"
+						],
+						"pattern": "\\d*(\\.?|\\,?)\\d+(\\.|\\,)\\d\\d"
+					},
+					"last_order_id": {
+						"title": "last_order_id",
+						"description": "The id of the customer's last order.",
+						"type": [
+							"string",
+							"integer",
+							"null"
+						]
+					},
+					"note": {
+						"title": "note",
+						"description": "A note about the customer.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"verified_email": {
+						"title": "verified_email",
+						"description": "States whether or not the email address has been verified.",
+						"type": "boolean"
+					},
+					"multipass_identifier": {
+						"title": "multipass_identifier",
+						"description": "The customer's identifier used with Multipass login.",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"tax_exempt": {
+						"title": "tax_exempt",
+						"description": "Indicates whether the customer should be charged taxes when placing orders. Valid values are true or false.",
+						"type": "boolean"
+					},
+					"phone": {
+						"title": "phone",
+						"description": "The unique phone number for this customer. Attempting to assign the same phone number to multiple customers will return an error. Valid formats can be of different types, but must represent a number that can be dialed from anywhere in the world. When returned by Shopify, the phone number will always be formatted according to the E.164 standard, e.g. `+16135551111`.",
+						"type": [
+							"string",
+							"null"
+						],
+						"pattern": "\\+\\d*"
+					},
+					"tags": {
+						"title": "tags",
+						"description": "Tags are additional short descriptors formatted as a string of comma-separated values. For example, if an article has three tags: tag1, tag2, tag3.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"last_order_name": {
+						"title": "last_order_name",
+						"description": "The name of the customer's last order. This is directly related to the Order's name field.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"addresses": {
+						"title": "addresses",
+						"description": "A list of the ten most recently updated addresses for the customer.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/address"
+						}
+					},
+					"default_address": {
+						"title": "default_address",
+						"description": "The default address for the customer.",
+						"$ref": "#/definitions/address"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"accepts_marketing",
+					"created_at",
+					"updated_at",
+					"first_name",
+					"tax_exempt",
+					"phone",
+					"addresses"
+				],
+				"additionalProperties": {
+					"type": [
+						"string",
+						"number",
+						"boolean",
+						"null"
+					]
+				}
+			}
+		}
+	},
+	"tags": [
+		"Shopify",
+		"Customer",
+		"Get",
+		"CustomerAddress"
+	],
+	"audit": {}
+}

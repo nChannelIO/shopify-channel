@@ -4,21 +4,15 @@ let CheckForCustomer = function (ncUtil,
                                  payload,
                                  callback) {
 
-  log("Building response object...", ncUtil);
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
-    response: {},
-    payload: {}
+    payload: {},
+    response: {}
   };
 
   let invalid = false;
   let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
 
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or customerBusinessReferences, the request can't be sent
   if (!channelProfile) {
@@ -33,6 +27,12 @@ let CheckForCustomer = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.customerBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.customerBusinessReferences was not provided"
@@ -44,7 +44,7 @@ let CheckForCustomer = function (ncUtil,
     invalidMsg = "channelProfile.customerBusinessReferences is empty"
   }
 
-  //If a sales order document was not passed in, the request is invalid
+  //If a customer document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
@@ -60,27 +60,50 @@ let CheckForCustomer = function (ncUtil,
     throw new TypeError("callback is not a function")
   }
 
+
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+    const jsonata = require('jsonata');
+
+    let endPoint = "/admin/customers/search.json";
+
     let request = require('request');
 
-    let url = "https://localhost/";
+    let queryParams = [];
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
 
-    // Add any headers for the request
+    let busRefValues = [];
+    let values = [];
+    channelProfile.customerBusinessReferences.forEach(function (businessReference) {
+      let expression = jsonata(businessReference);
+      let value = expression.evaluate(payload.doc);
+      if (value) {
+        let lookup = businessReference.split('.').pop() + ":" + encodeURIComponent(value);
+        values.push(lookup);
+        busRefValues.push(value);
+      }
+    });
+    let query = values.join(" AND ");
+    let lookup = "query=" + query;
+    queryParams.push(lookup);
+
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
 
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
+    url += "?" + queryParams.join('&');
 
-    // Set options
+    log("Using URL [" + url + "]");
+
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
-      method: "GET",
       headers: headers,
-      body: payload.doc,
       json: true
     };
 
@@ -88,13 +111,19 @@ let CheckForCustomer = function (ncUtil,
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If no errors, process results here
+          log("Do CheckForCustomer Callback");
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+
           if (response.statusCode == 200) {
             if (body.customers && body.customers.length == 1) {
+              let customer = {
+                customer: body.customers[0]
+              };
               out.ncStatusCode = 200;
               out.payload = {
-                customerRemoteID: "1",
-                customerBusinessReference: "email"
+                customerRemoteID: customer.customer.id,
+                customerBusinessReference: extractBusinessReference(channelProfile.customerBusinessReferences, customer)
               };
             } else if (body.customers.length > 1) {
               out.ncStatusCode = 409;
@@ -114,34 +143,31 @@ let CheckForCustomer = function (ncUtil,
           }
           callback(out);
         } else {
-          // If an error occurs, log the error here
-          logError("Do CheckForCustomer Callback error - " + error, ncUtil);
+          logError("Do CheckForCustomer Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = error;
           callback(out);
         }
       });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in CheckForCustomer - " + err, ncUtil);
+    } catch (error) {
+      logError("Exception occurred in CheckForCustomer - " + error);
+      out.payload.error = {err: error, stack: error.stackTrace};
       out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

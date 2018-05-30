@@ -1,0 +1,1526 @@
+{
+	"name": "Shopify Get Order",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"title": "Shopify Get Order",
+		"type": "object",
+		"properties": {
+			"order": {
+				"$ref": "#/definitions/order"
+			}
+		},
+		"definitions": {
+			"line_item": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "The id of the line item.",
+						"type": "number"
+					},
+					"variant_id": {
+						"title": "variant_id",
+						"description": "The id of the product variant.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"title": {
+						"title": "title",
+						"description": "The title of the product.",
+						"type": "string"
+					},
+					"quantity": {
+						"title": "quantity",
+						"description": "The number of products that were purchased.",
+						"type": "number"
+					},
+					"price": {
+						"title": "price",
+						"description": "The price of the item before discounts have been applied.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"grams": {
+						"title": "grams",
+						"description": "The weight of the item in grams.",
+						"type": "number"
+					},
+					"sku": {
+						"title": "sku",
+						"description": "A unique identifier of the item in the fulfillment.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"variant_title": {
+						"title": "variant_title",
+						"description": "The title of the product variant.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"vendor": {
+						"title": "vendor",
+						"description": "The name of the supplier of the item.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"fulfillment_service": {
+						"title": "fulfillment_service",
+						"description": "Service provider who is doing the fulfillment. Valid values are either \"manual\" or the name of the provider. eg: \"amazon\", \"shipwire\", etc.",
+						"type": "string"
+					},
+					"product_id": {
+						"title": "product_id",
+						"description": "The unique numeric identifier for the product in the fulfillment. Can be null if the original product associated with the order is deleted at a later date",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"requires_shipping": {
+						"title": "requires_shipping",
+						"description": "States whether or not the fulfillment requires shipping. Values are: true or false.",
+						"type": "boolean"
+					},
+					"taxable": {
+						"title": "taxable",
+						"description": "States whether or not the product was taxable. Values are: true or false.",
+						"type": "boolean"
+					},
+					"gift_card": {
+						"title": "gift_card",
+						"description": "States whether or not the line_item is a gift card. If so, the item is not taxed or considered for shipping charges.",
+						"type": "boolean"
+					},
+					"name": {
+						"title": "name",
+						"description": "The name of the product variant.",
+						"type": "string"
+					},
+					"variant_inventory_management": {
+						"title": "variant_inventory_management",
+						"description": "States the name of the inventory management service.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"properties": {
+						"description": "An array of custom information for an item that has been added to the cart. Often used to provide product customization options.",
+						"type": "array"
+					},
+					"product_exists": {
+						"title": "product_exists",
+						"description": "A value signifying if the product exists within Shopify.  Valid values are true or false.",
+						"type": "boolean"
+					},
+					"fulfillable_quantity": {
+						"title": "fulfillable_quantity",
+						"description": "The amount available to fulfill. This is the quantity - max(refunded_quantity, fulfilled_quantity) - pending_fulfilled_quantity - open_fulfilled_quantity.",
+						"type": "number"
+					},
+					"total_discount": {
+						"title": "total_discount",
+						"description": "The total discount amount applied to this line item. This value is not subtracted in the line item price.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"fulfillment_status": {
+						"title": "fulfillment_status",
+						"description": "How far along an order is in terms line items fulfilled. Valid values are: fulfilled, null or partial.",
+						"type": [
+							"string",
+							"null"
+						],
+						"enum": [
+							"fulfilled",
+							"partial",
+							"null",
+							null
+						]
+					},
+					"tax_lines": {
+						"title": "tax_lines",
+						"description": "A list of tax_line objects, each of which details the taxes applicable to this line_item.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/tax_line"
+						}
+					},
+        			"origin_location": {
+						"title": "origin_location",
+						"description": "The origin location of the Line Item (where it's being shipped from).",
+						"$ref": "#/definitions/line_item_location"
+					},
+					"destination_location": {
+						"title": "destination_location",
+						"description": "The destination location of the Line Item (where it's being shipped to).",
+						"$ref": "#/definitions/line_item_location"
+					}
+				},
+				"required": [
+					"id",
+					"variant_id",
+					"title",
+					"quantity",
+					"price",
+					"grams",
+					"sku",
+					"variant_title",
+					"vendor",
+					"fulfillment_service",
+					"product_id",
+					"requires_shipping",
+					"taxable",
+					"gift_card",
+					"name",
+					"variant_inventory_management",
+					"properties",
+					"product_exists",
+					"fulfillable_quantity",
+					"total_discount",
+					"fulfillment_status",
+					"tax_lines"
+				],
+				"additionalProperties": false
+			},
+			"shipping_line": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "The unique identifier for the shipping line.",
+						"type": "number"
+					},
+					"title": {
+						"title": "title",
+						"description": "The title of the shipping method.",
+						"type": "string"
+					},
+					"price": {
+						"title": "price",
+						"description": "The price of this shipping method.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"code": {
+						"title": "code",
+						"description": "A reference to the shipping method.",
+						"type": "string"
+					},
+					"source": {
+						"title": "source",
+						"description": "The source of the shipping method.",
+						"type": "string"
+					},
+					"phone": {
+						"title": "phone",
+						"description": "Phone number associated with the shipping method.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"requested_fulfillment_service_id": {
+						"title": "requested_fulfillment_service_id",
+						"description": "A reference to the fulfillment service that is being requested for the shipping method. Present if shipping method requires processing by a third party fulfillment service; null otherwise.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"delivery_category": {
+						"title": "delivery_category",
+						"description": "The delivery category assoicated with the shipping method.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"carrier_identifier": {
+						"title": "carrier_identifier",
+						"description": "A reference to the carrier service that provided the rate. Present if the rate was computed by a third party carrier service; null otherwise.",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"tax_lines": {
+						"title": "tax_lines",
+						"description": "A list of tax_line objects, each of which details the taxes applicable to this shipping_line.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/tax_line"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"price",
+					"code",
+					"source",
+					"phone",
+					"requested_fulfillment_service_id",
+					"delivery_category",
+					"carrier_identifier",
+					"tax_lines"
+				]
+			},
+			"fulfillment": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "A unique numeric identifier for the fulfillment.",
+						"type": "number"
+					},
+					"order_id": {
+						"title": "order_id",
+						"description": "The unique numeric identifier for the order.",
+						"type": "number"
+					},
+					"status": {
+						"title": "status",
+						"description": "The status of the fulfillment. Valid values are: pending, open, success, cancelled, error, failure.",
+						"type": "string",
+						"enum": [
+							"pending",
+							"open",
+							"success",
+							"cancelled",
+							"error",
+							"failure"
+						]
+					},
+					"created_at": {
+						"title": "created_at",
+						"description": "The date and time when the fulfillment was created. The API returns this value in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"service": {
+						"title": "service",
+						"description": "The name of the fulfillment service.",
+						"type": "string"
+					},
+					"updated_at": {
+						"title": "updated_at",
+						"description": "The date and time when the fulfillment was last modified. The API returns this value in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"tracking_company": {
+						"title": "tracking_company",
+						"description": "The name of the tracking company.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"shipment_status": {
+						"title": "shipment_status",
+						"description": "The status of the shipment.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tracking_number": {
+						"title": "tracking_number",
+						"description": "The tracking number, provided by the shipping company.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tracking_numbers": {
+						"title": "tracking_numbers",
+						"description": "A list of tracking numbers, provided by the shipping company.",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"tracking_url": {
+						"title": "tracking_url",
+						"description": "The URL to track the fulfillment.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tracking_urls": {
+						"title": "tracking_urls",
+						"description": "The URLs to track the fulfillment.",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"receipt": {
+						"$ref": "#/definitions/receipt"
+					},
+					"line_items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/line_item"
+						}
+					},
+					"variant_inventory_management": {
+						"title": "variant_inventory_management",
+						"description": "States the name of the inventory management service.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"notify_customer": {
+						"title": "notify_customer",
+						"description": "A flag indicating whether the customer should be notified. If set to true, an email will be sent when the fulfillment is created or updated. The default value is true. If you don't specify a value, the customer will receive an email.",
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"order_id",
+					"status",
+					"created_at",
+					"service",
+					"updated_at",
+					"tracking_company",
+					"shipment_status",
+					"tracking_numbers",
+					"tracking_urls"
+				],
+				"additionalProperties": false
+			},
+			"address": {
+				"type": "object",
+				"properties": {
+					"first_name": {
+						"title": "first_name",
+						"description": "The first name of the person associated with the specific address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"last_name": {
+						"title": "last_name",
+						"description": "The last name of the person associated with the specific address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"company": {
+						"title": "company",
+						"description": "The company of the person associated with the address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"address1": {
+						"title": "address1",
+						"description": "The street address of the address.",
+						"type": "string"
+					},
+					"address2": {
+						"title": "address2",
+						"description": "An optional additional field for the street address",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"city": {
+						"title": "city",
+						"description": "The city of the address.",
+						"type": "string"
+					},
+					"province": {
+						"title": "province",
+						"description": "The name of the state or province of the address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"country": {
+						"title": "country",
+						"description": "The name of the country of the address.",
+						"type": "string"
+					},
+					"zip": {
+						"title": "zip",
+						"description": "The zip or postal code of the address.",
+						"type": "string"
+					},
+					"latitude": {
+						"title": "latitude",
+						"description": "The latitude of the address.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"longitude": {
+						"title": "longitude",
+						"description": "The longitude of the address.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"phone": {
+						"title": "phone",
+						"description": "The phone number at the address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"name": {
+						"title": "name",
+						"description": "The full name of the person associated with the address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"province_code": {
+						"title": "province_code",
+						"description": "The abbreviation of the state or province of the address.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"country_code": {
+						"title": "country_code",
+						"description": "The two-letter code (ISO 3166-1 alpha-2 two-letter country code) for the country of the address.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 2
+					},
+					"id": {
+						"title": "id",
+						"type": "number"
+					},
+					"customer_id": {
+						"title": "customer_id",
+						"type": "number"
+					},
+					"country_name": {
+						"title": "country_name",
+						"type": "string"
+					},
+					"default": {
+						"title": "default",
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"first_name",
+					"last_name",
+					"company",
+					"address1",
+					"address2",
+					"city",
+					"province",
+					"country",
+					"zip",
+					"phone",
+					"name",
+					"province_code",
+					"country_code"
+				],
+				"additionalProperties": false
+			},
+			"customer": {
+				"title": "customer",
+				"description": "An object containing information about the customer. It is important to note that the order may not have a customer and consumers should not depend on the existence of a customer object. This value may be null if the order was created through Shopify POS",
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "A unique numeric identifier for the customer.",
+						"type": "number"
+					},
+					"email": {
+						"title": "email",
+						"description": "The customer's email address.",
+						"type": [
+							"string",
+							"null"
+						],
+						"format": "email"
+					},
+					"accepts_marketing": {
+						"title": "accepts_marketing",
+						"description": "Indicates whether or not the customer would like to receive email updates from the shop.",
+						"type": "boolean"
+					},
+					"created_at": {
+						"title": "created_at",
+						"description": "The date and time when the customer record was created.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"title": "updated_at",
+						"description": "The date and time when the customer record was last updated.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"first_name": {
+						"title": "first_name",
+						"description": "The customer's first name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"last_name": {
+						"title": "last_name",
+						"description": "The customer's last name.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"orders_count": {
+						"title": "orders_count",
+						"description": "The number of orders placed by this customer to a shop. Pulls the current information.",
+						"type": "integer"
+					},
+					"state": {
+						"title": "state",
+						"description": "The state of the customer's account in a shop. The state can be changed in the shop admin or by the customer, but not through the API. Valid states are: disabled, invited, enabled, declined.",
+						"type": "string",
+						"enum": [
+							"disabled",
+							"invited",
+							"enabled",
+							"declined"
+						]
+					},
+					"total_spent": {
+						"title": "total_spent",
+						"description": "The total amount of money that the customer has spent at the shop.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"last_order_id": {
+						"title": "last_order_id",
+						"description": "The id of the customer's last order.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"note": {
+						"title": "note",
+						"description": "A note about the customer.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"verified_email": {
+						"title": "verified_email",
+						"description": "States whether or not the email address has been verified.",
+						"type": "boolean"
+					},
+					"multipass_identifier": {
+						"title": "multipass_identifier",
+						"description": "The customer's identifier used with Multipass login",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tax_exempt": {
+						"title": "tax_exempt",
+						"description": "Indicates whether the customer should be charged taxes when placing orders.",
+						"type": "boolean"
+					},
+					"phone": {
+						"title": "phone",
+						"description": "The customer's phone number / the unique phone number for this customer. Attempting to assign the same phone number to multiple customers will return an error. Valid formats can be of different types, but must represent a number that can be dialed from anywhere in the world.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tags": {
+						"title": "tags",
+						"description": "Tags are additional short descriptors, commonly used for filtering and searching, formatted as a string of comma-separated values. For example, if an order has three tags: tag1, tag2, tag3.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"last_order_name": {
+						"title": "last_order_name",
+						"description": "The name of the customer's last order. This is directly related to the Order's name field.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"default_address": {
+						"title": "default_address",
+						"description": "The default address for the customer.",
+						"$ref": "#/definitions/address"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"accepts_marketing",
+					"created_at",
+					"updated_at",
+					"first_name",
+					"last_name",
+					"orders_count",
+					"state",
+					"total_spent",
+					"last_order_id",
+					"note",
+					"verified_email",
+					"multipass_identifier",
+					"tax_exempt",
+					"phone",
+					"tags",
+					"last_order_name"
+				],
+				"additionalProperties": false
+			},
+			"order": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "The unique numeric identifier for the order. This one is used for API purposes. This is different from the order_number property (see below), which is also a unique numeric identifier for the order, but used by the shop owner and customer.",
+						"type": "number"
+					},
+					"email": {
+						"title": "email",
+						"description": "The customer's email address.",
+						"type": "string",
+						"format": "email"
+					},
+					"closed_at": {
+						"title": "closed_at",
+						"description": "The date and time when the order was closed. If the order was closed, the API returns this value in ISO 8601 format. If the order was not closed, this value is null.",
+						"type": [
+							"string",
+							"null"
+						],
+						"format": "date-time"
+					},
+					"created_at": {
+						"title": "created_at",
+						"description": "This auto-generated property is the date and time when the order was created in Shopify, in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"title": "updated_at",
+						"description": "The date and time when the order was last modified. The API returns this value in ISO 8601 format.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"number": {
+						"title": "number",
+						"description": "Numerical identifier unique to the shop. A number is sequential and starts at 1000.",
+						"type": "integer"
+					},
+					"note": {
+						"title": "note",
+						"description": "The text of an optional note that a shop owner can attach to the order.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"token": {
+						"title": "token",
+						"description": "Unique identifier for a particular order.",
+						"type": "string"
+					},
+					"gateway": {
+						"title": "gateway",
+						"description": "Deprecated as of July 14, 2014. This information is instead available on transactions The payment gateway used.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"test": {
+						"title": "test",
+						"description": "If the order is a test order.",
+						"type": "boolean"
+					},
+					"total_price": {
+						"title": "total_price",
+						"description": "The sum of all the prices of all the items in the order, taxes and discounts included (must be positive).",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"subtotal_price": {
+						"title": "subtotal_price",
+						"description": "Price of the order before shipping and taxes",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"total_weight": {
+						"title": "total_weight",
+						"description": "The sum of all the weights of the line items in the order, in grams.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"total_tax": {
+						"title": "total_tax",
+						"description": "The sum of all the taxes applied to the order (must be positive).",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"taxes_included": {
+						"title": "taxes_included",
+						"description": "States whether or not taxes are included in the order subtotal. Valid values are \"true\" or \"false\".",
+						"type": "boolean"
+					},
+					"currency": {
+						"title": "currency",
+						"description": "The three letter code (ISO 4217) for the currency used for the payment.",
+						"type": "string",
+						"minLength": 3,
+						"maxLength": 3
+					},
+					"financial_status": {
+						"title": "financial_status",
+						"description": "The financial status of the order. Valid values are: pending, authorized, partially paid, paid, partially_refunded, refunded, voided.",
+						"type": "string",
+						"enum": [
+							"pending",
+							"authorized",
+							"partially_paid",
+							"paid",
+							"partially_refunded",
+							"refunded",
+							"voided"
+						]
+					},
+					"confirmed": {
+						"title": "confirmed",
+						"type": "boolean"
+					},
+					"total_discounts": {
+						"title": "total_discounts",
+						"description": "The total amount of the discounts to be applied to the price of the order.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"total_line_items_price": {
+						"title": "total_line_items_price",
+						"description": "The sum of all the prices of all the items in the order.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"cart_token": {
+						"title": "cart_token",
+						"description": "Unique identifier for a particular cart that is attached to a particular order.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"buyer_accepts_marketing": {
+						"title": "buyer_accepts_marketing",
+						"description": "Indicates whether or not the person who placed the order would like to receive email updates from the shop. The default value is false.",
+						"type": "boolean"
+					},
+					"name": {
+						"title": "name",
+						"description": "The customer's order name as represented by a number.",
+						"type": "string"
+					},
+					"referring_site": {
+						"title": "referring_site",
+						"description": "The website that the customer clicked on to come to the shop.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"landing_site": {
+						"title": "landing_site",
+						"description": "The URL for the page where the buyer landed when entering the shop.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"cancelled_at": {
+						"title": "cancelled_at",
+						"description": "The date and time when the order was cancelled. If the order was cancelled, the API returns this value in ISO 8601 format. If the order was not cancelled, this value is null",
+						"type": [
+							"string",
+							"null"
+						],
+						"format": "date-time"
+					},
+					"cancel_reason": {
+						"title": "cancel_reason",
+						"description": "The reason why the order was cancelled. If the order was not cancelled, this value is null. If the order was cancelled, the value will be one of the following: customer, fraud, inventory, other.",
+						"type": [
+							"string",
+							"null"
+						],
+						"enum": [
+							"customer",
+							"fraud",
+							"inventory",
+							"other",
+							"null",
+							null
+						]
+					},
+					"total_price_usd": {
+						"title": "total_price_usd",
+						"description": "The total price converted to USD.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"checkout_token": {
+						"title": "checkout_token",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"reference": {
+						"title": "reference",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"user_id": {
+						"title": "user_id",
+						"description": "Only present on orders processed at point of sale. The unique numerical identifier for the user logged into the terminal at the time the order was processed at.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"location_id": {
+						"title": "location_id",
+						"description": "Only present on orders processed at point of sale. The unique numeric identifier for the physical location at which the order was processed.",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"source_identifier": {
+						"title": "source_identifier",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"source_url": {
+						"title": "source_url",
+						"type": [
+							"string",
+							"null"
+						],
+						"format": "uri"
+					},
+					"processed_at": {
+						"title": "processed_at",
+						"description": "The date and time when the order was imported, in ISO 8601 format. This value can be set to dates in the past when importing from other systems. If no value is provided, it will be auto-generated based on the current date and time in Shopify.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"device_id": {
+						"title": "device_id",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"phone": {
+						"title": "phone",
+						"description": "The customer's phone number.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"app_id": {
+						"title": "app_id",
+						"description": "Unique identifier of the app who created the order.",
+						"type": "number"
+					},
+					"customer_locale": {
+						"title": "customer_locale",
+						"description": "The two or three letter language code, optionally followed by a region modifier. Example values could be 'en', 'en-CA', 'en-PIRATE'.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"browser_ip": {
+						"title": "browser_ip",
+						"description": "The IP address of the browser used by the customer when placing the order.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"landing_site_ref": {
+						"title": "landing_site_ref",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"order_number": {
+						"title": "order_number",
+						"description": "A unique numeric identifier for the order. This one is used by the shop owner and customer. This is different from the id property, which is also a unique numeric identifier for the order, but used for API purposes.",
+						"type": "number"
+					},
+					"discount_codes": {
+						"title": "discount_codes",
+						"description": "Applicable discount codes that can be applied to the order. If no codes exist the value will default to blank.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/discount_code"
+						}
+					},
+					"note_attributes": {
+						"title": "note_attributes",
+						"description": "Extra information that is added to the order. Each array entry must contain a hash with \"name\" and \"value\" keys as shown above.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/note_attributes"
+						}
+					},
+					"payment_gateway_names": {
+						"title": "payment_gateway_names",
+						"description": "The list of all payment gateways used for the order.",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"processing_method": {
+						"title": "processing_method",
+						"description": "States the type of payment processing method. Valid values are: checkout, direct, manual, offsite or express.",
+						"type": "string",
+						"enum": [
+							"checkout",
+							"manual",
+							"direct",
+							"offsite",
+							"express",
+							""
+						]
+					},
+					"checkout_id": {
+						"title": "checkout_id",
+						"type": [
+							"number",
+							"null"
+						]
+					},
+					"source_name": {
+						"title": "source_name",
+						"description": "Where the order originated. May only be set during creation, and is not writeable thereafter. Orders created through official Shopify channels have protected values that cannot be assigned by other API clients during order creation. These protected values are: \"web\", \"pos\", \"iphone\", and \"android\" Orders created via the API may be assigned any other string of your choice. If source_name is unspecified, new orders are assigned the value \"api\".",
+						"type": "string"
+					},
+					"fulfillment_status": {
+						"title": "fulfillment_status",
+						"description": "The status of the order fulfillment. Valid values are: fulfilled, null, partial.",
+						"type": [
+							"string",
+							"null"
+						],
+						"enum": [
+							"fulfilled",
+							"partial",
+							"null",
+							null
+						]
+					},
+					"tax_lines": {
+						"title": "tax_lines",
+						"description": "An array of tax_line objects, each of which details the total taxes applicable to the order. Each tax line object has the following properties: price, rate, title.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/tax_line"
+						}
+					},
+					"tags": {
+						"title": "tags",
+						"description": "Tags are additional short descriptors, commonly used for filtering and searching, formatted as a string of comma-separated values. For example, if an order has three tags: tag1, tag2, tag3. Each individual tag is limited to 40 characters in length.",
+						"type": "string"
+					},
+					"contact_email": {
+						"title": "contact_email",
+						"type": [
+							"string",
+							"null"
+						],
+						"format": "email"
+					},
+					"order_status_url": {
+						"title": "order_status_url",
+						"description": "The URL pointing to the order status web page. The URL will be null unless the order was created from a checkout.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"line_items": {
+						"title": "line_items",
+						"description": "A list of line item objects, each one containing information about an item in the order.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/line_item"
+						}
+					},
+					"shipping_lines": {
+						"title": "shipping_lines",
+						"description": "An array of shipping_line objects, each of which details the shipping methods used.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/shipping_line"
+						}
+					},
+					"billing_address": {
+						"title": "billing_address",
+						"description": "The mailing address associated with the payment method. This address is an optional field that will not be available on orders that do not require one.",
+						"$ref": "#/definitions/address"
+					},
+					"shipping_address": {
+						"title": "shipping_address",
+						"description": "The mailing address to where the order will be shipped. This address is optional and will not be available on orders that do not require one.",
+						"$ref": "#/definitions/address"
+					},
+					"fulfillments": {
+						"title": "fulfillments",
+						"description": "An array of fulfillment objects.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/fulfillment"
+						}
+					},
+					"refunds": {
+						"title": "refunds",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/refund"
+						}
+					},
+					"client_details": {
+						"$ref": "#/definitions/client_details"
+					},
+					"customer": {
+						"$ref": "#/definitions/customer"
+					},
+					"payment_details": {
+						"title": "payment_details",
+						"description": "Deprecated as of July 7, 2014. This information is instead available on transactions An object containing information about the payment. ",
+						"type": "array",
+						"items": {
+							"description": "Possible properties are: avs_result_code, credit_card_bin, credit_card_company, credit_card_number, cvv_result_code.",
+							"type": "object"
+						}
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"closed_at",
+					"created_at",
+					"updated_at",
+					"number",
+					"note",
+					"token",
+					"test",
+					"total_price",
+					"subtotal_price",
+					"total_weight",
+					"total_tax",
+					"taxes_included",
+					"currency",
+					"financial_status",
+					"confirmed",
+					"total_discounts",
+					"total_line_items_price",
+					"cart_token",
+					"buyer_accepts_marketing",
+					"name",
+					"referring_site",
+					"landing_site",
+					"cancelled_at",
+					"cancel_reason",
+					"total_price_usd",
+					"checkout_token",
+					"reference",
+					"user_id",
+					"location_id",
+					"source_identifier",
+					"source_url",
+					"processed_at",
+					"device_id",
+					"phone",
+					"customer_locale",
+					"browser_ip",
+					"landing_site_ref",
+					"order_number",
+					"discount_codes",
+					"note_attributes",
+					"payment_gateway_names",
+					"processing_method",
+					"checkout_id",
+					"source_name",
+					"fulfillment_status",
+					"tax_lines",
+					"tags",
+					"contact_email",
+					"order_status_url",
+					"line_items",
+					"shipping_lines",
+					"fulfillments",
+					"refunds"
+				],
+				"additionalProperties": false
+			},
+			"discount_code": {
+				"title": "discount_code",
+				"description": "Applicable discount codes that can be applied to the order. If no codes exist the value will default to blank.",
+				"type": "object",
+				"properties": {
+					"amount": {
+						"title": "amount",
+						"description": "The value of the discount. The type field determines how this amount is calculated.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"code": {
+						"title": "code",
+						"description": "The discount code.",
+						"type": "string"
+					},
+					"type": {
+						"title": "type",
+						"description": "The type of discount. Value values are: fixed_amount, percentage, shipping.",
+						"type": "string",
+						"enum": [
+							"fixed_amount",
+							"percentage",
+							"shipping"
+						]
+					}
+				},
+				"required": [
+					"amount",
+					"code",
+					"type"
+				],
+				"additionalProperties": false
+			},
+			"note_attributes": {
+				"title": "note_attributes",
+				"description": "Extra information that is added to the order. Each array entry must contain a hash with \"name\" and \"value\" keys.",
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"value": {
+						"type": [
+							"string",
+							"number",
+							"boolean",
+							"null"
+						]
+					}
+				},
+				"additionalProperties": false
+			},
+			"receipt": {
+				"title": "receipt",
+				"description": "An object of text fields that provide information about the receipt.",
+				"type": "object",
+				"properties": {
+					"testcase": {
+						"title": "testcase",
+						"description": "States whether or not the fulfillment was a testcase.",
+						"type": "boolean"
+					},
+					"authorization": {
+						"title": "authorization",
+						"description": "The authorization code.",
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"client_details": {
+				"title": "client_details",
+				"type": "object",
+				"properties": {
+					"accept_language": {
+						"title": "accept_language",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"browser_height": {
+						"title": "browser_height",
+						"description": "The browser height in pixels, if available.",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"browser_ip": {
+						"title": "browser_ip",
+						"description": "The browser IP address.",
+						"type": "string"
+					},
+					"browser_width": {
+						"title": "browser_width",
+						"description": "The browser screen width in pixels, if available.",
+						"type": [
+							"string",
+							"number",
+							"null"
+						]
+					},
+					"session_hash": {
+						"title": "session_hash",
+						"description": "A hash of the session.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"user_agent": {
+						"title": "user_agent",
+						"type": [
+							"string",
+							"null"
+						]
+					}
+				},
+				"required": [
+					"accept_language",
+					"browser_height",
+					"browser_ip",
+					"browser_width",
+					"session_hash",
+					"user_agent"
+				],
+				"additionalProperties": false
+			},
+			"payment_gateway_names": {
+				"title": "payment_gateway_names",
+				"description": "The list of all payment gateways used for the order.",
+				"type": "array",
+				"minItems": 0,
+				"items": {
+					"type": "string"
+				}
+			},
+			"tax_line": {
+				"title": "tax_lines",
+				"type": "object",
+				"properties": {
+					"title": {
+						"title": "title",
+						"description": "Title of the tax line",
+						"type": "string"
+					},
+					"price": {
+						"title": "price",
+						"description": "The tax line price.",
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"rate": {
+						"title": "rate",
+						"description": "The rate at which the tax is calculated for this tax line.",
+						"type": "number"
+					}
+				},
+				"required": [
+					"title",
+					"price",
+					"rate"
+				],
+				"additionalProperties": false
+			},
+			"line_item_location": {
+				"title": "line_item_location",
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+					  	"description": "Unique ID of the location.",
+					  	"type": "integer"
+					},
+					"country_code": {
+						"title": "country_code",
+					  	"description": "The country code of the location.",
+						"type": "string"
+					},
+					"province_code": {
+						"title": "provice_code",
+					  	"description": "The province code / state code for the location.",
+					  	"type": "string"
+					},
+					"name": {
+						"title": "name",
+					  	"description": "The name of the location.",
+					  	"type": "string"
+					},
+					"address1": {
+						"title": "address1",
+					  	"description": "Address 1 value of the location.",
+					  	"type": "string"
+					},
+					"address2": {
+						"title": "address2",
+					  	"description": "Address 2 value of the location.",
+					  	"type": "string"
+					},
+					"city": {
+						"title": "city",
+					  	"description": "City value of the location.",
+					  	"type": "string"
+					},
+					"zip": {
+						"title": "zip",
+					  	"description": "Zip Code / Postal Code value of the location.",
+					  	"type": "string"
+					}
+				  },
+				  "required": [],
+				  "additionalProperties": false
+				},
+			"refund": {
+				"title": "refund",
+				"type": "object",
+				"properties": {
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"processed_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"id": {
+						"type": "integer"
+					},
+					"note": {
+						"type": "string"
+					},
+					"refund_line_items": {
+						"title": "refund_line_items",
+						"description": "Details about one returned/refunded item.",
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"id": {
+									"type": "integer"
+								},
+								"line_item": {
+									"title": "line_item",
+									"description": "The single line item being returned.",
+									"type": "object"
+								},
+								"line_item_id": {
+									"description": "The id of the related line item.",
+									"type": "integer"
+								},
+								"quantity": {
+									"type": "integer"
+								}
+							}
+						}
+					},
+					"restock": {
+						"type": "boolean"
+					},
+					"transactions": {
+						"type": "array",
+						"items": {
+							"type": "object"
+						}
+					},
+					"user_id": {
+						"type": "integer"
+					}
+				}
+			}
+		}
+	},
+	"tags": [
+		"Shopify",
+		"Order",
+		"Get"
+	],
+	"audit": {}
+}

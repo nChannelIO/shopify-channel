@@ -1,0 +1,82 @@
+{
+  "name": "Shopify Get Product Quantity",
+  "schemaDef": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "Shopify Get Product Quantity",
+    "type": "object",
+    "properties": {
+      "id": {
+        "title": "id",
+        "type": ["string", "number"]
+      },
+      "sku": {
+        "title": "location_id",
+        "type": "string"
+      },
+      "tracked": {
+        "title": "tracked",
+        "type": ["boolean", "null"]
+      },
+      "inventory_levels": {
+        "title": "inventory_levels",
+        "type": "array",
+        "items": {
+          "$ref": "#/definitions/inventory_level"
+        }
+      },
+      "created_at": {
+        "title": "created_at",
+        "type": "string"
+      },
+      "updated_at": {
+        "title": "updated_at",
+        "type": "string"
+      }
+    },
+    "required": [
+      "inventory_item_ids",
+      "sku",
+      "id"
+    ],
+    "additionalProperties": false,
+    "definitions": {
+      "inventory_level": {
+        "type": "object",
+        "properties": {
+          "inventory_item_id": {
+            "title": "inventory_item_id",
+            "type": ["string", "number"]
+          },
+          "location_id": {
+            "title": "location_id",
+            "type": ["string", "number"]
+          },
+          "available": {
+            "title": "available",
+            "type": ["string", "number"]
+          },
+          "disconnect_if_necessary": {
+            "title": "disconnect_if_necessary",
+            "type": ["boolean", "null"]
+          },
+          "updated_at": {
+            "title": "updated_at",
+            "type": "string"
+          }
+        },
+        "required": [
+          "inventory_item_id",
+          "location_id",
+          "available"
+        ]
+      }
+    }
+  },
+  "tags": [
+    "Shopify",
+    "Product",
+    "Quantity",
+    "Get"
+  ],
+  "audit": {}
+}
