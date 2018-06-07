@@ -1,0 +1,47 @@
+{
+	"name": "Shopify Get Product Pricing",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "Shopify Get Product Pricing",
+		"type": "object",
+		"properties": {
+			"id": {
+				"title": "id",
+				"type": ["string", "number"]
+			},
+			"price": {
+				"title": "price",
+				"type": ["string", "number"]
+			},
+			"sku": {
+				"title": "sku",
+				"type": ["string"]
+			},
+			"compare_at_price": {
+				"title": "compare_at_price",
+				"type": ["string", "number", "null"]
+			},
+			"taxable": {
+				"title": "taxable",
+				"type": ["boolean", "null"]
+			},
+			"updated_at": {
+				"title": "updated_at",
+				"type": ["string"]
+			}
+		},
+		"required": [
+			"id",
+			"sku",
+			"price"
+		],
+		"additionalProperties": false
+	},
+	"tags": [
+		"Shopify",
+		"Product",
+		"Pricing",
+		"Get"
+	],
+	"audit": {}
+}

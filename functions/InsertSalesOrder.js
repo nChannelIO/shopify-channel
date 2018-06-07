@@ -4,7 +4,7 @@ let InsertSalesOrder = function (ncUtil,
                                  payload,
                                  callback) {
 
-  log("Building response object...", ncUtil);
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -14,14 +14,7 @@ let InsertSalesOrder = function (ncUtil,
   let invalid = false;
   let invalidMsg = "";
 
-  // If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
-  // If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
-  // Properties may differ depending on the channel
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -34,6 +27,12 @@ let InsertSalesOrder = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.salesOrderBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
@@ -62,21 +61,26 @@ let InsertSalesOrder = function (ncUtil,
   }
 
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+
+    let endPoint = "/admin/orders.json";
+
     let request = require('request');
 
-    let url = "https://localhost/";
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
 
-    // Add any headers for the request
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
 
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
+    log("Using URL [" + url + "]");
 
-    // Set options
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
       method: "POST",
@@ -89,8 +93,18 @@ let InsertSalesOrder = function (ncUtil,
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If no errors, process results here
-          if (response.statusCode === 201) {
+          log("Do InsertSalesOrder Callback");
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+
+          // If we have an order object, set out.payload.doc to be the order document
+          if (body.order) {
+            out.payload = {
+              doc: body,
+              salesOrderRemoteID: body.order.id,
+              salesOrderBusinessReference: extractBusinessReference(channelProfile.salesOrderBusinessReferences, body),
+            };
+
             out.ncStatusCode = 201;
           } else if (response.statusCode == 429) {
             out.ncStatusCode = 429;
@@ -104,34 +118,31 @@ let InsertSalesOrder = function (ncUtil,
           }
           callback(out);
         } else {
-          // If an error occurs, log the error here
-          logError("Do InsertSalesOrder Callback error - " + error, ncUtil);
+          logError("Do InsertSalesOrder Callback error - " + error);
           out.ncStatusCode = 500;
-          out.payload.error = {err: error};
+          out.payload.error = error;
           callback(out);
         }
       });
     } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in InsertSalesOrder - " + err, ncUtil);
+      logError("Exception occurred in InsertSalesOrder - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 
