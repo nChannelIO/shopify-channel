@@ -1,0 +1,189 @@
+{
+	"name": "Shopify Put Customer",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"title": "Shopify POST / PUT Customer",
+		"type": "object",
+		"properties": {
+			"customer": {
+				"$ref": "#/definitions/customer"
+			}
+		},
+		"required": [
+			"customer"
+		],
+		"additionalProperties": false,
+		"definitions": {
+			"address": {
+				"title": "address",
+				"type": "object",
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"company": {
+						"type": "string"
+					},
+					"address1": {
+						"type": "string"
+					},
+					"address2": {
+						"type": "string"
+					},
+					"city": {
+						"type": "string"
+					},
+					"province": {
+						"type": "string"
+					},
+					"zip": {
+						"type": "string"
+					},
+					"country": {
+						"type": "string"
+					},
+					"province_code": {
+						"type": "string",
+						"minLength": 2,
+						"maxLength": 2
+					},
+					"country_code": {
+						"type": "string",
+						"minLength": 2,
+						"maxLength": 2
+					},
+					"country_name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"customer": {
+				"type": "object",
+				"properties": {
+					"first_name": {
+						"type": "string"
+					},
+					"last_name": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string",
+						"format": "email"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"accepts_marketing": {
+						"type": "boolean"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"updated_at": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"note": {
+						"type": "string"
+					},
+					"verified_email": {
+						"type": "boolean"
+					},
+					"multipass_identifier": {
+						"type": "string"
+					},
+					"tax_exempt": {
+						"type": "boolean"
+					},
+					"tags": {
+						"type": "string"
+					},
+					"addresses": {
+						"title": "addresses",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/address"
+						}
+					},
+					"metafields": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/metafield"
+						}
+					},
+					"password": {
+						"type": "string"
+					},
+					"password_confirmation": {
+						"type": "string"
+					},
+					"send_email_invite": {
+						"type": "boolean",
+						"default": false
+					},
+					"send_email_welcome": {
+						"type": "boolean"
+					}
+				},
+				"dependencies": {
+					"password": [
+						"password_confirmation"
+					]
+				}
+			},
+			"metafield": {
+				"type": "object",
+				"properties": {
+					"namespace": {
+						"type": "string",
+						"maxLength": 20
+					},
+					"key": {
+						"type": "string",
+						"maxLength": 30
+					},
+					"value": {
+						"type": [
+							"string",
+							"number"
+						]
+					},
+					"value_type": {
+						"type": "string",
+						"enum": [
+							"string",
+							"integer"
+						]
+					},
+					"description": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"namespace",
+					"key",
+					"value",
+					"value_type"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"tags": [
+		"Shopify",
+		"Customer",
+		"Put"
+	],
+	"audit": {}
+}

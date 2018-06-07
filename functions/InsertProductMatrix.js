@@ -1,25 +1,19 @@
 let InsertProductMatrix = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
-
-  log("Building response object...", ncUtil);
+                                    channelProfile,
+                                    flowContext,
+                                    payload,
+                                    callback) {
+  
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
     payload: {}
   };
-
+  
   let invalid = false;
   let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
+  
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
@@ -33,6 +27,12 @@ let InsertProductMatrix = function (ncUtil,
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.shop) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.shop was not provided"
   } else if (!channelProfile.productBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.productBusinessReferences was not provided"
@@ -43,8 +43,8 @@ let InsertProductMatrix = function (ncUtil,
     invalid = true;
     invalidMsg = "channelProfile.productBusinessReferences is empty"
   }
-
-  //If a sales order document was not passed in, the request is invalid
+  
+  //If a product group document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
@@ -52,30 +52,35 @@ let InsertProductMatrix = function (ncUtil,
     invalid = true;
     invalidMsg = "payload.doc was not provided";
   }
-
+  
   //If callback is not a function
   if (!callback) {
     throw new Error("A callback function was not provided");
   } else if (typeof callback !== 'function') {
     throw new TypeError("callback is not a function")
   }
-
+  
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
+    const extractBusinessReference = require('../util/extractBusinessReference');
+    
+    let endPoint = "/admin/products.json";
+    
     let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
+    
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelAuthValues.shop + endPoint;
+    
+    /*
+     Format url
+     */
     let headers = {
-
+      "X-Shopify-Access-Token": channelProfile.channelAuthValues.access_token
     };
-
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
-
-    // Set options
+    
+    log("Using URL [" + url + "]");
+    
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
       method: "POST",
@@ -83,13 +88,23 @@ let InsertProductMatrix = function (ncUtil,
       body: payload.doc,
       json: true
     };
-
+    
     try {
       // Pass in our URL and headers
       request(options, function (error, response, body) {
         if (!error) {
-          // If no errors, process results here
-          if (response.statusCode === 201) {
+          log("Do InsertProductMatrix Callback");
+          out.response.endpointStatusCode = response.statusCode;
+          out.response.endpointStatusMessage = response.statusMessage;
+          
+          // If we have a product group object, set out.payload.doc to be the product group document
+          if (response.statusCode === 201 && body.product) {
+            out.payload = {
+              doc: body,
+              productRemoteID: body.product.id,
+              productMatrixBusinessReference: extractBusinessReference(channelProfile.productBusinessReferences, body)
+            };
+            
             out.ncStatusCode = 201;
           } else if (response.statusCode == 429) {
             out.ncStatusCode = 429;
@@ -101,36 +116,34 @@ let InsertProductMatrix = function (ncUtil,
             out.ncStatusCode = 400;
             out.payload.error = body;
           }
+          
           callback(out);
         } else {
-          // If an error occurs, log the error here
-          logError("Do InsertProductMatrix Callback error - " + error, ncUtil);
+          logError("Do InsertProductMatrix Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = {err: error};
           callback(out);
         }
       });
     } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in InsertProductMatrix - " + err, ncUtil);
+      logError("Exception occurred in InsertProductMatrix - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
     }
   } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

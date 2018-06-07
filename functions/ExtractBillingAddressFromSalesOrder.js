@@ -6,7 +6,7 @@ let ExtractBillingAddressFromSalesOrder = function(
     callback)
 {
 
-    log("Building callback object...", ncUtil);
+    log("Building callback object...");
     let out = {
         ncStatusCode: null,
         payload: {}
@@ -80,13 +80,13 @@ let ExtractBillingAddressFromSalesOrder = function(
           callback(out);
         } else if (!invalid && notFound){
           // Billing Address Not Found
-          log(invalidMsg, ncUtil);
+          log(invalidMsg);
           out.ncStatusCode = 204;
 
           callback(out);
         } else {
           // Invalid Request (payload or payload.doc was not passed in)
-          log(invalidMsg, ncUtil);
+          log(invalidMsg);
           out.ncStatusCode = 400;
           out.payload.error = { err: invalidMsg };
 
@@ -94,7 +94,7 @@ let ExtractBillingAddressFromSalesOrder = function(
         }
     }
     catch (err){
-        logError("Exception occurred in ExtractBillingAddressFromSalesOrder - " + err, ncUtil);
+        logError("Exception occurred in ExtractBillingAddressFromSalesOrder - " + err);
         out.ncStatusCode = 500;
         out.payload.error = { err: err.message, stackTrace: err.stackTrace };
         callback(out);
@@ -102,11 +102,11 @@ let ExtractBillingAddressFromSalesOrder = function(
 
 }
 
-function logError(msg, ncUtil) {
+function logError(msg) {
     console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
     console.log("[info] " + msg);
 }
 module.exports.ExtractBillingAddressFromSalesOrder = ExtractBillingAddressFromSalesOrder;

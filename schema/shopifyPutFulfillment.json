@@ -1,0 +1,157 @@
+{
+	"name": "Shopify Put Fulfillment",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "Shopify Put Fulfillment",
+		"type": "object",
+		"properties": {
+			"fulfillment": {
+				"title": "fulfillment",
+				"description": "Order Fulfillment Object",
+				"type": "object",
+				"properties": {
+					"tracking_number": {
+						"title": "tracking_number",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"tracking_numbers": {
+						"title": "tracking_numbers",
+						"description": "A list of tracking numbers, provided by the shipping company.",
+						"type": "array",
+						"items": {
+							"type": "string"
+						}
+					},
+					"tracking_url": {
+						"title": "tracking_url",
+						"type": "string",
+						"format": "uri"
+					},
+					"tracking_urls": {
+						"title": "tracking_urls",
+						"description": "The URLs to track the fulfillment.",
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/tracking_url"
+						}
+					},
+					"tracking_company": {
+						"title": "tracking_company",
+						"description": "The name of the tracking company.",
+						"type": "string"
+					},
+					"notify_customer": {
+						"title": "notify_customer",
+						"description": "A flag indicating whether the customer should be notified. If set to true, an email will be sent when the fulfillment is created or updated. The default value is true. If you don't specify a value, the customer will receive an email.",
+						"type": "boolean"
+					},
+					"line_items": {
+						"type": "array",
+						"items": {
+							"$ref": "#/definitions/line_item"
+						}
+					},
+					"receipt": {
+						"title": "receipt",
+						"description": "Text field that provides information about the receipt.",
+						"type": "object",
+						"properties": {
+							"testcase": {
+								"title": "testcase",
+								"description": "States whether or not the fulfillment was a testcase. Valid values are \"true\" or \"false\".",
+								"type": "boolean"
+							},
+							"authorization": {
+								"title": "authorization",
+								"description": "The authorization code.",
+								"type": [
+									"string",
+									"number"
+								]
+							}
+						},
+						"additionalProperties": false
+					},
+					"status": {
+						"title": "status",
+						"description": "The status of the fulfillment. Valid values are: pending, open, success, cancelled, error, failure.",
+						"type": "string",
+						"enum": [
+							"pending",
+							"open",
+							"success",
+							"cancelled",
+							"error",
+							"failure"
+						]
+					},
+					"sales_order_business_ref": {
+						"title": "sales_order_business_ref",
+						"description": "nChannel Sales Order Business Reference value.",
+						"type": "string"
+					},
+					"fulfillment_business_ref": {
+						"title": "fulfillment_business_ref",
+						"description": "nChannel Fulfillment Business Reference value.",
+						"type": "string"
+					}
+				},
+				"required": [
+					"sales_order_business_ref",
+					"fulfillment_business_ref"
+				],
+				"additionalProperties": false
+			}
+		},
+		"required": [
+			"fulfillment"
+		],
+		"additionalProperties": false,
+		"definitions": {
+			"line_item": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "id",
+						"description": "Line Item ID, accepts a string or integer - Shopify wants an Integer but stub functions and business refs can use either to transform",
+						"type": "string"
+					},
+					"quantity": {
+						"title": "quantity",
+						"description": "Quantity of the line item being fulfilled.",
+						"type": "integer"
+					},
+					"sku": {
+						"title": "sku",
+						"description": "Line Item SKU - Shopify doesn't use this value but nChannel does.",
+						"type": "string"
+					}
+				},
+				"required": [
+					"sku"
+				],
+				"additionalProperties": {
+					"type": [
+						"string",
+						"number",
+						"boolean",
+						"null"
+					]
+				}
+			},
+			"tracking_url": {
+				"type": "string",
+				"format": "uri"
+			}
+		}
+	},
+	"tags": [
+		"Shopify",
+		"Fulfillment",
+		"Put"
+	],
+	"audit": {}
+}

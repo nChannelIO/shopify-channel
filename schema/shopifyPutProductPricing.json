@@ -1,0 +1,38 @@
+{
+	"name": "Shopify Put Product Pricing",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "Shopify Put Product Pricing",
+		"type": "object",
+		"properties": {
+			"price": {
+				"title": "price",
+				"type": ["string", "number"]
+			},
+			"sku": {
+				"title": "sku",
+				"type": ["string"]
+			},
+			"compare_at_price": {
+				"title": "compare_at_price",
+				"type": ["string", "number", "null"]
+			},
+			"taxable": {
+				"title": "taxable",
+				"type": ["boolean", "null"]
+			}
+		},
+		"required": [
+			"price",
+			"sku"
+		],
+		"additionalProperties": true
+	},
+	"tags": [
+		"Shopify",
+		"Product",
+		"Pricing",
+		"Put"
+	],
+	"audit": {}
+}
