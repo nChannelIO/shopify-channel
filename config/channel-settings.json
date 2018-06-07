@@ -82,7 +82,7 @@
           {
             "name": "variant",
             "location": "product.variants",
-            "remoteID": "inventory_item_id",
+            "remoteID": "id",
             "businessReferences": ["sku"]
           }
         ]
@@ -141,9 +141,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["product.title"]},
+        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
         "remoteID": "product.id",
-        "businessReferences": ["product.title"],
+        "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
           {
             "name": "PRODUCTPRICING",
@@ -160,7 +160,7 @@
           {
             "name": "variant",
             "location": "product.variants",
-            "remoteID": "inventory_item_id",
+            "remoteID": "id",
             "businessReferences": ["sku"]
           }
         ]
@@ -299,9 +299,9 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["product.title"]},
+        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
         "remoteID": "product.id",
-        "businessReferences": ["product.title"],
+        "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
           {
             "name": "PRODUCTPRICING",
@@ -318,10 +318,11 @@
           {
             "name": "variant",
             "location": "product.variants",
-            "remoteID": "inventory_item_id",
+            "remoteID": "id",
             "businessReferences": ["sku"]
           }
-        ]
+        ],
+        "refreshNouns": ["PRODUCT"]
       }
     },
     {
@@ -357,7 +358,7 @@
       "configDef": {
         "configValues": {
           "canUpdateProductPricingFlag": true,
-          "donUpdateProductPricingFlag": true
+          "doUpdateProductPricingFlag": true
         },
         "configView": [],
         "configModel": {
@@ -382,7 +383,8 @@
         "schema": {},
         "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
         "remoteID": "id",
-        "businessReferences": ["sku"]
+        "businessReferences": ["sku"],
+        "refreshNouns": ["PRODUCT"]
       }
     },
     {
@@ -443,7 +445,8 @@
         "schema": {},
         "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
         "remoteID": "id",
-        "businessReferences": ["sku"]
+        "businessReferences": ["sku"],
+        "refreshNouns": ["PRODUCT"]
       }
     },
     {
@@ -496,13 +499,13 @@
             "name": "FULFILLMENT",
             "location": "order.fulfillments",
             "remoteID": "id",
-            "businessReferences": ["order_id"]
+            "businessReferences": ["id"]
           },
           {
-            "name": "PRODUCT",
+            "name": "variant",
             "location": "order.line_items",
-            "remoteID": "product_id",
-            "businessReferences": ["title"]
+            "remoteID": "variant_id",
+            "businessReferences": ["sku"]
           }
         ]
       }
@@ -676,30 +679,6 @@
           }
         ],
         "refreshNouns": ["CUSTOMER", "PRODUCT"]
-      }
-    },
-    {
-      "name": "GET FULFILLMENT",
-      "description": "GET FULFILLMENT",
-      "channelVerb": "GET",
-      "channelNoun": "FULFILLMENT",
-      "ruleDef": {
-        "ruleSchema": {},
-        "defaultRuleValues": {}
-      },
-      "configDef": {
-        "configValues": {},
-        "configView": [],
-        "configModel": {}
-      },
-      "documentDef": {
-        "schema": {},
-        "referenceLocation": {
-          "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
-          "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
-        },
-        "remoteID": "fulfillment.id",
-        "businessReferences": ["order_id"]
       }
     },
     {
@@ -912,7 +891,8 @@
         "schema": {},
         "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
         "remoteID": "customer.id",
-        "businessReferences": ["customer.email", "customer.phone"]
+        "businessReferences": ["customer.email", "customer.phone"],
+        "refreshNouns": ["CUSTOMER"]
       }
     }
   ],
