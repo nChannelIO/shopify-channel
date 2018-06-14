@@ -158,7 +158,7 @@
 							"$ref": "#/definitions/tax_line"
 						}
 					},
-        			"origin_location": {
+					"origin_location": {
 						"title": "origin_location",
 						"description": "The origin location of the Line Item (where it's being shipped from).",
 						"$ref": "#/definitions/line_item_location"
@@ -193,7 +193,7 @@
 					"fulfillment_status",
 					"tax_lines"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"shipping_line": {
 				"type": "object",
@@ -407,7 +407,7 @@
 					"tracking_numbers",
 					"tracking_urls"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"address": {
 				"type": "object",
@@ -553,7 +553,7 @@
 					"province_code",
 					"country_code"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"customer": {
 				"title": "customer",
@@ -715,7 +715,7 @@
 					"tags",
 					"last_order_name"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"order": {
 				"type": "object",
@@ -1236,7 +1236,7 @@
 					"fulfillments",
 					"refunds"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"discount_code": {
 				"title": "discount_code",
@@ -1272,7 +1272,7 @@
 					"code",
 					"type"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"note_attributes": {
 				"title": "note_attributes",
@@ -1291,7 +1291,7 @@
 						]
 					}
 				},
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"receipt": {
 				"title": "receipt",
@@ -1309,7 +1309,7 @@
 						"type": "string"
 					}
 				},
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"client_details": {
 				"title": "client_details",
@@ -1369,7 +1369,7 @@
 					"session_hash",
 					"user_agent"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"payment_gateway_names": {
 				"title": "payment_gateway_names",
@@ -1408,7 +1408,7 @@
 					"price",
 					"rate"
 				],
-				"additionalProperties": false
+				"additionalProperties": true
 			},
 			"line_item_location": {
 				"title": "line_item_location",
@@ -1416,48 +1416,48 @@
 				"properties": {
 					"id": {
 						"title": "id",
-					  	"description": "Unique ID of the location.",
-					  	"type": "integer"
+						"description": "Unique ID of the location.",
+						"type": "integer"
 					},
 					"country_code": {
 						"title": "country_code",
-					  	"description": "The country code of the location.",
+						"description": "The country code of the location.",
 						"type": "string"
 					},
 					"province_code": {
 						"title": "provice_code",
-					  	"description": "The province code / state code for the location.",
-					  	"type": "string"
+						"description": "The province code / state code for the location.",
+						"type": "string"
 					},
 					"name": {
 						"title": "name",
-					  	"description": "The name of the location.",
-					  	"type": "string"
+						"description": "The name of the location.",
+						"type": "string"
 					},
 					"address1": {
 						"title": "address1",
-					  	"description": "Address 1 value of the location.",
-					  	"type": "string"
+						"description": "Address 1 value of the location.",
+						"type": "string"
 					},
 					"address2": {
 						"title": "address2",
-					  	"description": "Address 2 value of the location.",
-					  	"type": "string"
+						"description": "Address 2 value of the location.",
+						"type": "string"
 					},
 					"city": {
 						"title": "city",
-					  	"description": "City value of the location.",
-					  	"type": "string"
+						"description": "City value of the location.",
+						"type": "string"
 					},
 					"zip": {
 						"title": "zip",
-					  	"description": "Zip Code / Postal Code value of the location.",
-					  	"type": "string"
+						"description": "Zip Code / Postal Code value of the location.",
+						"type": "string"
 					}
-				  },
-				  "required": [],
-				  "additionalProperties": false
 				},
+				"required": [],
+				"additionalProperties": true
+			},
 			"refund": {
 				"title": "refund",
 				"type": "object",
