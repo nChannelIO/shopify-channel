@@ -129,6 +129,16 @@ class Shopify extends Channel {
     }
   }
 
+  handleRejection(reason) {
+    if (reason instanceof this.requestErrors.StatusCodeError) {
+      return this.handleStatusCodeError(reason);
+    } else if (reason instanceof this.requestErrors.RequestError) {
+      return this.handleRequestError(reason);
+    } else {
+      return this.handleOtherError(reason);
+    }
+  }
+
   handleStatusCodeError(reason) {
     this.error(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
 
@@ -193,11 +203,11 @@ class Shopify extends Channel {
   }
 
   enrichProductsWithMetafields(...args) {
-    return require('./functions/getProductMatrixHelper').enrichProductsWithMetafields.bind(this)(...args);
+    return require('./functions/getProductMatrixHelpers').enrichProductsWithMetafields.bind(this)(...args);
   }
 
   getMetafieldsWithPaging(...args) {
-    return require('./functions/getProductMatrixHelper').getMetafieldsWithPaging.bind(this)(...args);
+    return require('./functions/getProductMatrixHelpers').getMetafieldsWithPaging.bind(this)(...args);
   }
 }
 

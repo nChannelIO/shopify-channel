@@ -17,5 +17,5 @@ module.exports = function (uri, pageSize) {
     });
 
     return this.formatGetResponse(customers, pageSize, response.statusCode);
-  }).catch(this.requestErrors.RequestError, this.handleRequestError).catch(this.requestErrors.StatusCodeError, this.handleStatusCodeError).catch(this.handleOtherError);
+  }).catch(this.handleRejection);
 };

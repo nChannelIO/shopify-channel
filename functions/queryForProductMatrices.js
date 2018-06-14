@@ -19,5 +19,5 @@ module.exports = function (uri, pageSize) {
 
       return this.formatGetResponse(enrichedProducts, pageSize, 200);
     });
-  }).catch(this.requestErrors.RequestError, this.handleRequestError).catch(this.requestErrors.StatusCodeError, this.handleStatusCodeError).catch(this.handleOtherError);
+  }).catch(this.handleRejection);
 };

@@ -2,8 +2,8 @@
 
 module.exports = function (flowContext, payload) {
   let options = {
-    url: `${this.baseUri}/admin/customers.json`,
-    method: "POST",
+    url: `${this.baseUri}/admin/variants/${payload.productPricingRemoteID}.json`,
+    method: "PUT",
     body: payload.doc,
     resolveWithFullResponse: true
   };
@@ -13,7 +13,7 @@ module.exports = function (flowContext, payload) {
   this.request(options).then(response => {
     return {
       endpointStatusCode: response.statusCode,
-      statusCode: 201,
+      statusCode: 200,
       payload: response.body
     };
   }).catch(this.handleRejection);

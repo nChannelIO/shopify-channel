@@ -1,6 +1,8 @@
+'use strict';
+
 module.exports = function (flowContext, payload) {
   let options = {
-    url: `${this.baseUri}/admin/customers.json`,
+    url: `${this.baseUri}/admin/customers/${payload.customerRemoteID}.json`,
     method: "PUT",
     body: payload.doc,
     resolveWithFullResponse: true
@@ -14,5 +16,5 @@ module.exports = function (flowContext, payload) {
       statusCode: 200,
       payload: response.body
     };
-  }).catch(this.requestErrors.RequestError, this.handleRequestError).catch(this.requestErrors.StatusCodeError, this.handleStatusCodeError);
+  }).catch(this.handleRejection);
 };

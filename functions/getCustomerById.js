@@ -8,5 +8,5 @@ module.exports = function (flowContext, payload) {
   queryParams.push("page=" + payload.doc.page);
   queryParams.push("limit=" + payload.doc.pageSize);
 
-  return this.queryForCustomer(`${this.baseUri}?${queryParams.join('&')}`, payload.doc.pageSize);
+  return this.queryForCustomers(`${this.baseUri}/admin/customers.json?${queryParams.join('&')}`, payload.doc.pageSize);
 };
