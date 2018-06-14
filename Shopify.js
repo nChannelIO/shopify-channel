@@ -1,6 +1,6 @@
 'use strict';
 
-let Channel = require('@nchannel/channel-sdk').PromiseChannel;
+let Channel = require('@nchannel/nchannel-endpoint-sdk').PromiseChannel;
 
 class Shopify extends Channel {
   constructor(...args) {
@@ -108,15 +108,20 @@ class Shopify extends Channel {
     let errors = [];
     if (!this.channelProfile) {
       errors.push("this.channelProfile was not provided");
-    } else if (!this.channelProfile.channelSettingsValues) {
+    }
+    if (!this.channelProfile.channelSettingsValues) {
       errors.push("this.channelProfile.channelSettingsValues was not provided");
-    } else if (!this.channelProfile.channelSettingsValues.protocol) {
+    }
+    if (!this.channelProfile.channelSettingsValues.protocol) {
       errors.push("this.channelProfile.channelSettingsValues.protocol was not provided");
-    } else if (!this.channelProfile.channelAuthValues) {
+    }
+    if (!this.channelProfile.channelAuthValues) {
       errors.push("this.channelProfile.channelAuthValues was not provided");
-    } else if (!this.channelProfile.channelAuthValues.access_token) {
+    }
+    if (!this.channelProfile.channelAuthValues.access_token) {
       errors.push("this.channelProfile.channelAuthValues.access_token was not provided");
-    } else if (!this.channelProfile.channelAuthValues.shop) {
+    }
+    if (!this.channelProfile.channelAuthValues.shop) {
       errors.push("this.channelProfile.channelAuthValues.shop was not provided");
     }
     if (errors.length > 0) {
@@ -159,8 +164,40 @@ class Shopify extends Channel {
     return Promise.reject(out);
   }
 
-  queryForCustomer(uri, pageSize) {
-    return require('./functions/queryForCustomer').bind(this)(uri, pageSize);
+  handleOtherError(reason) {
+    if (!reason || !reason.statusCode || !reason.errors) {
+      let out = {
+        statusCode: 500,
+        errors: [reason  || 'Rejection without reason']
+      };
+      return Promise.reject(out);
+    } else {
+      return Promise.reject(reason);
+    }
+  }
+
+  formatGetResponse(items, pageSize, endpointStatusCode = 'N/A') {
+    return {
+      endpointStatusCode: endpointStatusCode,
+      statusCode: items.length === pageSize ? 206 : (items.length > 0 ? 200 : 204),
+      payload: items
+    };
+  }
+
+  queryForCustomers(...args) {
+    return require('./functions/queryForCustomers').bind(this)(...args);
+  }
+
+  queryForProductMatrices(...args) {
+    return require('./functions/queryForProductMatrices').bind(this)(...args);
+  }
+
+  enrichProductsWithMetafields(...args) {
+    return require('./functions/getProductMatrixHelper').enrichProductsWithMetafields.bind(this)(...args);
+  }
+
+  getMetafieldsWithPaging(...args) {
+    return require('./functions/getProductMatrixHelper').getMetafieldsWithPaging.bind(this)(...args);
   }
 }
 
