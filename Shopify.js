@@ -261,6 +261,10 @@ class Shopify extends Channel {
   updateInventoryLevels(...args) {
     return require('./functions/updateProductQuantityHelpers').updateInventoryLevels.bind(this)(...args);
   }
+
+  queryForSalesOrders(...args) {
+    return require('./functions/getSalesOrderHelpers').queryForSalesOrders.bind(this)(...args);
+  }
 }
 
 module.exports = Shopify;
