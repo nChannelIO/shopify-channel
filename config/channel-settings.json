@@ -486,7 +486,7 @@
       "documentDef": {
         "schema": {},
         "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
-        "remoteID": "id",
+        "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
           {
@@ -656,7 +656,7 @@
           "salesOrderBusinessReferences": ["order.name"],
           "customerBusinessReferences": ["customer.email", "customer.phone"]
         },
-        "remoteID": "id",
+        "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
           {
