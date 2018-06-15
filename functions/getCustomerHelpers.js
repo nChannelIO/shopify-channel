@@ -21,5 +21,5 @@ function queryForCustomers(uri, pageSize) {
     });
 
     return this.formatGetResponse(customers, pageSize, response.statusCode);
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 }
