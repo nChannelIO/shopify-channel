@@ -76,6 +76,22 @@ class Shopify extends Channel {
     return require('./functions/updateProductPricing').bind(this)(...args);
   }
 
+  getProductQuantityById(...args) {
+    return require('./functions/getProductQuantityById').bind(this)(...args);
+  }
+
+  getProductQuantityByCreatedTimeRange(...args) {
+    return require('./functions/getProductQuantityByCreatedTimeRange').bind(this)(...args);
+  }
+
+  getProductQuantityByModifiedTimeRange(...args) {
+    return require('./functions/getProductQuantityByModifiedTimeRange').bind(this)(...args);
+  }
+
+  updateProductQuantity(...args) {
+    return require('./functions/updateProductQuantity').bind(this)(...args);
+  }
+
   getSalesOrderById(...args) {
     return require('./functions/getSalesOrderById').bind(this)(...args);
   }
@@ -195,11 +211,11 @@ class Shopify extends Channel {
   }
 
   queryForCustomers(...args) {
-    return require('./functions/queryForCustomers').bind(this)(...args);
+    return require('./functions/getCustomerHelpers').queryForCustomers.bind(this)(...args);
   }
 
   queryForProductMatrices(...args) {
-    return require('./functions/queryForProductMatrices').bind(this)(...args);
+    return require('./functions/getProductMatrixHelpers').queryForProductMatrices.bind(this)(...args);
   }
 
   enrichProductsWithMetafields(...args) {
@@ -208,6 +224,42 @@ class Shopify extends Channel {
 
   getMetafieldsWithPaging(...args) {
     return require('./functions/getProductMatrixHelpers').getMetafieldsWithPaging.bind(this)(...args);
+  }
+
+  updateProductMetafields(...args) {
+    return require('./functions/updateProductMatrixHelpers').updateProductMetafields.bind(this)(...args);
+  }
+
+  updateVariantMetafields(...args) {
+    return require('./functions/updateProductMatrixHelpers').updateVariantMetafields.bind(this)(...args);
+  }
+
+  queryForProductQuantities(...args) {
+    return require('./functions/getProductQuantityHelpers').queryForProductQuantities.bind(this)(...args);
+  }
+
+  getInventoryItems(...args) {
+    return require('./functions/getProductQuantityHelpers').getInventoryItems.bind(this)(...args);
+  }
+
+  getInventoryItemsWithPaging(...args) {
+    return require('./functions/getProductQuantityHelpers').getInventoryItemsWithPaging.bind(this)(...args);
+  }
+
+  getInventoryLevels(...args) {
+    return require('./functions/getProductQuantityHelpers').getInventoryLevels.bind(this)(...args);
+  }
+
+  getInventoryLevelsWithPaging(...args) {
+    return require('./functions/getProductQuantityHelpers').getInventoryLevelsWithPaging.bind(this)(...args);
+  }
+
+  updateInventoryItem(...args) {
+    return require('./functions/updateProductQuantityHelpers').updateInventoryItem.bind(this)(...args);
+  }
+
+  updateInventoryLevels(...args) {
+    return require('./functions/updateProductQuantityHelpers').updateInventoryLevels.bind(this)(...args);
   }
 }
 

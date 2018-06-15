@@ -2,8 +2,7 @@
 
 module.exports = function (flowContext, payload) {
   let options = {
-    method: 'GET',
-    uri: uri
+    method: 'GET'
   };
 
   return Promise.all(payload.doc.remoteIDs.map(remoteID => {
@@ -15,6 +14,6 @@ module.exports = function (flowContext, payload) {
       return this.mapVariantToPricing(body.variant);
     });
   })).then(productPricings => {
-    return this.formatGetResponse(productPricings, payload.doc.pageSize, 200);
+    return this.formatGetResponse(productPricings, undefined, 200);
   }).catch(this.handleRejection);
 };

@@ -1,6 +1,10 @@
 'use strict';
 
-module.exports = function (uri, pageSize) {
+module.exports = {
+  queryForCustomers
+};
+
+function queryForCustomers(uri, pageSize) {
   let options = {
     method: 'GET',
     uri: uri,
@@ -9,7 +13,7 @@ module.exports = function (uri, pageSize) {
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
-  this.request(options).then(response => {
+  return this.request(options).then(response => {
     let customers = response.body.customers || [];
 
     customers = customers.map(customer => {
@@ -18,4 +22,4 @@ module.exports = function (uri, pageSize) {
 
     return this.formatGetResponse(customers, pageSize, response.statusCode);
   }).catch(this.handleRejection);
-};
+}

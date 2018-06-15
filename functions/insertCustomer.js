@@ -10,7 +10,7 @@ module.exports = function (flowContext, payload) {
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
-  this.request(options).then(response => {
+  return this.request(options).then(response => {
     return {
       endpointStatusCode: response.statusCode,
       statusCode: 201,
