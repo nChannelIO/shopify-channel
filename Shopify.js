@@ -120,6 +120,19 @@ class Shopify extends Channel {
     return require('./functions/updateFulfillment').bind(this)(...args);
   }
 
+  extractBillingAddressFromSalesOrder(...args) {
+    return require('./functions/extractBillingAddressFromSalesOrder').bind(this)(...args);
+  }
+
+  extractCustomerFromSalesOrder(...args) {
+    return require('./functions/extractCustomerFromSalesOrder').bind(this)(...args);
+  }
+
+  extractShippingAddressFromSalesOrder(...args) {
+    return require('./functions/extractShippingAddressFromSalesOrder').bind(this)(...args);
+  }
+
+
   validateChannelProfile() {
     let errors = [];
     if (!this.channelProfile) {
