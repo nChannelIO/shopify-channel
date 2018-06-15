@@ -17,7 +17,7 @@ function queryForSalesOrders(uri, pageSize) {
     let salesOrders = response.body.orders || [];
 
     salesOrders = salesOrders.map(salesOrder => {
-      return {salesOrder: salesOrder};
+      return {order: salesOrder};
     });
 
     return this.formatGetResponse(salesOrders, pageSize, response.statusCode);
