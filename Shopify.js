@@ -1,5 +1,6 @@
 'use strict';
 
+let requestErrors = require('request-promise/errors');
 let Channel = require('@nchannel/nchannel-endpoint-sdk').PromiseChannel;
 
 class Shopify extends Channel {
@@ -8,14 +9,11 @@ class Shopify extends Channel {
 
     this.validateChannelProfile();
 
-    this.request = require('request-promise');
-    this.requestErrors = require('request-promise/errors');
-
     let headers = {
       "X-Shopify-Access-Token": this.channelProfile.channelAuthValues.access_token
     };
 
-    this.request.defaults({headers: headers, json: true});
+    this.request = require('request-promise').defaults({headers: headers, json: true});
 
     this.baseUri = `${this.channelProfile.channelSettingsValues.protocol}://${this.channelProfile.channelAuthValues.shop}`;
   }
@@ -159,9 +157,9 @@ class Shopify extends Channel {
   }
 
   handleRejection(reason) {
-    if (reason instanceof this.requestErrors.StatusCodeError) {
+    if (reason instanceof requestErrors.StatusCodeError) {
       return this.handleStatusCodeError(reason);
-    } else if (reason instanceof this.requestErrors.RequestError) {
+    } else if (reason instanceof requestErrors.RequestError) {
       return this.handleRequestError(reason);
     } else {
       return this.handleOtherError(reason);
