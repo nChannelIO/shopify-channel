@@ -18,115 +18,115 @@ class Shopify extends Channel {
     this.baseUri = `${this.channelProfile.channelSettingsValues.protocol}://${this.channelProfile.channelAuthValues.shop}`;
   }
 
-  getCustomerById(...args) {
+  async getCustomerById(...args) {
     return require('./functions/getCustomerById').bind(this)(...args);
   }
 
-  getCustomerByCreatedTimeRange(...args) {
+  async getCustomerByCreatedTimeRange(...args) {
     return require('./functions/getCustomerByCreatedTimeRange').bind(this)(...args);
   }
 
-  getCustomerByModifiedTimeRange(...args) {
+  async getCustomerByModifiedTimeRange(...args) {
     return require('./functions/getCustomerByModifiedTimeRange').bind(this)(...args);
   }
 
-  insertCustomer(...args) {
+  async insertCustomer(...args) {
     return require('./functions/insertCustomer').bind(this)(...args);
   }
 
-  updateCustomer(...args) {
+  async updateCustomer(...args) {
     return require('./functions/updateCustomer').bind(this)(...args);
   }
 
-  getProductMatrixById(...args) {
+  async getProductMatrixById(...args) {
     return require('./functions/getProductMatrixById').bind(this)(...args);
   }
 
-  getProductMatrixByCreatedTimeRange(...args) {
+  async getProductMatrixByCreatedTimeRange(...args) {
     return require('./functions/getProductMatrixByCreatedTimeRange').bind(this)(...args);
   }
 
-  getProductMatrixByModifiedTimeRange(...args) {
+  async getProductMatrixByModifiedTimeRange(...args) {
     return require('./functions/getProductMatrixByModifiedTimeRange').bind(this)(...args);
   }
 
-  insertProductMatrix(...args) {
+  async insertProductMatrix(...args) {
     return require('./functions/insertProductMatrix').bind(this)(...args);
   }
 
-  updateProductMatrix(...args) {
+  async updateProductMatrix(...args) {
     return require('./functions/updateProductMatrix').bind(this)(...args);
   }
 
-  getProductPricingById(...args) {
+  async getProductPricingById(...args) {
     return require('./functions/getProductPricingById').bind(this)(...args);
   }
 
-  getProductPricingByCreatedTimeRange(...args) {
+  async getProductPricingByCreatedTimeRange(...args) {
     return require('./functions/getProductPricingByCreatedTimeRange').bind(this)(...args);
   }
 
-  getProductPricingByModifiedTimeRange(...args) {
+  async getProductPricingByModifiedTimeRange(...args) {
     return require('./functions/getProductPricingByModifiedTimeRange').bind(this)(...args);
   }
 
-  updateProductPricing(...args) {
+  async updateProductPricing(...args) {
     return require('./functions/updateProductPricing').bind(this)(...args);
   }
 
-  getProductQuantityById(...args) {
+  async getProductQuantityById(...args) {
     return require('./functions/getProductQuantityById').bind(this)(...args);
   }
 
-  getProductQuantityByCreatedTimeRange(...args) {
+  async getProductQuantityByCreatedTimeRange(...args) {
     return require('./functions/getProductQuantityByCreatedTimeRange').bind(this)(...args);
   }
 
-  getProductQuantityByModifiedTimeRange(...args) {
+  async getProductQuantityByModifiedTimeRange(...args) {
     return require('./functions/getProductQuantityByModifiedTimeRange').bind(this)(...args);
   }
 
-  updateProductQuantity(...args) {
+  async updateProductQuantity(...args) {
     return require('./functions/updateProductQuantity').bind(this)(...args);
   }
 
-  getSalesOrderById(...args) {
+  async getSalesOrderById(...args) {
     return require('./functions/getSalesOrderById').bind(this)(...args);
   }
 
-  getSalesOrderByCreatedTimeRange(...args) {
+  async getSalesOrderByCreatedTimeRange(...args) {
     return require('./functions/getSalesOrderByCreatedTimeRange').bind(this)(...args);
   }
 
-  getSalesOrderByModifiedTimeRange(...args) {
+  async getSalesOrderByModifiedTimeRange(...args) {
     return require('./functions/getSalesOrderByModifiedTimeRange').bind(this)(...args);
   }
 
-  insertSalesOrder(...args) {
+  async insertSalesOrder(...args) {
     return require('./functions/insertSalesOrder').bind(this)(...args);
   }
 
-  updateSalesOrder(...args) {
+  async updateSalesOrder(...args) {
     return require('./functions/updateSalesOrder').bind(this)(...args);
   }
 
-  insertFulfillment(...args) {
+  async insertFulfillment(...args) {
     return require('./functions/insertFulfillment').bind(this)(...args);
   }
 
-  updateFulfillment(...args) {
+  async updateFulfillment(...args) {
     return require('./functions/updateFulfillment').bind(this)(...args);
   }
 
-  extractBillingAddressFromSalesOrder(...args) {
+  async extractBillingAddressFromSalesOrder(...args) {
     return require('./functions/extractBillingAddressFromSalesOrder').bind(this)(...args);
   }
 
-  extractCustomerFromSalesOrder(...args) {
+  async extractCustomerFromSalesOrder(...args) {
     return require('./functions/extractCustomerFromSalesOrder').bind(this)(...args);
   }
 
-  extractShippingAddressFromSalesOrder(...args) {
+  async extractShippingAddressFromSalesOrder(...args) {
     return require('./functions/extractShippingAddressFromSalesOrder').bind(this)(...args);
   }
 

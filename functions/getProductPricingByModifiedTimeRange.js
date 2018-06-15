@@ -58,7 +58,7 @@ module.exports = function (flowContext, payload) {
     out.payload = variants.map(this.mapVariantToPricing);
 
     return out;
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };
 
 function withinTimeRange(time, start, end) {

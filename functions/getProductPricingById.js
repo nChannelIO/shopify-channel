@@ -15,5 +15,5 @@ module.exports = function (flowContext, payload) {
     });
   })).then(productPricings => {
     return this.formatGetResponse(productPricings, undefined, 200);
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };

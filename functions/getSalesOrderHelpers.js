@@ -21,5 +21,5 @@ function queryForSalesOrders(uri, pageSize) {
     });
 
     return this.formatGetResponse(salesOrders, pageSize, response.statusCode);
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 }

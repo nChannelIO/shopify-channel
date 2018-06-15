@@ -72,7 +72,7 @@ module.exports = function(flowContext, payload) {
     out.paylaod = productQuantities;
 
     return out;
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };
 
 function withinTimeRange(time, start, end) {

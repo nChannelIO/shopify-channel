@@ -13,5 +13,5 @@ module.exports = function (flowContext, payload) {
         payload: inventoryItem,
         statusCode: 200
       }
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };

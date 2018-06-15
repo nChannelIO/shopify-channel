@@ -56,6 +56,6 @@ module.exports = function (flowContext, payload) {
     });
 
     return this.formatGetResponse(fulfillments, undefined, response.statusCode);
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };
 

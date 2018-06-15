@@ -25,7 +25,7 @@ function queryForProductMatrices(uri, pageSize) {
 
       return this.formatGetResponse(enrichedProducts, pageSize, response.statusCode);
     });
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 }
 
 function enrichProductsWithMetafields(products) {

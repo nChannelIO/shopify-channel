@@ -128,5 +128,5 @@ module.exports = function (flowContext, payload) {
       }
       return getSalesOrderResponse;
     }
-  }).catch(this.handleRejection);
+  }).catch(this.handleRejection.bind(this));
 };
