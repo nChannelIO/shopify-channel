@@ -167,7 +167,7 @@ class Shopify extends Channel {
   }
 
   handleStatusCodeError(reason) {
-    this.error(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error}`);
+    this.error(`The endpoint returned an error status code: ${reason.statusCode} error: ${reason.error.toString()}`);
 
     let out = {
       endpointStatusCode: reason.statusCode,

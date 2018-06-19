@@ -15,824 +15,10 @@
   },
   "docs": [
     {
-      "functionName": "CheckForCustomer",
+      "functionName": "getCustomerById",
       "tests": [
         {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  },
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers/search.json?query=email:derek.boytim%40nchannel.com",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProduct",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["variant.sku"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProductPricing",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["variant.sku"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProductQuantity",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "#COFFEEMUG2"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "variant": {
-                "sku": "#COFFEEMUG2"
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/variants/search.json?query=sku:%23COFFEEMUG2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "variants": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["variant.sku"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractProductFromProductMatrix",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "product": {
-                "id": 12020548676,
-                "title": "2asdfs45",
-                "body_html": null,
-                "vendor": "ci-sales-01",
-                "product_type": "",
-                "created_at": "2017-10-11T17:52:24Z",
-                "handle": "2asdfs45-2",
-                "updated_at": "2017-10-11T17:52:24Z",
-                "published_at": "2017-10-11T17:52:24Z",
-                "template_suffix": null,
-                "published_scope": "global",
-                "tags": "",
-                "variants": [
-                  {
-                    "id": 52668187844,
-                    "product_id": 12020548676,
-                    "title": "Default Title",
-                    "price": "0.00",
-                    "sku": "",
-                    "position": 1,
-                    "inventory_policy": "deny",
-                    "compare_at_price": null,
-                    "fulfillment_service": "manual",
-                    "inventory_management": null,
-                    "option1": "Default Title",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2017-10-11T17:52:24Z",
-                    "updated_at": "2017-10-11T17:52:24Z",
-                    "taxable": true,
-                    "barcode": null,
-                    "grams": 0,
-                    "image_id": null,
-                    "inventory_quantity": 1,
-                    "weight": 0,
-                    "weight_unit": "lb",
-                    "old_inventory_quantity": 1,
-                    "requires_shipping": true
-                  }
-                ],
-                "options": [
-                  {
-                    "id": 14701432644,
-                    "product_id": 12020548676,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                      "Default Title"
-                    ]
-                  }
-                ],
-                "images": [],
-                "image": null
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "productBusinessReferences": ["productMatrixid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "product": {
-                "id": 12020548676,
-                "title": "2asdfs45",
-                "body_html": null,
-                "vendor": "ci-sales-01",
-                "product_type": "",
-                "created_at": "2017-10-11T17:52:24Z",
-                "handle": "2asdfs45-2",
-                "updated_at": "2017-10-11T17:52:24Z",
-                "published_at": "2017-10-11T17:52:24Z",
-                "template_suffix": null,
-                "published_scope": "global",
-                "tags": "",
-                "variants": [],
-                "options": [
-                  {
-                    "id": 14701432644,
-                    "product_id": 12020548676,
-                    "name": "Title",
-                    "position": 1,
-                    "values": [
-                      "Default Title"
-                    ]
-                  }
-                ],
-                "images": [],
-                "image": null
-              }
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "productBusinessReferences": ["productMatrixid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "GetCustomerFromQuery",
-      "tests": [
-        {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "remoteIDs": [1073339459]
@@ -861,7 +47,7 @@
           }
         },
         {
-          "ncStatusCode": 204,
+          "statusCode": 204,
           "payload": {
             "doc": {
               "remoteIDs": [1073339459]
@@ -885,7 +71,84 @@
           }
         },
         {
-          "ncStatusCode": 206,
+          "statusCode": 400,
+          "payload": {
+            "doc": {
+              "remoteIDs": [1073339459]
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?ids=1073339459",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 401,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
+          "statusCode": 429,
+          "payload": {
+            "doc": {
+              "remoteIDs": [1073339459]
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?ids=1073339459",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 429,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
+          "statusCode": 500,
+          "payload": {
+            "doc": {
+              "remoteIDs": [1073339459]
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?ids=1073339459",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 500,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        }
+      ]
+    },
+    {
+      "functionName": "getCustomerByModifiedTimeRange",
+      "tests": [
+        {
+          "statusCode": 206,
           "payload": {
             "doc": {
               "modifiedDateRange": {
@@ -920,269 +183,14 @@
           "channelProfile": {
             "customerBusinessReferences": ["customer.email"]
           }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers.json?ids=1073339459",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers.json?ids=1073339459",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/customers.json?ids=1073339459",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["customer.email"]
-          }
         }
       ]
     },
     {
-      "functionName": "GetFulfillmentFromQuery",
+      "functionName": "getProductMatrixById",
       "tests": [
         {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901]
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "fulfillments": [
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901]
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "fulfillments": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        },
-        {
-          "ncStatusCode": 206,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901],
-              "page": 1,
-              "pageSize": 5
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901&page=1&limit=5",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "fulfillments": [
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  },
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  },
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  },
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  },
-                  {
-                    "id": 1022782901,
-                    "order_id": 1073459964
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901]
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "fulfillments": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901]
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "fulfillments": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "remoteIDs": [1022782901]
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json?ids=1022782901",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "fulfillments": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.order_id"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "GetProductMatrixFromQuery",
-      "tests": [
-        {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"]
@@ -1192,7 +200,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=50",
+              "uri": "/admin/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1227,7 +235,7 @@
           }
         },
         {
-          "ncStatusCode": 204,
+          "statusCode": 204,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"]
@@ -1237,7 +245,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=50",
+              "uri": "/admin/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1251,7 +259,7 @@
           }
         },
         {
-          "ncStatusCode": 206,
+          "statusCode": 206,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"],
@@ -1378,7 +386,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"]
@@ -1388,7 +396,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=50",
+              "uri": "/admin/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
@@ -1402,7 +410,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"]
@@ -1412,7 +420,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=50",
+              "uri": "/admin/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1426,7 +434,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "remoteIDs": ["12020548676"]
@@ -1436,7 +444,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=50",
+              "uri": "/admin/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1452,10 +460,10 @@
       ]
     },
     {
-      "functionName": "GetSalesOrderFromQuery",
+      "functionName": "getSalesOrderById",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"]
@@ -1483,7 +491,7 @@
           }
         },
         {
-          "ncStatusCode": 204,
+          "statusCode": 204,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"]
@@ -1507,7 +515,7 @@
           }
         },
         {
-          "ncStatusCode": 206,
+          "statusCode": 206,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"],
@@ -1540,7 +548,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"]
@@ -1564,7 +572,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"]
@@ -1588,7 +596,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "remoteIDs": ["4571292613"]
@@ -1614,10 +622,10 @@
       ]
     },
     {
-      "functionName": "InsertCustomer",
+      "functionName": "insertCustomer",
       "tests": [
         {
-          "ncStatusCode": 201,
+          "statusCode": 201,
           "payload": {
             "doc": {
               "customer": {
@@ -1648,7 +656,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "customer": {
@@ -1674,7 +682,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "customer": {
@@ -1700,7 +708,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "customer": {
@@ -1728,10 +736,10 @@
       ]
     },
     {
-      "functionName": "InsertFulfillment",
+      "functionName": "insertFulfillment",
       "tests": [
         {
-          "ncStatusCode": 201,
+          "statusCode": 201,
           "payload": {
             "doc": {
               "fulfillment": {
@@ -1938,7 +946,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "fulfillment": {
@@ -1961,210 +969,8 @@
             {
               "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
               "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "orders": [
-                  {
-                    "id": 1073459964,
-                    "email": "",
-                    "closed_at": null,
-                    "created_at": "2017-09-05T14:37:57-04:00",
-                    "updated_at": "2017-09-05T14:37:58-04:00",
-                    "number": 2,
-                    "note": null,
-                    "token": "61928ede1c971d9295a2e96cf93cf20c",
-                    "gateway": "",
-                    "test": false,
-                    "total_price": "238.47",
-                    "subtotal_price": "224.97",
-                    "total_weight": null,
-                    "total_tax": "13.50",
-                    "taxes_included": false,
-                    "currency": "EUR",
-                    "financial_status": "paid",
-                    "confirmed": true,
-                    "total_discounts": "0.00",
-                    "total_line_items_price": "224.97",
-                    "cart_token": null,
-                    "buyer_accepts_marketing": false,
-                    "name": "#1002",
-                    "referring_site": null,
-                    "landing_site": null,
-                    "cancelled_at": null,
-                    "cancel_reason": null,
-                    "total_price_usd": "340.54",
-                    "checkout_token": null,
-                    "reference": null,
-                    "user_id": null,
-                    "location_id": null,
-                    "source_identifier": null,
-                    "source_url": null,
-                    "processed_at": "2017-09-05T14:37:57-04:00",
-                    "device_id": null,
-                    "phone": null,
-                    "customer_locale": null,
-                    "app_id": 755357713,
-                    "browser_ip": null,
-                    "landing_site_ref": null,
-                    "order_number": 1002,
-                    "discount_codes": [],
-                    "note_attributes": [],
-                    "payment_gateway_names": [
-                      ""
-                    ],
-                    "processing_method": "",
-                    "checkout_id": null,
-                    "source_name": "755357713",
-                    "fulfillment_status": null,
-                    "tax_lines": [
-                      {
-                        "title": "State tax",
-                        "price": "13.50",
-                        "rate": 0.06
-                      }
-                    ],
-                    "tags": "",
-                    "contact_email": null,
-                    "order_status_url": null,
-                    "line_items": [
-                      {
-                        "id": 1071823172,
-                        "variant_id": null,
-                        "title": "Coffee Mug",
-                        "quantity": 1,
-                        "price": "24.99",
-                        "grams": 1300,
-                        "sku": "COOLMUG1",
-                        "variant_title": null,
-                        "vendor": null,
-                        "fulfillment_service": "manual",
-                        "product_id": null,
-                        "requires_shipping": true,
-                        "taxable": true,
-                        "gift_card": false,
-                        "name": "Big Brown Bear Boots",
-                        "variant_inventory_management": null,
-                        "properties": [],
-                        "product_exists": false,
-                        "fulfillable_quantity": 3,
-                        "total_discount": "0.00",
-                        "fulfillment_status": null,
-                        "tax_lines": [
-                          {
-                            "title": "State tax",
-                            "price": "13.50",
-                            "rate": 0.06
-                          }
-                        ]
-                      },
-                      {
-                        "id": 1071823173,
-                        "variant_id": null,
-                        "title": "Coffee Mug",
-                        "quantity": 2,
-                        "price": "74.99",
-                        "grams": 1300,
-                        "sku": "COOLMUG1",
-                        "variant_title": null,
-                        "vendor": null,
-                        "fulfillment_service": "manual",
-                        "product_id": null,
-                        "requires_shipping": true,
-                        "taxable": true,
-                        "gift_card": false,
-                        "name": "Big Brown Bear Boots",
-                        "variant_inventory_management": null,
-                        "properties": [],
-                        "product_exists": false,
-                        "fulfillable_quantity": 3,
-                        "total_discount": "0.00",
-                        "fulfillment_status": null,
-                        "tax_lines": [
-                          {
-                            "title": "State tax",
-                            "price": "13.50",
-                            "rate": 0.06
-                          }
-                        ]
-                      },
-                      {
-                        "id": 1071823174,
-                        "variant_id": null,
-                        "title": "Another Coffee Mug",
-                        "quantity": 3,
-                        "price": "74.99",
-                        "grams": 1300,
-                        "sku": "COOLMUG2",
-                        "variant_title": null,
-                        "vendor": null,
-                        "fulfillment_service": "manual",
-                        "product_id": null,
-                        "requires_shipping": true,
-                        "taxable": true,
-                        "gift_card": false,
-                        "name": "Big Brown Bear Boots",
-                        "variant_inventory_management": null,
-                        "properties": [],
-                        "product_exists": false,
-                        "fulfillable_quantity": 3,
-                        "total_discount": "0.00",
-                        "fulfillment_status": null,
-                        "tax_lines": [
-                          {
-                            "title": "State tax",
-                            "price": "13.50",
-                            "rate": 0.06
-                          }
-                        ]
-                      }
-                    ],
-                    "shipping_lines": [],
-                    "fulfillments": [],
-                    "refunds": []
-                  }
-                ]
-              }
-            },
-            {
-              "uri": "/admin/orders/1073459964/fulfillments.json",
-              "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
-              "responsePayload": {}
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
-            "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {
-              "fulfillment": {
-                "fulfillment_business_ref": 11111111,
-                "sales_order_business_ref": 22222222,
-                "tracking_url": "http:\/\/www.packagetrackr.com\/track\/somecarrier\/1234567",
-                "line_items": [
-                  {
-                    "sku": "COOLMUG1",
-                    "quantity": 1
-                  }
-                ]
-              }
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
               "responsePayload": {
                 "orders": [
                   {
@@ -2327,46 +1133,39 @@
                   }
                 ]
               }
+            }
+          ],
+          "channelProfile": {
+            "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
+            "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
+          }
+        },
+        {
+          "statusCode": 429,
+          "payload": {
+            "doc": {
+              "fulfillment": {
+                "fulfillment_business_ref": 11111111,
+                "sales_order_business_ref": 22222222,
+                "tracking_url": "http:\/\/www.packagetrackr.com\/track\/somecarrier\/1234567",
+                "line_items": [
+                  {
+                    "sku": "COOLMUG1",
+                    "quantity": 1
+                  }
+                ]
+              }
             },
+            "salesOrderRemoteID": 1073459964
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
             {
-              "uri": "/admin/orders/1073459964/fulfillments.json",
-              "method": "POST",
+              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
-              "responsePayload": {}
-            }
-          ],
-          "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
-            "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {
-              "fulfillment": {
-                "fulfillment_business_ref": 11111111,
-                "sales_order_business_ref": 22222222,
-                "tracking_url": "http:\/\/www.packagetrackr.com\/track\/somecarrier\/1234567",
-                "line_items": [
-                  {
-                    "sku": "COOLMUG1",
-                    "quantity": 1
-                  }
-                ]
-              }
-            },
-            "salesOrderRemoteID": 1073459964
-          },
-          "baseUri": "https://mystore.myshopify.com",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
               "responsePayload": {
                 "orders": [
                   {
@@ -2529,13 +1328,201 @@
                   }
                 ]
               }
+            }
+          ],
+          "channelProfile": {
+            "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
+            "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
+          }
+        },
+        {
+          "statusCode": 500,
+          "payload": {
+            "doc": {
+              "fulfillment": {
+                "fulfillment_business_ref": 11111111,
+                "sales_order_business_ref": 22222222,
+                "tracking_url": "http:\/\/www.packagetrackr.com\/track\/somecarrier\/1234567",
+                "line_items": [
+                  {
+                    "sku": "COOLMUG1",
+                    "quantity": 1
+                  }
+                ]
+              }
             },
+            "salesOrderRemoteID": 1073459964
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
             {
-              "uri": "/admin/orders/1073459964/fulfillments.json",
-              "method": "POST",
+              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
-              "responsePayload": {}
+              "responsePayload": {
+                "orders": [
+                  {
+                    "id": 1073459964,
+                    "email": "",
+                    "closed_at": null,
+                    "created_at": "2017-09-05T14:37:57-04:00",
+                    "updated_at": "2017-09-05T14:37:58-04:00",
+                    "number": 2,
+                    "note": null,
+                    "token": "61928ede1c971d9295a2e96cf93cf20c",
+                    "gateway": "",
+                    "test": false,
+                    "total_price": "238.47",
+                    "subtotal_price": "224.97",
+                    "total_weight": null,
+                    "total_tax": "13.50",
+                    "taxes_included": false,
+                    "currency": "EUR",
+                    "financial_status": "paid",
+                    "confirmed": true,
+                    "total_discounts": "0.00",
+                    "total_line_items_price": "224.97",
+                    "cart_token": null,
+                    "buyer_accepts_marketing": false,
+                    "name": "#1002",
+                    "referring_site": null,
+                    "landing_site": null,
+                    "cancelled_at": null,
+                    "cancel_reason": null,
+                    "total_price_usd": "340.54",
+                    "checkout_token": null,
+                    "reference": null,
+                    "user_id": null,
+                    "location_id": null,
+                    "source_identifier": null,
+                    "source_url": null,
+                    "processed_at": "2017-09-05T14:37:57-04:00",
+                    "device_id": null,
+                    "phone": null,
+                    "customer_locale": null,
+                    "app_id": 755357713,
+                    "browser_ip": null,
+                    "landing_site_ref": null,
+                    "order_number": 1002,
+                    "discount_codes": [],
+                    "note_attributes": [],
+                    "payment_gateway_names": [
+                      ""
+                    ],
+                    "processing_method": "",
+                    "checkout_id": null,
+                    "source_name": "755357713",
+                    "fulfillment_status": null,
+                    "tax_lines": [
+                      {
+                        "title": "State tax",
+                        "price": "13.50",
+                        "rate": 0.06
+                      }
+                    ],
+                    "tags": "",
+                    "contact_email": null,
+                    "order_status_url": null,
+                    "line_items": [
+                      {
+                        "id": 1071823172,
+                        "variant_id": null,
+                        "title": "Coffee Mug",
+                        "quantity": 1,
+                        "price": "24.99",
+                        "grams": 1300,
+                        "sku": "COOLMUG1",
+                        "variant_title": null,
+                        "vendor": null,
+                        "fulfillment_service": "manual",
+                        "product_id": null,
+                        "requires_shipping": true,
+                        "taxable": true,
+                        "gift_card": false,
+                        "name": "Big Brown Bear Boots",
+                        "variant_inventory_management": null,
+                        "properties": [],
+                        "product_exists": false,
+                        "fulfillable_quantity": 3,
+                        "total_discount": "0.00",
+                        "fulfillment_status": null,
+                        "tax_lines": [
+                          {
+                            "title": "State tax",
+                            "price": "13.50",
+                            "rate": 0.06
+                          }
+                        ]
+                      },
+                      {
+                        "id": 1071823173,
+                        "variant_id": null,
+                        "title": "Coffee Mug",
+                        "quantity": 2,
+                        "price": "74.99",
+                        "grams": 1300,
+                        "sku": "COOLMUG1",
+                        "variant_title": null,
+                        "vendor": null,
+                        "fulfillment_service": "manual",
+                        "product_id": null,
+                        "requires_shipping": true,
+                        "taxable": true,
+                        "gift_card": false,
+                        "name": "Big Brown Bear Boots",
+                        "variant_inventory_management": null,
+                        "properties": [],
+                        "product_exists": false,
+                        "fulfillable_quantity": 3,
+                        "total_discount": "0.00",
+                        "fulfillment_status": null,
+                        "tax_lines": [
+                          {
+                            "title": "State tax",
+                            "price": "13.50",
+                            "rate": 0.06
+                          }
+                        ]
+                      },
+                      {
+                        "id": 1071823174,
+                        "variant_id": null,
+                        "title": "Another Coffee Mug",
+                        "quantity": 3,
+                        "price": "74.99",
+                        "grams": 1300,
+                        "sku": "COOLMUG2",
+                        "variant_title": null,
+                        "vendor": null,
+                        "fulfillment_service": "manual",
+                        "product_id": null,
+                        "requires_shipping": true,
+                        "taxable": true,
+                        "gift_card": false,
+                        "name": "Big Brown Bear Boots",
+                        "variant_inventory_management": null,
+                        "properties": [],
+                        "product_exists": false,
+                        "fulfillable_quantity": 3,
+                        "total_discount": "0.00",
+                        "fulfillment_status": null,
+                        "tax_lines": [
+                          {
+                            "title": "State tax",
+                            "price": "13.50",
+                            "rate": 0.06
+                          }
+                        ]
+                      }
+                    ],
+                    "shipping_lines": [],
+                    "fulfillments": [],
+                    "refunds": []
+                  }
+                ]
+              }
             }
           ],
           "channelProfile": {
@@ -2546,10 +1533,10 @@
       ]
     },
     {
-      "functionName": "InsertProductMatrix",
+      "functionName": "insertProductMatrix",
       "tests": [
         {
-          "ncStatusCode": 201,
+          "statusCode": 201,
           "payload": {
             "doc": {
               "product": {
@@ -2579,7 +1566,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "product": {
@@ -2604,7 +1591,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "product": {
@@ -2629,7 +1616,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "product": {
@@ -2656,10 +1643,10 @@
       ]
     },
     {
-      "functionName": "InsertSalesOrder",
+      "functionName": "insertSalesOrder",
       "tests": [
         {
-          "ncStatusCode": 201,
+          "statusCode": 201,
           "payload": {
             "doc": {
               "order": {
@@ -2710,7 +1697,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "order": {
@@ -2757,7 +1744,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "order": {
@@ -2804,7 +1791,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "order": {
@@ -2853,10 +1840,10 @@
       ]
     },
     {
-      "functionName": "UpdateCustomer",
+      "functionName": "updateCustomer",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "customer": {
@@ -2888,7 +1875,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "customer": {
@@ -2915,7 +1902,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "customer": {
@@ -2942,7 +1929,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "customer": {
@@ -2971,10 +1958,10 @@
       ]
     },
     {
-      "functionName": "UpdateProductMatrix",
+      "functionName": "updateProductMatrix",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "product": {
@@ -3054,42 +2041,6 @@
                   "image": null
                 }
               }
-            },
-            {
-              "uri": "/admin/products/1073339459/variants.json",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "variants": [
-                  {
-                    "id": 52668187844,
-                    "product_id": 12020548676,
-                    "title": "Default Title",
-                    "price": "0.00",
-                    "sku": "",
-                    "position": 1,
-                    "inventory_policy": "deny",
-                    "compare_at_price": null,
-                    "fulfillment_service": "manual",
-                    "inventory_management": null,
-                    "option1": "Default Title",
-                    "option2": null,
-                    "option3": null,
-                    "created_at": "2017-10-11T17:52:24Z",
-                    "updated_at": "2017-10-11T17:52:24Z",
-                    "taxable": true,
-                    "barcode": null,
-                    "grams": 0,
-                    "image_id": null,
-                    "inventory_quantity": 1,
-                    "weight": 0,
-                    "weight_unit": "lb",
-                    "old_inventory_quantity": 1,
-                    "requires_shipping": true
-                  }
-                ]
-              }
             }
           ],
           "channelProfile": {
@@ -3097,12 +2048,17 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "product": {
                 "vendor": "Porsche",
-                "title": "911 GT2 RS"
+                "title": "911 GT2 RS",
+                "variants": [
+                  {
+                    "sku": "fooBar"
+                  }
+                ]
               }
             },
             "productRemoteID": 1073339459
@@ -3111,8 +2067,8 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459/variants.json",
-              "method": "GET",
+              "uri": "/admin/products/1073339459.json",
+              "method": "PUT",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
@@ -3123,12 +2079,17 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "product": {
                 "vendor": "Porsche",
-                "title": "911 GT2 RS"
+                "title": "911 GT2 RS",
+                "variants": [
+                  {
+                    "sku": "fooBar"
+                  }
+                ]
               }
             },
             "productRemoteID": 1073339459
@@ -3137,8 +2098,8 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459/variants.json",
-              "method": "GET",
+              "uri": "/admin/products/1073339459.json",
+              "method": "PUT",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
@@ -3149,12 +2110,17 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "product": {
                 "vendor": "Porsche",
-                "title": "911 GT2 RS"
+                "title": "911 GT2 RS",
+                "variants": [
+                  {
+                    "sku": "fooBar"
+                  }
+                ]
               }
             },
             "productRemoteID": 1073339459
@@ -3163,8 +2129,8 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459/variants.json",
-              "method": "GET",
+              "uri": "/admin/products/1073339459.json",
+              "method": "PUT",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
@@ -3177,10 +2143,10 @@
       ]
     },
     {
-      "functionName": "UpdateProductPricing",
+      "functionName": "updateProductPricing",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "variant": {
@@ -3213,7 +2179,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "variant": {
@@ -3238,7 +2204,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "variant": {
@@ -3263,7 +2229,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "variant": {
@@ -3290,12 +2256,13 @@
       ]
     },
     {
-      "functionName": "UpdateProductQuantity",
+      "functionName": "updateProductQuantity",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
+              "id": 52182110852,
               "sku": "COFFEEMUG2",
               "tracked": true,
               "inventory_levels": [
@@ -3349,9 +2316,10 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
+              "id": 52182110852,
               "sku": "COFFEEMUG2",
               "tracked": true,
               "inventory_levels": [
@@ -3372,6 +2340,26 @@
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
+            },
+            {
+              "uri": "/admin/inventory_items/52182110852.json",
+              "method": "PUT",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "inventory_item": {
+                  "id": 52182110852,
+                  "sku": "COFFEEMUG2",
+                  "tracked": true,
+                  "inventory_levels": [
+                    {
+                      "inventory_item_id": 52182110852,
+                      "location_id": 52182110851,
+                      "amount": 25
+                    }
+                  ]
+                }
+              }
             }
           ],
           "channelProfile": {
@@ -3379,9 +2367,10 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
+              "id": 52182110852,
               "sku": "COFFEEMUG2",
               "tracked": true,
               "inventory_levels": [
@@ -3402,6 +2391,26 @@
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
+            },
+            {
+              "uri": "/admin/inventory_items/52182110852.json",
+              "method": "PUT",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "inventory_item": {
+                  "id": 52182110852,
+                  "sku": "COFFEEMUG2",
+                  "tracked": true,
+                  "inventory_levels": [
+                    {
+                      "inventory_item_id": 52182110852,
+                      "location_id": 52182110851,
+                      "amount": 25
+                    }
+                  ]
+                }
+              }
             }
           ],
           "channelProfile": {
@@ -3409,9 +2418,10 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
+              "id": 52182110852,
               "sku": "COFFEEMUG2",
               "tracked": true,
               "inventory_levels": [
@@ -3432,6 +2442,26 @@
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
+            },
+            {
+              "uri": "/admin/inventory_items/52182110852.json",
+              "method": "PUT",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "inventory_item": {
+                  "id": 52182110852,
+                  "sku": "COFFEEMUG2",
+                  "tracked": true,
+                  "inventory_levels": [
+                    {
+                      "inventory_item_id": 52182110852,
+                      "location_id": 52182110851,
+                      "amount": 25
+                    }
+                  ]
+                }
+              }
             }
           ],
           "channelProfile": {
@@ -3441,10 +2471,10 @@
       ]
     },
     {
-      "functionName": "UpdateSalesOrder",
+      "functionName": "updateSalesOrder",
       "tests": [
         {
-          "ncStatusCode": 200,
+          "statusCode": 200,
           "payload": {
             "doc": {
               "order": {
@@ -3473,7 +2503,7 @@
           }
         },
         {
-          "ncStatusCode": 400,
+          "statusCode": 400,
           "payload": {
             "doc": {
               "order": {
@@ -3498,7 +2528,7 @@
           }
         },
         {
-          "ncStatusCode": 429,
+          "statusCode": 429,
           "payload": {
             "doc": {
               "order": {
@@ -3523,7 +2553,7 @@
           }
         },
         {
-          "ncStatusCode": 500,
+          "statusCode": 500,
           "payload": {
             "doc": {
               "order": {

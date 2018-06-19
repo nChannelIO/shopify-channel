@@ -12,7 +12,7 @@ module.exports = function (flowContext, payload) {
     });
 
     let options = {
-      url: `${this.baseUri}/admin/products/${payload.productRemoteID}.json`,
+      uri: `${this.baseUri}/admin/products/${payload.productRemoteID}.json`,
       method: "PUT",
       body: payload.doc,
       resolveWithFullResponse: true

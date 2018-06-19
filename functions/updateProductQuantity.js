@@ -1,8 +1,10 @@
 'use strict';
 
+let _ = require('lodash');
+
 module.exports = function (flowContext, payload) {
   return Promise.all([
-    this.updateInventoryItem(payload.doc),
+    this.updateInventoryItem(_.cloneDeep(payload.doc)),
     this.updateInventoryLevels(payload.doc.inventory_levels)
   ]).then(([inventoryItem, updatedInventoryLevels]) => {
       // Add the updated inventory levels to the inventory item

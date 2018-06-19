@@ -7,8 +7,12 @@ module.exports = function (flowContext, payload) {
   queryParams.push("created_at_min=" + new Date(Date.parse(payload.doc.createdDateRange.startDateGMT) - 1).toISOString());
   queryParams.push("created_at_max=" + new Date(Date.parse(payload.doc.createdDateRange.endDateGMT) + 1).toISOString());
 
-  queryParams.push("page=" + payload.doc.page);
-  queryParams.push("limit=" + payload.doc.pageSize);
+  if (payload.doc.page) {
+    queryParams.push("page=" + payload.doc.page);
+  }
+  if (payload.doc.pageSize) {
+    queryParams.push("limit=" + payload.doc.pageSize);
+  }
 
   return this.queryForSalesOrders(`${this.baseUri}/admin/orders.json?${queryParams.join('&')}`, payload.doc.pageSize);
 };

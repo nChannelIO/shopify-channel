@@ -18,6 +18,7 @@ module.exports = function (flowContext, payload) {
   let fulfillment = payload.doc.fulfillment;
 
   return this.getSalesOrderById(flowContext, queryPayload).then(getSalesOrderResponse => {
+    console.log(JSON.stringify(getSalesOrderResponse, null, 2));
     if (getSalesOrderResponse.statusCode === 200) {
       //---Update the fulfillment document---
       delete fulfillment.fulfillment_business_ref;
@@ -27,7 +28,7 @@ module.exports = function (flowContext, payload) {
       if (fulfillment.line_items) {
 
         let matchProperty = 'sku';
-        let salesOrderLineItems = _.cloneDeep(getSalesOrderResponse.payload[0].doc.order.line_items);
+        let salesOrderLineItems = _.cloneDeep(getSalesOrderResponse.payload[0].order.line_items);
         let correspondingLineItem;
 
         //Update the fulfillment line items based on the sales order
