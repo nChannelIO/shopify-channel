@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function (flowContext, payload) {
+module.exports = function (flowContext, query) {
 
   //TODO GET FULFILLMENT REQUIRES AN ORDER ID
 
@@ -9,42 +9,42 @@ module.exports = function (flowContext, payload) {
   /*
    Create query string for searching fulfillments by specific fields
    */
-  if (payload.doc.remoteIDs) {
+  if (query.remoteIDs) {
     /*
      Add remote IDs as a query parameter
      */
-    queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
+    queryParams.push("ids=" + query.remoteIDs.join(','));
 
-  } else if (payload.doc.modifiedDateRange) {
+  } else if (query.modifiedDateRange) {
     /*
      Add modified date ranges to the query
      Queried dates are exclusive so skew by 1 ms to create and equivalent inclusive range
      */
-    if (payload.doc.modifiedDateRange.startDateGMT) {
-      queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
+    if (query.modifiedDateRange.startDateGMT) {
+      queryParams.push("updated_at_min=" + new Date(Date.parse(query.modifiedDateRange.startDateGMT) - 1).toISOString());
     }
-    if (payload.doc.modifiedDateRange.endDateGMT) {
-      queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
+    if (query.modifiedDateRange.endDateGMT) {
+      queryParams.push("updated_at_max=" + new Date(Date.parse(query.modifiedDateRange.endDateGMT) + 1).toISOString());
     }
   }
 
   /*
    Add page to the query
    */
-  if (payload.doc.page) {
-    queryParams.push("page=" + payload.doc.page);
+  if (query.page) {
+    queryParams.push("page=" + query.page);
   }
 
   /*
    Add pageSize (limit) to the query
    */
-  if (payload.doc.pageSize) {
-    queryParams.push("limit=" + payload.doc.pageSize);
+  if (query.pageSize) {
+    queryParams.push("limit=" + query.pageSize);
   }
 
   let options = {
     method: 'GET',
-    url: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
+    url: `${this.baseUri}/admin/orders/${query.salesOrderRemoteID}/fulfillments.json`,
   };
 
 

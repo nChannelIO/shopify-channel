@@ -1,9 +1,9 @@
 'use strict';
 
-module.exports = function(flowContext, payload) {
+module.exports = function(flowContext, query) {
   let output = {
     statusCode: 400,
-    payload: [],
+    query: [],
     errors: [
       'This function has not been implemented.'
     ]

@@ -1,16 +1,16 @@
 'use strict';
 
-module.exports = function (flowContext, payload) {
+module.exports = function (flowContext, query) {
   let queryParams = [];
 
-  queryParams.push("ids=" + payload.doc.remoteIDs.join(','));
+  queryParams.push("ids=" + query.remoteIDs.join(','));
 
-  if (payload.doc.page) {
-    queryParams.push("page=" + payload.doc.page);
+  if (query.page) {
+    queryParams.push("page=" + query.page);
   }
-  if (payload.doc.pageSize) {
-    queryParams.push("limit=" + payload.doc.pageSize);
+  if (query.pageSize) {
+    queryParams.push("limit=" + query.pageSize);
   }
 
-  return this.queryForSalesOrders(`${this.baseUri}/admin/orders.json?${queryParams.join('&')}`, payload.doc.pageSize);
+  return this.queryForSalesOrders(`${this.baseUri}/admin/orders.json?${queryParams.join('&')}`, query.pageSize);
 };

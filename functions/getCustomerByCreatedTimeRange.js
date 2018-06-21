@@ -1,18 +1,18 @@
 'use strict';
 
-module.exports = function (flowContext, payload) {
+module.exports = function (flowContext, query) {
   let queryParams = [];
 
   //Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
-  queryParams.push("created_at_min=" + new Date(Date.parse(payload.doc.createdDateRange.startDateGMT) - 1).toISOString());
-  queryParams.push("created_at_max=" + new Date(Date.parse(payload.doc.createdDateRange.endDateGMT) + 1).toISOString());
+  queryParams.push("created_at_min=" + new Date(Date.parse(query.createdDateRange.startDateGMT) - 1).toISOString());
+  queryParams.push("created_at_max=" + new Date(Date.parse(query.createdDateRange.endDateGMT) + 1).toISOString());
 
-  if (payload.doc.page) {
-    queryParams.push("page=" + payload.doc.page);
+  if (query.page) {
+    queryParams.push("page=" + query.page);
   }
-  if (payload.doc.pageSize) {
-    queryParams.push("limit=" + payload.doc.pageSize);
+  if (query.pageSize) {
+    queryParams.push("limit=" + query.pageSize);
   }
 
-  return this.queryForCustomers(`${this.baseUri}/admin/customers.json?${queryParams.join('&')}`, payload.doc.pageSize);
+  return this.queryForCustomers(`${this.baseUri}/admin/customers.json?${queryParams.join('&')}`, query.pageSize);
 };

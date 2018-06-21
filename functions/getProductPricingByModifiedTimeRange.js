@@ -2,18 +2,18 @@
 
 let moment = require('moment');
 
-module.exports = function (flowContext, payload) {
+module.exports = function (flowContext, query) {
   let queryParams = [];
 
   //Queried dates are exclusive so skew by 1 ms to create an equivalent inclusive range
-  queryParams.push("updated_at_min=" + new Date(Date.parse(payload.doc.modifiedDateRange.startDateGMT) - 1).toISOString());
-  queryParams.push("updated_at_max=" + new Date(Date.parse(payload.doc.modifiedDateRange.endDateGMT) + 1).toISOString());
+  queryParams.push("updated_at_min=" + new Date(Date.parse(query.modifiedDateRange.startDateGMT) - 1).toISOString());
+  queryParams.push("updated_at_max=" + new Date(Date.parse(query.modifiedDateRange.endDateGMT) + 1).toISOString());
 
-  if (payload.doc.page) {
-    queryParams.push("page=" + payload.doc.page);
+  if (query.page) {
+    queryParams.push("page=" + query.page);
   }
-  if (payload.doc.pageSize) {
-    queryParams.push("limit=" + payload.doc.pageSize);
+  if (query.pageSize) {
+    queryParams.push("limit=" + query.pageSize);
   }
 
   /**
@@ -59,7 +59,7 @@ module.exports = function (flowContext, payload) {
       out.statusCode = variants.length > 0 ? 200 : 204;
     }
 
-    out.payload = variants.map(this.mapVariantToPricing);
+    out.query = variants.map(this.mapVariantToPricing);
 
     return out;
   }).catch(this.handleRejection.bind(this));

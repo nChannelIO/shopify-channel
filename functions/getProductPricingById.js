@@ -1,11 +1,11 @@
 'use strict';
 
-module.exports = function (flowContext, payload) {
+module.exports = function (flowContext, query) {
   let options = {
     method: 'GET'
   };
 
-  return Promise.all(payload.doc.remoteIDs.map(remoteID => {
+  return Promise.all(query.remoteIDs.map(remoteID => {
     options.uri = `${this.baseUri}/admin/variants/${remoteID}.json`;
 
     this.info(`Requesting [${options.method} ${options.uri}]`);

@@ -1,9 +1,5 @@
 {
   "unitTestPackage": "nock",
-  "ncUtil": {
-    "request": {},
-    "logger": null
-  },
   "channelProfile": {
     "channelSettingsValues": {
       "protocol": "https"
