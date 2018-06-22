@@ -6,11 +6,9 @@ module.exports = function (flowContext, payload) {
 
   //First get the corresponding sales order
   let queryPayload = {
-    doc: {
-      remoteIDs: [payload.salesOrderRemoteID],
-      page: 1,
-      pageSize: 2  //Using page size 2 so that GetSalesOrder will return 206 if more than one order is returned
-    }
+    remoteIDs: [payload.salesOrderRemoteID],
+    page: 1,
+    pageSize: 2  //Using page size 2 so that GetSalesOrder will return 206 if more than one order is returned
   };
 
   let invalid;

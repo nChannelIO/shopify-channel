@@ -16,9 +16,7 @@
         {
           "statusCode": 200,
           "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
+            "remoteIDs": [1073339459]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -45,9 +43,7 @@
         {
           "statusCode": 204,
           "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
+            "remoteIDs": [1073339459]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -69,9 +65,7 @@
         {
           "statusCode": 400,
           "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
+            "remoteIDs": [1073339459]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -93,9 +87,7 @@
         {
           "statusCode": 429,
           "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
+            "remoteIDs": [1073339459]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -117,9 +109,7 @@
         {
           "statusCode": 500,
           "payload": {
-            "doc": {
-              "remoteIDs": [1073339459]
-            }
+            "remoteIDs": [1073339459]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -144,15 +134,72 @@
       "functionName": "getCustomerByModifiedTimeRange",
       "tests": [
         {
+          "statusCode": 200,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "customers": [
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  },
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
           "statusCode": 206,
           "payload": {
-            "doc": {
-              "modifiedDateRange": {
-                "startDateGMT": "2017-05-12T10:00:00.000Z",
-                "endDateGMT": "2017-05-19T12:00:00.000Z"
-              },
-              "pageSize": 2
-            }
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 2
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -183,14 +230,111 @@
       ]
     },
     {
+      "functionName": "getCustomerByCreatedTimeRange",
+      "tests": [
+        {
+          "statusCode": 200,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "customers": [
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  },
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        },
+        {
+          "statusCode": 206,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 2
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "customers": [
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  },
+                  {
+                    "id": 1073339459,
+                    "email": "derek.boytim@nchannel.com"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["customer.email"]
+          }
+        }
+      ]
+    },
+    {
       "functionName": "getProductMatrixById",
       "tests": [
         {
           "statusCode": 200,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"]
-            }
+            "remoteIDs": ["12020548676"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -233,9 +377,7 @@
         {
           "statusCode": 204,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"]
-            }
+            "remoteIDs": ["12020548676"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -257,11 +399,9 @@
         {
           "statusCode": 206,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"],
-              "page": 1,
-              "pageSize": 5
-            }
+            "remoteIDs": ["12020548676"],
+            "page": 1,
+            "pageSize": 5
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -384,9 +524,7 @@
         {
           "statusCode": 400,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"]
-            }
+            "remoteIDs": ["12020548676"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -408,9 +546,7 @@
         {
           "statusCode": 429,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"]
-            }
+            "remoteIDs": ["12020548676"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -432,9 +568,7 @@
         {
           "statusCode": 500,
           "payload": {
-            "doc": {
-              "remoteIDs": ["12020548676"]
-            }
+            "remoteIDs": ["12020548676"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -456,14 +590,419 @@
       ]
     },
     {
+      "functionName": "getProductMatrixByModifiedTimeRange",
+      "tests": [
+        {
+          "statusCode": 200,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": [
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        },
+        {
+          "statusCode": 206,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 5
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=5",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": [
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        }
+      ]
+    },
+    {
+      "functionName": "getProductMatrixByCreatedTimeRange",
+      "tests": [
+        {
+          "statusCode": 200,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": [
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 25
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        },
+        {
+          "statusCode": 206,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 5
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=5",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "products": [
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  },
+                  {
+                    "id": 12020548676,
+                    "title": "#2asdfs45",
+                    "vendor": "ci-sales-01"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]
+          }
+        }
+      ]
+    },
+    {
       "functionName": "getSalesOrderById",
       "tests": [
         {
           "statusCode": 200,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"]
-            }
+            "remoteIDs": ["4571292613"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -489,9 +1028,7 @@
         {
           "statusCode": 204,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"]
-            }
+            "remoteIDs": ["4571292613"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -513,11 +1050,9 @@
         {
           "statusCode": 206,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"],
-              "page": 1,
-              "pageSize": 2
-            }
+            "remoteIDs": ["4571292613"],
+            "page": 1,
+            "pageSize": 2
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -546,9 +1081,7 @@
         {
           "statusCode": 400,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"]
-            }
+            "remoteIDs": ["4571292613"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -570,9 +1103,7 @@
         {
           "statusCode": 429,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"]
-            }
+            "remoteIDs": ["4571292613"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -594,9 +1125,7 @@
         {
           "statusCode": 500,
           "payload": {
-            "doc": {
-              "remoteIDs": ["4571292613"]
-            }
+            "remoteIDs": ["4571292613"]
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
@@ -608,6 +1137,190 @@
               "statusCode": 500,
               "responsePayload": {
                 "orders": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        }
+      ]
+    },
+    {
+      "functionName": "getSalesOrderByModifiedTimeRange",
+      "tests": [
+        {
+          "statusCode": 200,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": [
+                  {
+                    "id": 4571292613
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        },
+        {
+          "statusCode": 206,
+          "payload": {
+            "modifiedDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 2
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": [
+                  {
+                    "id": 4571292613
+                  },
+                  {
+                    "id": 4571292613
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        }
+      ]
+    },
+    {
+      "functionName": "getSalesOrderByCreatedTimeRange",
+      "tests": [
+        {
+          "statusCode": 200,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": [
+                  {
+                    "id": 4571292613
+                  }
+                ]
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        },
+        {
+          "statusCode": 204,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            }
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "salesOrderBusinessReferences": ["order.email", "order.phone"]
+          }
+        },
+        {
+          "statusCode": 206,
+          "payload": {
+            "createdDateRange": {
+              "startDateGMT": "2017-05-12T10:00:00.000Z",
+              "endDateGMT": "2017-05-19T12:00:00.000Z"
+            },
+            "pageSize": 2
+          },
+          "baseUri": "https://mystore.myshopify.com",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "orders": [
+                  {
+                    "id": 4571292613
+                  },
+                  {
+                    "id": 4571292613
+                  }
+                ]
               }
             }
           ],
