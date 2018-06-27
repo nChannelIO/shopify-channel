@@ -1,7 +1,7 @@
 'use strict';
 
 let requestErrors = require('request-promise/errors');
-let Channel = require('@nchannel/nchannel-endpoint-sdk').PromiseChannel;
+let Channel = require('@nchannel/endpoint-sdk').PromiseChannel;
 
 class Shopify extends Channel {
   constructor(...args) {
