@@ -732,11 +732,10 @@
       "documentDef": {
         "schema": {},
         "referenceLocation": {
-          "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
         "remoteID": "fulfillment.id",
-        "businessReferences": ["order_id"]
+        "businessReferences": ["fulfillment.fulfillment_business_ref"]
       }
     },
     {
