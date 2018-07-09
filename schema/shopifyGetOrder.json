@@ -728,8 +728,7 @@
 					"email": {
 						"title": "email",
 						"description": "The customer's email address.",
-						"type": "string",
-						"format": "email"
+						"type": "string"
 					},
 					"closed_at": {
 						"title": "closed_at",
