@@ -847,8 +847,7 @@
             "createdDateRange": {
               "startDateGMT": "2017-05-12T10:00:00.000Z",
               "endDateGMT": "2017-05-19T12:00:00.000Z"
-            },
-            "pageSize": 25
+            }
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
