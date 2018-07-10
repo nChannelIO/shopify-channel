@@ -64,7 +64,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -142,7 +141,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -300,7 +298,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -342,7 +339,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -382,7 +378,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -404,7 +399,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -444,7 +438,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -486,7 +479,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -653,10 +645,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {
-          "salesOrderBusinessReferences": ["order.name"],
-          "customerBusinessReferences": ["customer.email", "customer.phone"]
-        },
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -731,7 +719,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {
+        "secondaryReferences": {
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
         "remoteID": "fulfillment.id",
@@ -754,7 +742,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -775,7 +762,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -889,7 +875,6 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"],
         "refreshNouns": ["CUSTOMER"]
