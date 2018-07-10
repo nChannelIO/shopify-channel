@@ -98,11 +98,13 @@ module.exports = function (flowContext, payload) {
 
       if (!invalid) {
         let options = {
-          url: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
+          uri: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
           method: "POST",
           body: payload.doc,
           resolveWithFullResponse: true
         };
+
+        this.info(`Requesting [${options.method} ${options.uri}]`);
 
         return this.request(options).then(response => {
           //Add the business references back into the document

@@ -44,9 +44,10 @@ module.exports = function (flowContext, query) {
 
   let options = {
     method: 'GET',
-    url: `${this.baseUri}/admin/orders/${query.salesOrderRemoteID}/fulfillments.json`,
+    uri: `${this.baseUri}/admin/orders/${query.salesOrderRemoteID}/fulfillments.json`,
   };
 
+  this.info(`Requesting [${options.method} ${options.uri}]`);
 
   return this.request(options).then(response => {
     let fulfillments = response.body.fulfillments || [];
