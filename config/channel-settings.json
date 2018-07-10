@@ -64,6 +64,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -141,6 +142,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -298,6 +300,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -339,6 +342,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -378,6 +382,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -399,6 +404,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -438,6 +444,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -479,6 +486,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -645,6 +653,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -719,6 +728,9 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {
+          "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
+        },
         "secondaryReferences": {
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
@@ -742,6 +754,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -762,6 +775,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -875,6 +889,7 @@
       },
       "documentDef": {
         "schema": {},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"],
         "refreshNouns": ["CUSTOMER"]
