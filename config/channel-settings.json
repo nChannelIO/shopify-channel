@@ -64,7 +64,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -142,7 +142,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -300,7 +300,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -342,7 +342,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -382,7 +382,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -404,7 +404,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -444,7 +444,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -486,7 +486,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
+        "referenceLocation": {},
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -653,10 +653,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {
-          "salesOrderBusinessReferences": ["order.name"],
-          "customerBusinessReferences": ["customer.email", "customer.phone"]
-        },
+        "referenceLocation": {},
         "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
@@ -734,6 +731,9 @@
         "referenceLocation": {
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
+        "secondaryReferences": {
+          "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
+        },
         "remoteID": "fulfillment.id",
         "businessReferences": ["fulfillment.fulfillment_business_ref"]
       }
@@ -754,7 +754,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -775,7 +775,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -889,7 +889,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"],
         "refreshNouns": ["CUSTOMER"]

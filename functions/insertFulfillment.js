@@ -17,6 +17,10 @@ module.exports = function (flowContext, payload) {
 
   return this.getSalesOrderById(flowContext, queryPayload).then(getSalesOrderResponse => {
     if (getSalesOrderResponse.statusCode === 200) {
+      // Save the synthetic business references so we can add them to the output doc
+      let fulfillmentBusinessRef = fulfillment.fulfillment_business_ref;
+      let salesOrderBusinessRef = fulfillment.sales_order_business_ref;
+
       //---Update the fulfillment document---
       delete fulfillment.fulfillment_business_ref;
       delete fulfillment.sales_order_business_ref;
@@ -94,13 +98,19 @@ module.exports = function (flowContext, payload) {
 
       if (!invalid) {
         let options = {
-          url: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
+          uri: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
           method: "POST",
           body: payload.doc,
           resolveWithFullResponse: true
         };
 
+        this.info(`Requesting [${options.method} ${options.uri}]`);
+
         return this.request(options).then(response => {
+          //Add the business references back into the document
+          response.body.fulfillment.fulfillment_business_ref = fulfillmentBusinessRef;
+          response.body.fulfillment.sales_order_business_ref = salesOrderBusinessRef;
+
           return {
             endpointStatusCode: response.statusCode,
             payload: response.body,
