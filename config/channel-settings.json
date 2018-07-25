@@ -501,12 +501,6 @@
             "location": "order.fulfillments",
             "remoteID": "id",
             "businessReferences": ["id"]
-          },
-          {
-            "name": "variant",
-            "location": "order.line_items",
-            "remoteID": "variant_id",
-            "businessReferences": ["sku"]
           }
         ]
       }
