@@ -7,6 +7,16 @@ module.exports = function (flowContext, query) {
   queryParams.push("created_at_min=" + new Date(Date.parse(query.createdDateRange.startDateGMT) - 1).toISOString());
   queryParams.push("created_at_max=" + new Date(Date.parse(query.createdDateRange.endDateGMT) + 1).toISOString());
 
+  if (flowContext.orderStatus) {
+    queryParams.push(`status=${flowContext.orderStatus}`);
+  }
+  if (flowContext.financialStatus) {
+    queryParams.push(`financial_status=${flowContext.financialStatus}`);
+  }
+  if (flowContext.fulfillmentStatus) {
+    queryParams.push(`fulfillment_status=${flowContext.fulfillmentStatus}`);
+  }
+
   if (query.page) {
     queryParams.push("page=" + query.page);
   }
