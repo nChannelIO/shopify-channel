@@ -510,7 +510,7 @@
           "fulfillmentStatus"
         ],
         "configValues": {
-          "orderStatus": "open",
+          "orderStatus": "any",
           "financialStatus": "any",
           "fulfillmentStatus": "any"
         }
