@@ -469,7 +469,7 @@
           "properties": {
             "orderStatus": {
               "type": "string",
-              "title": "Get Orders With OrderStatus",
+              "title": "Get Orders With Status",
               "enum": [
                 "open",
                 "closed",
@@ -479,7 +479,7 @@
             },
             "financialStatus": {
               "type": "string",
-              "title": "Get Orders With FinancialStatus",
+              "title": "Get Orders With Financial Status",
               "enum": [
                 "authorized",
                 "pending",
@@ -494,7 +494,7 @@
             },
             "fulfillmentStatus": {
               "type": "string",
-              "title": "Get Orders With FulfillmentStatus",
+              "title": "Get Orders With Fulfillment Status",
               "enum": [
                 "shipped",
                 "partial",
