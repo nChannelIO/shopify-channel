@@ -462,26 +462,57 @@
       "configDef": {
         "configModel": {
           "required": [
-            "orderStatus"
+            "orderStatus",
+            "financialStatus",
+            "fulfillmentStatus"
           ],
           "properties": {
             "orderStatus": {
               "type": "string",
-              "title": "Get Orders With Status",
+              "title": "Get Orders With OrderStatus",
               "enum": [
                 "open",
                 "closed",
                 "cancelled",
                 "any"
               ]
+            },
+            "financialStatus": {
+              "type": "string",
+              "title": "Get Orders With FinancialStatus",
+              "enum": [
+                "authorized",
+                "pending",
+                "paid",
+                "partially_paid",
+                "refunded",
+                "voided",
+                "partially_refunded",
+                "any",
+                "unpaid"
+              ]
+            },
+            "fulfillmentStatus": {
+              "type": "string",
+              "title": "Get Orders With FulfillmentStatus",
+              "enum": [
+                "shipped",
+                "partial",
+                "unshipped",
+                "any"
+              ]
             }
           }
         },
         "configView": [
-          "orderStatus"
+          "orderStatus",
+          "financialStatus",
+          "fulfillmentStatus"
         ],
         "configValues": {
-          "orderStatus": "open"
+          "orderStatus": "open",
+          "financialStatus": "any",
+          "fulfillmentStatus": "any"
         }
       },
       "documentDef": {
