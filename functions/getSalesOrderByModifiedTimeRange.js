@@ -10,6 +10,12 @@ module.exports = function (flowContext, query) {
   if (flowContext.orderStatus) {
     queryParams.push(`status=${flowContext.orderStatus}`);
   }
+  if (flowContext.financialStatus) {
+    queryParams.push(`financial_status=${flowContext.financialStatus}`);
+  }
+  if (flowContext.fulfillmentStatus) {
+    queryParams.push(`fulfillment_status=${flowContext.fulfillmentStatus}`);
+  }
 
   if (query.page) {
     queryParams.push("page=" + query.page);
