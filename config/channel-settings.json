@@ -1,4 +1,5 @@
 {
+  "sdkVersion": "1",
   "name": "Shopify",
   "description": "Shopify Registry",
   "channelIcon": "data:image/png;base64,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",
@@ -63,7 +64,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -141,7 +142,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -299,7 +300,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productBusinessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"]},
+        "referenceLocation": {},
         "remoteID": "product.id",
         "businessReferences": ["$filter(product.metafields, function($v) {$v.namespace = 'nchannel' and $v.key = 'businessReference'})[0].value"],
         "children": [
@@ -341,7 +342,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -381,7 +382,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productPricingBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -403,7 +404,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"]
       }
@@ -443,7 +444,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"productQuantityBusinessReferences": ["sku"]},
+        "referenceLocation": {},
         "remoteID": "id",
         "businessReferences": ["sku"],
         "refreshNouns": ["PRODUCT"]
@@ -461,7 +462,9 @@
       "configDef": {
         "configModel": {
           "required": [
-            "orderStatus"
+            "orderStatus",
+            "financialStatus",
+            "fulfillmentStatus"
           ],
           "properties": {
             "orderStatus": {
@@ -473,20 +476,49 @@
                 "cancelled",
                 "any"
               ]
+            },
+            "financialStatus": {
+              "type": "string",
+              "title": "Get Orders With Financial Status",
+              "enum": [
+                "authorized",
+                "pending",
+                "paid",
+                "partially_paid",
+                "refunded",
+                "voided",
+                "partially_refunded",
+                "any",
+                "unpaid"
+              ]
+            },
+            "fulfillmentStatus": {
+              "type": "string",
+              "title": "Get Orders With Fulfillment Status",
+              "enum": [
+                "shipped",
+                "partial",
+                "unshipped",
+                "any"
+              ]
             }
           }
         },
         "configView": [
-          "orderStatus"
+          "orderStatus",
+          "financialStatus",
+          "fulfillmentStatus"
         ],
         "configValues": {
-          "orderStatus": "open"
+          "orderStatus": "any",
+          "financialStatus": "any",
+          "fulfillmentStatus": "any"
         }
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"salesOrderBusinessReferences": ["order.name"]},
-        "remoteID": "id",
+        "referenceLocation": {},
+        "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
           {
@@ -500,12 +532,6 @@
             "location": "order.fulfillments",
             "remoteID": "id",
             "businessReferences": ["id"]
-          },
-          {
-            "name": "variant",
-            "location": "order.line_items",
-            "remoteID": "variant_id",
-            "businessReferences": ["sku"]
           }
         ]
       }
@@ -652,11 +678,8 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {
-          "salesOrderBusinessReferences": ["order.name"],
-          "customerBusinessReferences": ["customer.email", "customer.phone"]
-        },
-        "remoteID": "id",
+        "referenceLocation": {},
+        "remoteID": "order.id",
         "businessReferences": ["order.name"],
         "peers": [
           {
@@ -731,11 +754,13 @@
       "documentDef": {
         "schema": {},
         "referenceLocation": {
-          "fulfillmentBusinessReferences": ["fulfillment.fulfillment_business_ref"],
+          "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
+        },
+        "secondaryReferences": {
           "salesOrderBusinessReferences": ["fulfillment.sales_order_business_ref"]
         },
         "remoteID": "fulfillment.id",
-        "businessReferences": ["order_id"]
+        "businessReferences": ["fulfillment.fulfillment_business_ref"]
       }
     },
     {
@@ -754,7 +779,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -775,7 +800,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"]
       }
@@ -889,7 +914,7 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {"customerBusinessReferences": ["customer.email", "customer.phone"]},
+        "referenceLocation": {},
         "remoteID": "customer.id",
         "businessReferences": ["customer.email", "customer.phone"],
         "refreshNouns": ["CUSTOMER"]
