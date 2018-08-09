@@ -22,7 +22,7 @@
   "scripts": {
     "test": "npx nchannel-sdk test"
   },
-  "version": "0.0.15",
+  "version": "0.0.16",
   "main": "Shopify.js",
   "files": [
     "config",
