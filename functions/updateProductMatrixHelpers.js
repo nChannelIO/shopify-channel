@@ -72,7 +72,7 @@ function updateProductMetafields(payload) {
         return this.request(options);
       }
     })).then(updatedMetafields => {
-      return existingMetafields.concat(updatedMetafields);
+      payload.doc.product.metafields = existingMetafields.concat(updatedMetafields);
     });
   });
 }
