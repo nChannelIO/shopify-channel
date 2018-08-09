@@ -20,7 +20,7 @@
     "soap": "0.23.0"
   },
   "scripts": {
-    "test": "mocha --timeout 10000 validation/*.spec.js"
+    "test": "npx nchannel-sdk test"
   },
   "version": "0.0.14",
   "main": "Shopify.js",

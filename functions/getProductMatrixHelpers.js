@@ -32,9 +32,19 @@ function enrichProductsWithMetafields(products) {
   return Promise.all(products.map(product => {
     let uri = `${this.baseUri}/admin/products/${product.id}/metafields.json`;
 
+    // Get the products metafields
     return this.getMetafieldsWithPaging(uri).then(metafields => {
       product.metafields = metafields;
-      return product;
+
+      // Get the variant's metafields
+      return Promise.all(product.variants.map(variant => {
+        let uri = `${this.baseUri}/admin/products/${product.id}/variants/${variant.id}/metafields.json`;
+        return this.getMetafieldsWithPaging(uri).then(metafields => {
+          variant.metafields = metafields;
+        });
+      })).then(() => {
+        return product;
+      });
     });
   }));
 }
