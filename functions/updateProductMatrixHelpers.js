@@ -58,7 +58,7 @@ function updateProductMetafields(payload) {
 
         this.info(`Requesting [${options.method} ${options.uri}]`);
 
-        return this.request(options);
+        return this.request(options).then(body => body.metafield);
       } else {
         // Insert new metafield
         let options = {
@@ -69,7 +69,7 @@ function updateProductMetafields(payload) {
 
         this.info(`Requesting [${options.method} ${options.uri}]`);
 
-        return this.request(options);
+        return this.request(options).then(body => body.metafield);
       }
     })).then(updatedMetafields => {
       payload.doc.product.metafields = existingMetafields.concat(updatedMetafields);
@@ -127,7 +127,7 @@ function updateVariantMetafields(payload) {
 
             this.info(`Requesting [${options.method} ${options.uri}]`);
 
-            return this.request(options);
+            return this.request(options).then(body => body.metafield);
           } else {
             // Insert new metafield
             let options = {
@@ -138,7 +138,7 @@ function updateVariantMetafields(payload) {
 
             this.info(`Requesting [${options.method} ${options.uri}]`);
 
-            return this.request(options);
+            return this.request(options).then(body => body.metafield);
           }
         }));
       });
