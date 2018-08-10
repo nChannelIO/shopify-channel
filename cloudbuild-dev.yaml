@@ -14,7 +14,7 @@ steps:
 
 # Get version from package.json file
 - name: 'ubuntu'
-  args: ['bash', '-c', 'cat package.json | grep version | sed -e "s/[[:space:]]//g; s/\"//g" | cut -d":" -f2 > package-version.txt']
+  args: ['bash', '-c', 'cat package.json | grep version | sed -e "s/[[:space:]]//g; s/\"//g; s/\,//g" | cut -d":" -f2 > package-version.txt']
 
 # Save the API body template into a file
 # note the template is base64 encoded so it neeeds decoded here
