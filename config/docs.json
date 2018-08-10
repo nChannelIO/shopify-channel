@@ -349,7 +349,13 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -416,27 +422,57 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -613,7 +649,13 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -685,27 +727,57 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -816,7 +888,13 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -888,27 +966,57 @@
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   },
                   {
                     "id": 12020548676,
                     "title": "#2asdfs45",
-                    "vendor": "ci-sales-01"
+                    "vendor": "ci-sales-01",
+                    "variants": [
+                      {
+                        "id": 1234567,
+                        "sku": "v1"
+                      }
+                    ]
                   }
                 ]
               }
@@ -2248,8 +2356,13 @@
           "payload": {
             "doc": {
               "product": {
-                "vendor": "Porsche",
-                "title": "911 GT2 RS"
+                "title": "#2asdfs45",
+                "vendor": "ci-sales-01",
+                "variants": [
+                  {
+                    "sku": "v1"
+                  }
+                ]
               }
             }
           },
@@ -2263,9 +2376,31 @@
               "statusCode": 201,
               "responsePayload": {
                 "product": {
-                  "id": 1073339459,
-                  "sku": "test"
+                  "id": 12020548676,
+                  "title": "#2asdfs45",
+                  "vendor": "ci-sales-01",
+                  "variants": [
+                    {
+                      "id": 1234567,
+                      "sku": "v1"
+                    }
+                  ]
                 }
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
               }
             }
           ],
@@ -2673,81 +2808,54 @@
           "payload": {
             "doc": {
               "product": {
-                "vendor": "Porsche",
-                "title": "911 GT2 RS",
+                "id": 12020548676,
+                "title": "#2asdfs45",
+                "vendor": "ci-sales-01",
                 "variants": [
                   {
-                    "sku": "fooBar"
+                    "id": 1234567,
+                    "sku": "v1"
                   }
                 ]
               }
             },
-            "productRemoteID": 1073339459
+            "productRemoteID": 12020548676
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459.json",
+              "uri": "/admin/products/12020548676.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
                 "product": {
                   "id": 12020548676,
-                  "title": "911 GT2 RS",
-                  "body_html": null,
-                  "vendor": "Porsche",
-                  "product_type": "",
-                  "created_at": "2017-10-11T17:52:24Z",
-                  "handle": "2asdfs45-2",
-                  "updated_at": "2017-10-11T17:52:24Z",
-                  "published_at": "2017-10-11T17:52:24Z",
-                  "template_suffix": null,
-                  "published_scope": "global",
-                  "tags": "",
+                  "title": "#2asdfs45",
+                  "vendor": "ci-sales-01",
                   "variants": [
                     {
-                      "id": 52668187844,
-                      "product_id": 12020548676,
-                      "title": "Default Title",
-                      "price": "0.00",
-                      "sku": "fooBar",
-                      "position": 1,
-                      "inventory_policy": "deny",
-                      "compare_at_price": null,
-                      "fulfillment_service": "manual",
-                      "inventory_management": null,
-                      "option1": "Default Title",
-                      "option2": null,
-                      "option3": null,
-                      "created_at": "2017-10-11T17:52:24Z",
-                      "updated_at": "2017-10-11T17:52:24Z",
-                      "taxable": true,
-                      "barcode": null,
-                      "grams": 0,
-                      "image_id": null,
-                      "inventory_quantity": 1,
-                      "weight": 0,
-                      "weight_unit": "lb",
-                      "old_inventory_quantity": 1,
-                      "requires_shipping": true
+                      "id": 1234567,
+                      "sku": "v1"
                     }
-                  ],
-                  "options": [
-                    {
-                      "id": 14701432644,
-                      "product_id": 12020548676,
-                      "name": "Title",
-                      "position": 1,
-                      "values": [
-                        "Default Title"
-                      ]
-                    }
-                  ],
-                  "images": [],
-                  "image": null
+                  ]
                 }
+              }
+            },
+            {
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
               }
             }
           ],
@@ -2760,23 +2868,24 @@
           "payload": {
             "doc": {
               "product": {
-                "vendor": "Porsche",
-                "title": "911 GT2 RS",
+                "id": 12020548676,
+                "title": "#2asdfs45",
+                "vendor": "ci-sales-01",
                 "variants": [
                   {
-                    "sku": "fooBar"
+                    "sku": "v1"
                   }
                 ]
               }
             },
-            "productRemoteID": 1073339459
+            "productRemoteID": 12020548676
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459.json",
-              "method": "PUT",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
@@ -2791,23 +2900,24 @@
           "payload": {
             "doc": {
               "product": {
-                "vendor": "Porsche",
-                "title": "911 GT2 RS",
+                "id": 12020548676,
+                "title": "#2asdfs45",
+                "vendor": "ci-sales-01",
                 "variants": [
                   {
-                    "sku": "fooBar"
+                    "sku": "v1"
                   }
                 ]
               }
             },
-            "productRemoteID": 1073339459
+            "productRemoteID": 12020548676
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459.json",
-              "method": "PUT",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
@@ -2822,23 +2932,24 @@
           "payload": {
             "doc": {
               "product": {
-                "vendor": "Porsche",
-                "title": "911 GT2 RS",
+                "id": 12020548676,
+                "title": "#2asdfs45",
+                "vendor": "ci-sales-01",
                 "variants": [
                   {
-                    "sku": "fooBar"
+                    "sku": "v1"
                   }
                 ]
               }
             },
-            "productRemoteID": 1073339459
+            "productRemoteID": 12020548676
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/1073339459.json",
-              "method": "PUT",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
