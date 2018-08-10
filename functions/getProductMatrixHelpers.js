@@ -35,16 +35,7 @@ function enrichProductsWithMetafields(products) {
     // Get the products metafields
     return this.getMetafieldsWithPaging(uri).then(metafields => {
       product.metafields = metafields;
-
-      // Get the variant's metafields
-      return Promise.all(product.variants.map(variant => {
-        let uri = `${this.baseUri}/admin/products/${product.id}/variants/${variant.id}/metafields.json`;
-        return this.getMetafieldsWithPaging(uri).then(metafields => {
-          variant.metafields = metafields;
-        });
-      })).then(() => {
-        return product;
-      });
+      return product;
     });
   }));
 }

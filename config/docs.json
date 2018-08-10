@@ -374,15 +374,6 @@
                   }
                 ]
               }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
             }
           ],
           "channelProfile": {
@@ -502,12 +493,18 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "metafields": []
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
               }
             },
             {
@@ -526,15 +523,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -550,15 +538,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -571,39 +550,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": [
-                  {
-                    "namespace": "nchannel",
-                    "key": "businessReference",
-                    "value": "foo bar baz"
-                  }
-                ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
@@ -727,15 +673,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
@@ -861,12 +798,18 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "metafields": []
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
               }
             },
             {
@@ -885,15 +828,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -909,15 +843,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -930,39 +855,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": [
-                  {
-                    "namespace": "nchannel",
-                    "key": "businessReference",
-                    "value": "foo bar baz"
-                  }
-                ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
@@ -1020,15 +912,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
@@ -1154,12 +1037,18 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
+              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "metafields": []
+                "metafields": [
+                  {
+                    "namespace": "nchannel",
+                    "key": "businessReference",
+                    "value": "foo bar baz"
+                  }
+                ]
               }
             },
             {
@@ -1178,15 +1067,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -1202,15 +1082,6 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
               "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
@@ -1223,39 +1094,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": [
-                  {
-                    "namespace": "nchannel",
-                    "key": "businessReference",
-                    "value": "foo bar baz"
-                  }
-                ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
@@ -2564,15 +2402,6 @@
                   }
                 ]
               }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
-              }
             }
           ],
           "channelProfile": {
@@ -3027,15 +2856,6 @@
                     "value": "foo bar baz"
                   }
                 ]
-              }
-            },
-            {
-              "uri": "/admin/products/12020548676/variants/1234567/metafields.json?page=1&limit=250",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "metafields": []
               }
             }
           ],
