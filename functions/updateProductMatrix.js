@@ -10,11 +10,13 @@ module.exports = function (flowContext, payload) {
 
     // Remove all metafields
     delete payload.doc.product.metafields;
-    payload.doc.product.variants.forEach(variant => {
-      if (variant.hasOwnProperty('id')) {
-        delete variant.metafields;
-      }
-    });
+    if (payload.doc.product.variants) {
+      payload.doc.product.variants.forEach(variant => {
+        if (variant.hasOwnProperty('id')) {
+          delete variant.metafields;
+        }
+      });
+    }
 
     let options = {
       uri: `${this.baseUri}/admin/products/${payload.productRemoteID}.json`,
