@@ -12,7 +12,7 @@ function updateInventoryItem(inventoryItem) {
   let options = {
     method: 'PUT',
     uri: `${this.baseUri}/admin/inventory_items/${inventoryItem.id}.json`,
-    body: inventoryItem
+    body: {inventory_item: inventoryItem}
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
