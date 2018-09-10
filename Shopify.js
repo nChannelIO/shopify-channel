@@ -13,7 +13,7 @@ class Shopify extends Channel {
       "X-Shopify-Access-Token": this.channelProfile.channelAuthValues.access_token
     };
 
-    this.request = require('request-promise').defaults({headers: headers, json: true});
+    this.request = this.request.defaults({headers: headers, json: true});
 
     this.baseUri = `${this.channelProfile.channelSettingsValues.protocol}://${this.channelProfile.channelAuthValues.shop}`;
   }

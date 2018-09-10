@@ -21,7 +21,7 @@
       }
     },
     "required": [
-      "inventory_item_ids",
+      "inventory_levels",
       "sku"
     ],
     "additionalProperties": false,

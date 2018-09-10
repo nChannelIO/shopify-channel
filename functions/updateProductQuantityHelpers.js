@@ -20,7 +20,7 @@ function updateInventoryItem(inventoryItem) {
   return this.request(options);
 }
 
-function updateInventoryLevels(inventoryLevels) {
+function updateInventoryLevels(inventoryItemId, inventoryLevels) {
   if (inventoryLevels) {
     let options = {
       method: 'POST',
@@ -31,6 +31,7 @@ function updateInventoryLevels(inventoryLevels) {
     this.info(`Requesting [${options.method} ${options.uri}]`);
 
     return Promise.all(inventoryLevels.map(inventoryLevel => {
+      inventoryLevel.inventory_item_id = inventoryItemId;
       options.body = inventoryLevel;
 
       return this.request(options).then(body => body.inventory_level);
