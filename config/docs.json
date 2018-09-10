@@ -3081,15 +3081,17 @@
           "statusCode": 200,
           "payload": {
             "doc": {
-              "id": 52182110852,
-              "sku": "COFFEEMUG2",
-              "tracked": true,
-              "inventory_levels": [
-                {
-                  "location_id": 52182110851,
-                  "amount": 25
-                }
-              ]
+              "inventory_item": {
+                "id": 52182110852,
+                "sku": "COFFEEMUG2",
+                "tracked": true,
+                "inventory_levels": [
+                  {
+                    "location_id": 52182110851,
+                    "amount": 25
+                  }
+                ]
+              }
             },
             "productQuantityRemoteID": 52182110852
           },
@@ -3118,35 +3120,30 @@
                 "inventory_item": {
                   "id": 52182110852,
                   "sku": "COFFEEMUG2",
-                  "tracked": true,
-                  "inventory_levels": [
-                    {
-                      "inventory_item_id": 52182110852,
-                      "location_id": 52182110851,
-                      "amount": 25
-                    }
-                  ]
+                  "tracked": true
                 }
               }
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["sku"]
+            "productQuantityBusinessReferences": ["inventory_item.sku"]
           }
         },
         {
           "statusCode": 400,
           "payload": {
             "doc": {
-              "id": 52182110852,
-              "sku": "COFFEEMUG2",
-              "tracked": true,
-              "inventory_levels": [
-                {
-                  "location_id": 52182110851,
-                  "amount": 25
-                }
-              ]
+              "inventory_item": {
+                "id": 52182110852,
+                "sku": "COFFEEMUG2",
+                "tracked": true,
+                "inventory_levels": [
+                  {
+                    "location_id": 52182110851,
+                    "amount": 25
+                  }
+                ]
+              }
             },
             "productQuantityRemoteID": 52182110852
           },
@@ -3169,35 +3166,30 @@
                 "inventory_item": {
                   "id": 52182110852,
                   "sku": "COFFEEMUG2",
-                  "tracked": true,
-                  "inventory_levels": [
-                    {
-                      "inventory_item_id": 52182110852,
-                      "location_id": 52182110851,
-                      "amount": 25
-                    }
-                  ]
+                  "tracked": true
                 }
               }
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["sku"]
+            "productQuantityBusinessReferences": ["inventory_item.sku"]
           }
         },
         {
           "statusCode": 429,
           "payload": {
             "doc": {
-              "id": 52182110852,
-              "sku": "COFFEEMUG2",
-              "tracked": true,
-              "inventory_levels": [
-                {
-                  "location_id": 52182110851,
-                  "amount": 25
-                }
-              ]
+              "inventory_item": {
+                "id": 52182110852,
+                "sku": "COFFEEMUG2",
+                "tracked": true,
+                "inventory_levels": [
+                  {
+                    "location_id": 52182110851,
+                    "amount": 25
+                  }
+                ]
+              }
             },
             "productQuantityRemoteID": 52182110852
           },
@@ -3240,15 +3232,17 @@
           "statusCode": 500,
           "payload": {
             "doc": {
-              "id": 52182110852,
-              "sku": "COFFEEMUG2",
-              "tracked": true,
-              "inventory_levels": [
-                {
-                  "location_id": 52182110851,
-                  "amount": 25
-                }
-              ]
+              "inventory_item": {
+                "id": 52182110852,
+                "sku": "COFFEEMUG2",
+                "tracked": true,
+                "inventory_levels": [
+                  {
+                    "location_id": 52182110851,
+                    "amount": 25
+                  }
+                ]
+              }
             },
             "productQuantityRemoteID": 52182110852
           },
