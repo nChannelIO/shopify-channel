@@ -445,8 +445,8 @@
       "documentDef": {
         "schema": {},
         "referenceLocation": {},
-        "remoteID": "id",
-        "businessReferences": ["sku"],
+        "remoteID": "inventory_item.id",
+        "businessReferences": ["inventory_item.sku"],
         "refreshNouns": ["PRODUCT"]
       }
     },
