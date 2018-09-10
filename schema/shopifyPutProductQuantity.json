@@ -5,27 +5,38 @@
     "description": "Shopify Put Product Quantity",
     "type": "object",
     "properties": {
-      "sku": {
-        "title": "location_id",
-        "type": "string"
-      },
-      "tracked": {
-        "title": "tracked",
-        "type": ["boolean", "null"]
-      },
-      "inventory_levels": {
-        "type": "array",
-        "items": {
-          "$ref": "#/definitions/inventory_level"
-        }
+      "inventory_item": {
+        "$ref": "#/definitions/inventory_item"
       }
     },
     "required": [
-      "inventory_levels",
-      "sku"
+      "inventory_item"
     ],
     "additionalProperties": false,
     "definitions": {
+      "inventory_item": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "title": "location_id",
+            "type": "string"
+          },
+          "tracked": {
+            "title": "tracked",
+            "type": ["boolean", "null"]
+          },
+          "inventory_levels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/inventory_level"
+            }
+          }
+        },
+        "required": [
+          "inventory_levels",
+          "sku"
+        ]
+      },
       "inventory_level": {
         "type": "object",
         "properties": {
