@@ -120,6 +120,7 @@ function updateVariantMetafields(payload) {
           if (err.statusCode === 404) {
             return Promise.reject({
               statusCode: 400,
+              endpointStatusCode: 404,
               errors: [
                 `Get variant metafields for variant id '${variant.id}' failed with 404. Setting status code to 400.`,
                 `Variants are out of sync for product id '${payload.productRemoteID}'. Refresh this product to re-sync variants.`
