@@ -1,5 +1,7 @@
 'use strict';
 
+let errors = require('request-promise/errors');
+
 module.exports = {
   updateProductMetafields,
   updateVariantMetafields
