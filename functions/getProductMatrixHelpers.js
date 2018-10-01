@@ -1,5 +1,7 @@
 'use strict';
 
+let errors = require('request-promise/errors');
+
 module.exports = {
   queryForProductMatrices,
   enrichProductsWithMetafields,
@@ -56,6 +58,19 @@ function getMetafieldsWithPaging(uri, page = 1, result = []) {
       return this.getMetafieldsWithPaging(options, uri, ++page, result);
     } else {
       return result;
+    }
+  }).catch(errors.StatusCodeError, err => {
+    // If we get a 404 change it to 400
+    if (err.statusCode === 404) {
+      return Promise.reject({
+        statusCode: 400,
+        errors: [
+          `Get metafields using '${options.uri}' returned 404. Setting status code to 400.`
+        ]
+      })
+    } else {
+      // Otherwise let the error fall through and be caught elsewhere
+      return Promise.reject(err);
     }
   });
 }
