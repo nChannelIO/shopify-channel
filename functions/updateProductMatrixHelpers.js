@@ -124,8 +124,7 @@ function updateVariantMetafields(payload) {
               statusCode: 400,
               endpointStatusCode: 404,
               errors: [
-                `Get variant metafields for variant id '${variant.id}' failed with 404. Setting status code to 400.`,
-                `Variants are out of sync for product id '${payload.productRemoteID}'. Refresh this product to re-sync variants.`
+                `Get variant metafields for variant id '${variant.id}' of product id '${payload.productRemoteID}' failed with 404. Setting status code to 400.`
               ]
             })
           } else {
