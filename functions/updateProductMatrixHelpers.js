@@ -1,5 +1,7 @@
 'use strict';
 
+let errors = require('request-promise/errors');
+
 module.exports = {
   updateProductMetafields,
   updateVariantMetafields
@@ -24,7 +26,7 @@ function updateProductMetafields(payload) {
           // It's a match
           match = true;
 
-          if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || metafield.description !== existingMetafield.description) {
+          if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description != null && metafield.description !== existingMetafield.description) ) {
             // It needs updated
             metafield.id = existingMetafield.id;
             metafieldsForUpdate.push(metafield);
@@ -99,7 +101,7 @@ function updateVariantMetafields(payload) {
                 // Remove it to speed up future iterations
                 metafields.splice(i, 1);
 
-                if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || metafield.description !== existingMetafield.description) {
+                if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description != null && metafield.description !== existingMetafield.description) ) {
                   // It needs updated
                   metafield.id = existingMetafield.id;
                   metafieldsForUpdate.push(metafield);
@@ -115,6 +117,20 @@ function updateVariantMetafields(payload) {
 
             return metafieldsForUpdate;
           }, []);
+        }).catch(errors.StatusCodeError, err => {
+          // If we get a 404 change it to 400
+          if (err.statusCode === 404) {
+            return Promise.reject({
+              statusCode: 400,
+              endpointStatusCode: 404,
+              errors: [
+                `Get variant metafields for variant id '${variant.id}' of product id '${payload.productRemoteID}' failed with 404. Setting status code to 400.`
+              ]
+            })
+          } else {
+            // Otherwise let the error fall through and be caught elsewhere
+            return Promise.reject(err);
+          }
         }).then(metafields => {
           // Update the metafields
           return Promise.all(metafields.map(metafield => {
