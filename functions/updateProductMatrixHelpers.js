@@ -26,7 +26,7 @@ function updateProductMetafields(payload) {
           // It's a match
           match = true;
 
-          if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description !== null && metafield.description !== existingMetafield.description) ) {
+          if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description != null && metafield.description !== existingMetafield.description) ) {
             // It needs updated
             metafield.id = existingMetafield.id;
             metafieldsForUpdate.push(metafield);
@@ -101,7 +101,7 @@ function updateVariantMetafields(payload) {
                 // Remove it to speed up future iterations
                 metafields.splice(i, 1);
 
-                if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description !== null && metafield.description !== existingMetafield.description) ) {
+                if (metafield.value !== existingMetafield.value || metafield.value_type !== existingMetafield.value_type || (metafield.description != null && metafield.description !== existingMetafield.description) ) {
                   // It needs updated
                   metafield.id = existingMetafield.id;
                   metafieldsForUpdate.push(metafield);
