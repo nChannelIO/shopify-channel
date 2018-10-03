@@ -1,10 +1,15 @@
 'use strict';
 
 module.exports = function (flowContext, payload) {
-  return Promise.all([
-      this.updateProductMetafields(payload),
-      this.updateVariantMetafields(payload)
-    ]).then(() => {
+  // Update product metafields first. If it fails b/c the product doesn't exist => 404
+  // Update variant metafields second. If it fails b/c the variant doesn't exist => 400
+  //
+  // We don't want the get variant metafileds call to run before the get
+  // product metafields call and fail w/ 400 b/c the product doesn't exist
+
+  return this.updateProductMetafields(payload).then(() => {
+    return this.updateVariantMetafields(payload);
+  }).then(() => {
     // Save the metafields so they can be added to the output doc
     let productMetafields = payload.doc.product.metafields;
 
