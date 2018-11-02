@@ -934,6 +934,42 @@
           "implFolderName": {
             "title": "Implementation Folder Name",
             "type": "string"
+          },
+          "throttling":{
+            "title": "Throttling",
+            "type": "object",
+            "properties": {
+              "windowDuration": {
+                "title": "Window Duration (ms)",
+                "type": "integer"
+              },
+              "allocationLimit": {
+                "title": "Allocation Limit",
+                "type": "integer"
+              },
+              "throttledIndicators": {
+                "title": "Throttled Response Indicators",
+                "type": "array",
+                "items": {
+                  "title": "Criteria",
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "title": "Status Code",
+                      "type": "integer"
+                    },
+                    "body": {
+                      "title": "Text Contained in the Body",
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "required": [
+              "windowDuration",
+              "allocationLimit"
+            ]
           }
         },
         "required": [
@@ -941,10 +977,21 @@
           "implFolderName"
         ]
       },
-      "configView": [],
+      "configView": [
+        "throttling"
+      ],
       "configValues": {
         "protocol": "https",
-        "implFolderName": "@nchannel/shopify"
+        "implFolderName": "@nchannel/shopify",
+        "throttling": {
+          "windowDuration": 1000,
+          "allocationLimit": 2,
+          "throttledIndicators": [
+            {
+              "statusCode": 429
+            }
+          ]
+        }
       }
     }
   },
