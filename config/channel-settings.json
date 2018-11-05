@@ -940,11 +940,11 @@
             "type": "object",
             "properties": {
               "windowDuration": {
-                "title": "Window Duration (ms)",
+                "title": "Throttling Time Frame (ms)",
                 "type": "integer"
               },
               "allocationLimit": {
-                "title": "Allocation Limit",
+                "title": "Number of Requests per Time Frame",
                 "type": "integer"
               },
               "throttledIndicators": {
@@ -955,11 +955,11 @@
                   "type": "object",
                   "properties": {
                     "statusCode": {
-                      "title": "Status Code",
+                      "title": "Status Code (optional)",
                       "type": "integer"
                     },
                     "body": {
-                      "title": "Text Contained in the Body",
+                      "title": "Text Contained in the Response Body (optional)",
                       "type": "string"
                     }
                   }
