@@ -53,7 +53,7 @@ function getMetafieldsWithPaging(uri, page = 1, result = []) {
     result = result.concat(body.metafields);
 
     if (body.metafields.length === pageSize) {
-      return this.getMetafieldsWithPaging(options, uri, ++page, result);
+      return this.getMetafieldsWithPaging(uri, ++page, result);
     } else {
       return result;
     }
