@@ -526,12 +526,6 @@
             "location": "order.customer",
             "remoteID": "id",
             "businessReferences": ["email", "phone"]
-          },
-          {
-            "name": "FULFILLMENT",
-            "location": "order.fulfillments",
-            "remoteID": "id",
-            "businessReferences": ["id"]
           }
         ]
       }
