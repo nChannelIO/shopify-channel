@@ -30,7 +30,7 @@ function queryForProductMatrices(uri, pageSize) {
 
 function enrichProductsWithMetafields(products) {
   return Promise.all(products.map(product => {
-    let uri = `${this.baseUri}/admin/products/${product.id}/metafields.json`;
+    let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${product.id}/metafields.json`;
 
     // Get the products metafields
     return this.getMetafieldsWithPaging(uri).then(metafields => {

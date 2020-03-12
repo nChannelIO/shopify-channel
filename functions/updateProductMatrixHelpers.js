@@ -9,7 +9,7 @@ module.exports = {
 
 function updateProductMetafields(payload) {
   // Get existing product metafields
-  let uri = `${this.baseUri}/admin/products/${payload.productRemoteID}/metafields.json`;
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/metafields.json`;
 
   return this.getMetafieldsWithPaging(uri).then(metafields => {
     // Determine which metafields need updated/inserted
@@ -53,7 +53,7 @@ function updateProductMetafields(payload) {
       if (metafield.id) {
         // Update existing metafield
         let options = {
-          uri: `${this.baseUri}/admin/products/${payload.productRemoteID}/metafields/${metafield.id}.json`,
+          uri: `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/metafields/${metafield.id}.json`,
           method: 'PUT',
           body: {metafield: metafield}
         };
@@ -64,7 +64,7 @@ function updateProductMetafields(payload) {
       } else {
         // Insert new metafield
         let options = {
-          uri: `${this.baseUri}/admin/products/${payload.productRemoteID}/metafields.json`,
+          uri: `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/metafields.json`,
           method: 'POST',
           body: {metafield: metafield}
         };
@@ -85,7 +85,7 @@ function updateVariantMetafields(payload) {
     return Promise.all(payload.doc.product.variants.map(variant => {
       if (variant.id && variant.metafields && variant.metafields.length > 0) {
         // Get existing variant metafields
-        let uri = `${this.baseUri}/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`;
+        let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`;
 
         return this.getMetafieldsWithPaging(uri).then(metafields => {
           // Determine which metafields need updated/inserted
@@ -137,7 +137,7 @@ function updateVariantMetafields(payload) {
             if (metafield.id) {
               // Update existing metafield
               let options = {
-                uri: `${this.baseUri}/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields/${metafield.id}.json`,
+                uri: `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/variants/${variant.id}/metafields/${metafield.id}.json`,
                 method: 'PUT',
                 body: {metafield: metafield}
               };
@@ -148,7 +148,7 @@ function updateVariantMetafields(payload) {
             } else {
               // Insert new metafield
               let options = {
-                uri: `${this.baseUri}/admin/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`,
+                uri: `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`,
                 method: 'POST',
                 body: {metafield: metafield}
               };

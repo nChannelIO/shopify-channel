@@ -6,7 +6,7 @@ module.exports = function (flowContext, query) {
   };
 
   return Promise.all(query.remoteIDs.map(remoteID => {
-    options.uri = `${this.baseUri}/admin/variants/${remoteID}.json`;
+    options.uri = `${this.baseUri}/admin/api/${this.apiVersion}/variants/${remoteID}.json`;
 
     this.info(`Requesting [${options.method} ${options.uri}]`);
 

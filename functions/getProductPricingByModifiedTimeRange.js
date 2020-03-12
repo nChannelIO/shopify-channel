@@ -28,7 +28,7 @@ module.exports = function (flowContext, query) {
     // 1) Get all products which were modified in the time range
   let options = {
     method: 'GET',
-    uri: `${this.baseUri}/admin/products.json?${queryParams.join('&')}`
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/products.json?${queryParams.join('&')}`
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);

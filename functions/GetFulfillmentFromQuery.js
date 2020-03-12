@@ -44,7 +44,7 @@ module.exports = function (flowContext, query) {
 
   let options = {
     method: 'GET',
-    uri: `${this.baseUri}/admin/orders/${query.salesOrderRemoteID}/fulfillments.json`,
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/orders/${query.salesOrderRemoteID}/fulfillments.json`,
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);

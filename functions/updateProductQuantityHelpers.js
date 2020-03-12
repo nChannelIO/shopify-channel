@@ -11,7 +11,7 @@ function updateInventoryItem(inventoryItem) {
 
   let options = {
     method: 'PUT',
-    uri: `${this.baseUri}/admin/inventory_items/${inventoryItem.inventory_item.id}.json`,
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/inventory_items/${inventoryItem.inventory_item.id}.json`,
     body: inventoryItem
   };
 
@@ -24,7 +24,7 @@ function updateInventoryLevels(inventoryItemId, inventoryLevels) {
   if (inventoryLevels) {
     let options = {
       method: 'POST',
-      uri: `${this.baseUri}/admin/inventory_levels/set.json`
+      uri: `${this.baseUri}/admin/api/${this.apiVersion}/inventory_levels/set.json`
     };
 
     this.info(`Updating ${inventoryLevels.length} inventory levels`);

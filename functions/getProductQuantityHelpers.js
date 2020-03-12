@@ -26,7 +26,7 @@ function getInventoryItems(inventory_item_ids) {
   let options = {
     method: 'GET',
   };
-  let uri = `${this.baseUri}/admin/inventory_items.json?ids=${inventory_item_ids}`;
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/inventory_items.json?ids=${inventory_item_ids}`;
   return this.getInventoryItemsWithPaging(options, uri);
 }
 
@@ -51,7 +51,7 @@ function getInventoryLevels(inventory_item_ids) {
   let options = {
     method: 'GET',
   };
-  let uri = `${this.baseUri}/admin/inventory_levels.json?inventory_item_ids=${inventory_item_ids}`;
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/inventory_levels.json?inventory_item_ids=${inventory_item_ids}`;
   return this.getInventoryLevelsWithPaging(options, uri);
 }
 

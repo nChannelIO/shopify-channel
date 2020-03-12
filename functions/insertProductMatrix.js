@@ -2,7 +2,7 @@
 
 module.exports = function (flowContext, payload) {
   let options = {
-    uri: `${this.baseUri}/admin/products.json`,
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/products.json`,
     method: "POST",
     body: payload.doc,
     resolveWithFullResponse: true
@@ -14,7 +14,7 @@ module.exports = function (flowContext, payload) {
     let errors = [];
 
     //Add the metafields to the output document
-    let uri = `${this.baseUri}/admin/products/${response.body.product.id}/metafields.json`;
+    let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${response.body.product.id}/metafields.json`;
     return this.getMetafieldsWithPaging(uri).then(metafields => {
       response.body.product.metafields = metafields;
     }).catch(() => {

@@ -14,5 +14,5 @@ module.exports = function (flowContext, query) {
     queryParams.push("limit=" + query.pageSize);
   }
 
-  return this.queryForSalesOrders(`${this.baseUri}/admin/orders.json?${queryParams.join('&')}`, query.pageSize);
+  return this.queryForSalesOrders(`${this.baseUri}/admin/api/${this.apiVersion}/orders.json?${queryParams.join('&')}`, query.pageSize);
 };

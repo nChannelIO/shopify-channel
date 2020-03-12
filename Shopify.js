@@ -16,6 +16,8 @@ class Shopify extends Channel {
     this.request = this.request.defaults({headers: headers, json: true});
 
     this.baseUri = `${this.channelProfile.channelSettingsValues.protocol}://${this.channelProfile.channelAuthValues.shop}`;
+
+    this.apiVersion = this.channelProfile.channelSettingsValues.apiVersion || '2020-01';
   }
 
   async getCustomerById(...args) {

@@ -2,7 +2,8 @@
   "unitTestPackage": "nock",
   "channelProfile": {
     "channelSettingsValues": {
-      "protocol": "https"
+      "protocol": "https",
+      "apiVersion": "2019-10"
     },
     "channelAuthValues": {
       "access_token": "test",
@@ -22,7 +23,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?ids=1073339459",
+              "uri": "/admin/api/2019-10/customers.json?ids=1073339459",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -49,7 +50,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?ids=1073339459",
+              "uri": "/admin/api/2019-10/customers.json?ids=1073339459",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -71,7 +72,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?ids=1073339459",
+              "uri": "/admin/api/2019-10/customers.json?ids=1073339459",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
@@ -93,7 +94,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?ids=1073339459",
+              "uri": "/admin/api/2019-10/customers.json?ids=1073339459",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -115,7 +116,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?ids=1073339459",
+              "uri": "/admin/api/2019-10/customers.json?ids=1073339459",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -145,7 +146,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -179,7 +180,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -205,7 +206,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "uri": "/admin/api/2019-10/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -244,7 +245,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -278,7 +279,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -304,7 +305,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "uri": "/admin/api/2019-10/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -340,7 +341,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -361,7 +362,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -389,7 +390,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -413,7 +414,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676&page=1&limit=5",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676&page=1&limit=5",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -478,7 +479,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -493,7 +494,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -508,7 +509,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -523,7 +524,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -538,7 +539,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -566,7 +567,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
@@ -588,7 +589,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -610,7 +611,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?ids=12020548676",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -640,7 +641,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -661,7 +662,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -692,7 +693,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -718,7 +719,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=5",
+              "uri": "/admin/api/2019-10/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=5",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -783,7 +784,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -798,7 +799,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -813,7 +814,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -828,7 +829,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -843,7 +844,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -879,7 +880,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -900,7 +901,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -931,7 +932,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -957,7 +958,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=5",
+              "uri": "/admin/api/2019-10/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=5",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1022,7 +1023,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1037,7 +1038,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1052,7 +1053,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1067,7 +1068,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1082,7 +1083,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1115,7 +1116,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1141,7 +1142,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1165,7 +1166,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613&page=1&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1194,7 +1195,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
@@ -1216,7 +1217,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1238,7 +1239,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=4571292613",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1268,7 +1269,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1297,7 +1298,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1323,7 +1324,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1360,7 +1361,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1389,7 +1390,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
+              "uri": "/admin/api/2019-10/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1415,7 +1416,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1455,7 +1456,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json",
+              "uri": "/admin/api/2019-10/customers.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 201,
@@ -1486,7 +1487,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json",
+              "uri": "/admin/api/2019-10/customers.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1512,7 +1513,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json",
+              "uri": "/admin/api/2019-10/customers.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1538,7 +1539,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers.json",
+              "uri": "/admin/api/2019-10/customers.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1576,7 +1577,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1744,7 +1745,7 @@
               }
             },
             {
-              "uri": "/admin/orders/1073459964/fulfillments.json",
+              "uri": "/admin/api/2019-10/orders/1073459964/fulfillments.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 201,
@@ -1783,7 +1784,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1978,7 +1979,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2173,7 +2174,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2370,7 +2371,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json",
+              "uri": "/admin/api/2019-10/products.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 201,
@@ -2389,7 +2390,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2422,7 +2423,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json",
+              "uri": "/admin/api/2019-10/products.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -2447,7 +2448,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json",
+              "uri": "/admin/api/2019-10/products.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2472,7 +2473,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products.json",
+              "uri": "/admin/api/2019-10/products.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2524,7 +2525,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json",
+              "uri": "/admin/api/2019-10/orders.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 201,
@@ -2575,7 +2576,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json",
+              "uri": "/admin/api/2019-10/orders.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -2622,7 +2623,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json",
+              "uri": "/admin/api/2019-10/orders.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2669,7 +2670,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders.json",
+              "uri": "/admin/api/2019-10/orders.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2701,7 +2702,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers/1073339459.json",
+              "uri": "/admin/api/2019-10/customers/1073339459.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2733,7 +2734,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers/1073339459.json",
+              "uri": "/admin/api/2019-10/customers/1073339459.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 400,
@@ -2760,7 +2761,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers/1073339459.json",
+              "uri": "/admin/api/2019-10/customers/1073339459.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2787,7 +2788,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/customers/1073339459.json",
+              "uri": "/admin/api/2019-10/customers/1073339459.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2825,7 +2826,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/12020548676.json",
+              "uri": "/admin/api/2019-10/products/12020548676.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2844,7 +2845,7 @@
               }
             },
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2884,7 +2885,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
@@ -2916,7 +2917,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2948,7 +2949,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2978,7 +2979,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/variants/52182110852.json",
+              "uri": "/admin/api/2019-10/variants/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3011,7 +3012,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/variants/52182110852.json",
+              "uri": "/admin/api/2019-10/variants/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 400,
@@ -3036,7 +3037,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/variants/52182110852.json",
+              "uri": "/admin/api/2019-10/variants/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 429,
@@ -3061,7 +3062,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/variants/52182110852.json",
+              "uri": "/admin/api/2019-10/variants/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 500,
@@ -3099,7 +3100,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/inventory_levels/set.json",
+              "uri": "/admin/api/2019-10/inventory_levels/set.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3112,7 +3113,7 @@
               }
             },
             {
-              "uri": "/admin/inventory_items/52182110852.json",
+              "uri": "/admin/api/2019-10/inventory_items/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3151,14 +3152,14 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/inventory_levels/set.json",
+              "uri": "/admin/api/2019-10/inventory_levels/set.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             },
             {
-              "uri": "/admin/inventory_items/52182110852.json",
+              "uri": "/admin/api/2019-10/inventory_items/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3197,14 +3198,14 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/inventory_levels/set.json",
+              "uri": "/admin/api/2019-10/inventory_levels/set.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             },
             {
-              "uri": "/admin/inventory_items/52182110852.json",
+              "uri": "/admin/api/2019-10/inventory_items/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3250,14 +3251,14 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/inventory_levels/set.json",
+              "uri": "/admin/api/2019-10/inventory_levels/set.json",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             },
             {
-              "uri": "/admin/inventory_items/52182110852.json",
+              "uri": "/admin/api/2019-10/inventory_items/52182110852.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3300,7 +3301,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders/4575948293.json",
+              "uri": "/admin/api/2019-10/orders/4575948293.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 200,
@@ -3329,7 +3330,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders/4575948293.json",
+              "uri": "/admin/api/2019-10/orders/4575948293.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 400,
@@ -3354,7 +3355,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders/4575948293.json",
+              "uri": "/admin/api/2019-10/orders/4575948293.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 429,
@@ -3379,7 +3380,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/orders/4575948293.json",
+              "uri": "/admin/api/2019-10/orders/4575948293.json",
               "method": "PUT",
               "replyHeaders": {},
               "statusCode": 500,

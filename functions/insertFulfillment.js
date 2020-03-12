@@ -98,7 +98,7 @@ module.exports = function (flowContext, payload) {
 
       if (!invalid) {
         let options = {
-          uri: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
+          uri: `${this.baseUri}/admin/api/${this.apiVersion}/orders/${payload.salesOrderRemoteID}/fulfillments.json`,
           method: "POST",
           body: payload.doc,
           resolveWithFullResponse: true
