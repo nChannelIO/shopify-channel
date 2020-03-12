@@ -73,7 +73,7 @@ module.exports = function(flowContext, query) {
       out.statusCode = productQuantities.length > 0 ? 200 : 204;
     }
 
-    out.paylaod = productQuantities;
+    out.payload = productQuantities;
 
     return out;
   }).catch(this.handleRejection.bind(this));
