@@ -1,6 +1,7 @@
 'use strict';
 
 let Channel = require('@nchannel/endpoint-sdk').PromiseChannel;
+let errors = require('request-promise/errors')
 
 class Shopify extends Channel {
   constructor(...args) {
@@ -156,9 +157,9 @@ class Shopify extends Channel {
   }
 
   handleRejection(reason) {
-    if (reason instanceof this.request.StatusCodeError) {
+    if (reason instanceof errors.StatusCodeError) {
       return this.handleStatusCodeError(reason);
-    } else if (reason instanceof this.request.RequestError) {
+    } else if (reason instanceof errors.RequestError) {
       return this.handleRequestError(reason);
     } else {
       return this.handleOtherError(reason);
