@@ -23,24 +23,27 @@ function queryForProductQuantities(remoteIDs) {
 }
 
 function getInventoryItems(inventory_item_ids) {
-  let options = {
-    method: 'GET',
-  };
-  let uri = `${this.baseUri}/admin/inventory_items.json?ids=${inventory_item_ids}`;
-  return this.getInventoryItemsWithPaging(options, uri);
+  let pageSize = 250; //Max page size supported
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/inventory_items.json?ids=${inventory_item_ids}&limit=${pageSize}`;
+  return this.getInventoryItemsWithPaging(uri);
 }
 
-function getInventoryItemsWithPaging(options, uri, page = 1, result = []) {
-  let pageSize = 250; //Max page size supported
-  options.uri = `${uri}&page=${page}&limit=${pageSize}`;
+function getInventoryItemsWithPaging(uri, result = []) {
+  let options = {
+    method: 'GET',
+    uri: uri,
+    resolveWithFullResponse: true
+  };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
-  return this.request(options).then(body => {
-    result = result.concat(body.inventory_items);
+  return this.request(options).then(response => {
+    result = result.concat(response.body.inventory_items);
 
-    if (body.inventory_items.length === pageSize) {
-      return this.getInventoryItemsWithPaging(options, uri, ++page, result);
+    let linkHeader = this.parseLinkHeader(response.headers['link']);
+
+    if (linkHeader && linkHeader.next && linkHeader.next.url) {
+      return this.getInventoryItemsWithPaging(linkHeader.next.url, result);
     } else {
       return result;
     }
@@ -48,24 +51,27 @@ function getInventoryItemsWithPaging(options, uri, page = 1, result = []) {
 }
 
 function getInventoryLevels(inventory_item_ids) {
-  let options = {
-    method: 'GET',
-  };
-  let uri = `${this.baseUri}/admin/inventory_levels.json?inventory_item_ids=${inventory_item_ids}`;
-  return this.getInventoryLevelsWithPaging(options, uri);
+  let pageSize = 250; //Max page size supported
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/inventory_levels.json?inventory_item_ids=${inventory_item_ids}&limit=${pageSize}`;
+  return this.getInventoryLevelsWithPaging(uri);
 }
 
-function getInventoryLevelsWithPaging(options, uri, page = 1, result = []) {
-  let pageSize = 250; //Max page size supported
-  options.uri = `${uri}&page=${page}&limit=${pageSize}`;
+function getInventoryLevelsWithPaging(uri, result = []) {
+  let options = {
+    method: 'GET',
+    uri: uri,
+    resolveWithFullResponse: true
+  };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
-  return this.request(options).then(body => {
-    result = result.concat(body.inventory_levels);
+  return this.request(options).then(response => {
+    result = result.concat(response.body.inventory_levels);
 
-    if (body.inventory_levels.length === pageSize) {
-      return this.getInventoryLevelsWithPaging(options, uri, ++page, result);
+    let linkHeader = this.parseLinkHeader(response.headers['link']);
+
+    if (linkHeader && linkHeader.next && linkHeader.next.url) {
+      return this.getInventoryLevelsWithPaging(linkHeader.next.url, result);
     } else {
       return result;
     }

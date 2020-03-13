@@ -5,12 +5,16 @@ module.exports = function (flowContext, query) {
 
   queryParams.push("ids=" + query.remoteIDs.join(','));
 
-  if (query.page) {
-    queryParams.push("page=" + query.page);
-  }
   if (query.pageSize) {
     queryParams.push("limit=" + query.pageSize);
   }
 
-  return this.queryForSalesOrders(`${this.baseUri}/admin/orders.json?${queryParams.join('&')}`, query.pageSize);
+  let nextPage;
+  if (query.pagingContext && query.pagingContext.next) {
+    nextPage = query.pagingContext.next.url;
+  } else {
+    nextPage = `${this.baseUri}/admin/api/${this.apiVersion}/orders.json?${queryParams.join('&')}`;
+  }
+
+  return this.queryForSalesOrders(nextPage);
 };

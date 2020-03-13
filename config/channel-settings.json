@@ -970,6 +970,10 @@
               "windowDuration",
               "allocationLimit"
             ]
+          },
+          "apiVersion": {
+            "title": "API Version",
+            "type": "string"
           }
         },
         "required": [

@@ -1,6 +1,8 @@
 'use strict';
 
 let Channel = require('@nchannel/endpoint-sdk').PromiseChannel;
+let errors = require('request-promise/errors')
+let parseLinkHeader = require('parse-link-header');
 
 class Shopify extends Channel {
   constructor(...args) {
@@ -15,6 +17,9 @@ class Shopify extends Channel {
     this.request = this.request.defaults({headers: headers, json: true});
 
     this.baseUri = `${this.channelProfile.channelSettingsValues.protocol}://${this.channelProfile.channelAuthValues.shop}`;
+
+    this.apiVersion = this.channelProfile.channelSettingsValues.apiVersion || '2020-01';
+    this.parseLinkHeader = parseLinkHeader;
   }
 
   async getCustomerById(...args) {
@@ -156,9 +161,9 @@ class Shopify extends Channel {
   }
 
   handleRejection(reason) {
-    if (reason instanceof this.request.StatusCodeError) {
+    if (reason instanceof errors.StatusCodeError) {
       return this.handleStatusCodeError(reason);
-    } else if (reason instanceof this.request.RequestError) {
+    } else if (reason instanceof errors.RequestError) {
       return this.handleRequestError(reason);
     } else {
       return this.handleOtherError(reason);
@@ -212,11 +217,17 @@ class Shopify extends Channel {
     }
   }
 
-  formatGetResponse(items, pageSize, endpointStatusCode = 'N/A') {
+  formatGetResponse(items, response, endpointStatusCode = 'N/A') {
+    let linkHeader;
+    if (response && response.headers) {
+      linkHeader = parseLinkHeader(response.headers['link']);
+    }
+
     return {
       endpointStatusCode: endpointStatusCode,
-      statusCode: items.length === pageSize ? 206 : (items.length > 0 ? 200 : 204),
-      payload: items
+      statusCode: (linkHeader && linkHeader.next) ? 206 : (items.length > 0 ? 200 : 204),
+      payload: items,
+      pagingContext: linkHeader
     };
   }
 

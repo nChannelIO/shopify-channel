@@ -15,7 +15,7 @@ module.exports = function (flowContext, payload) {
   delete fulfillment.line_items;
 
   let options = {
-    uri: `${this.baseUri}/admin/orders/${payload.salesOrderRemoteID}/fulfillments/${payload.fulfillmentRemoteID}.json`,
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/orders/${payload.salesOrderRemoteID}/fulfillments/${payload.fulfillmentRemoteID}.json`,
     method: "PUT",
     body: payload.doc,
     resolveWithFullResponse: true
