@@ -6,4 +6,3 @@ services:
       dockerfile: Dockerfile.test
     environment:
       - NODE_ENV=dev
-      - SOURCE_BRANCH=development
