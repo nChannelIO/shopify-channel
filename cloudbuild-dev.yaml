@@ -25,6 +25,6 @@ steps:
 - name: 'ubuntu'
   args: ['bash', '-c', 'cat body-template.txt | sed -e s/{{TAG}}/`cat package-version.txt`/g > body.json']
 
-# Register in the lab
-- name: gcr.io/cloud-builders/curl
-  args: ['-v','-k','-d', '@body.json', '-X', 'POST', '-H', 'Authorization: Bearer ${_LAB_TOKEN}', '-H', 'Content-Type: application/json', '${_LAB_URL}']
+# # Register in the lab
+# - name: gcr.io/cloud-builders/curl
+#   args: ['-v','-k','-d', '@body.json', '-X', 'POST', '-H', 'Authorization: Bearer ${_LAB_TOKEN}', '-H', 'Content-Type: application/json', '${_LAB_URL}']
