@@ -19,7 +19,7 @@ function queryForCustomers(uri) {
     customers = customers.map(customer => {
       return {customer: customer};
     });
-console.log(JSON.stringify(response,null,2));
+
     return this.formatGetResponse(customers, response, response.statusCode);
   }).catch(this.handleRejection.bind(this));
 }
