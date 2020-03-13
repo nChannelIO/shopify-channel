@@ -6,7 +6,7 @@ module.exports = {
   getMetafieldsWithPaging
 };
 
-function queryForProductMatrices(uri, pageSize) {
+function queryForProductMatrices(uri) {
   let options = {
     method: 'GET',
     uri: uri,
@@ -23,14 +23,15 @@ function queryForProductMatrices(uri, pageSize) {
         return {product: enrichedProduct};
       });
 
-      return this.formatGetResponse(enrichedProducts, pageSize, response.statusCode);
+      return this.formatGetResponse(enrichedProducts, response, response.statusCode);
     });
   }).catch(this.handleRejection.bind(this));
 }
 
 function enrichProductsWithMetafields(products) {
   return Promise.all(products.map(product => {
-    let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${product.id}/metafields.json`;
+    let pageSize = 250; //Max page size supported
+    let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${product.id}/metafields.json?limit=${pageSize}`;
 
     // Get the products metafields
     return this.getMetafieldsWithPaging(uri).then(metafields => {
@@ -40,20 +41,22 @@ function enrichProductsWithMetafields(products) {
   }));
 }
 
-function getMetafieldsWithPaging(uri, page = 1, result = []) {
-  let pageSize = 250; //Max page size supported
+function getMetafieldsWithPaging(uri, result = []) {
   let options = {
     method: 'GET',
-    uri: `${uri}?page=${page}&limit=${pageSize}`
+    uri: uri,
+    resolveWithFullResponse: true
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
-  return this.request(options).then(body => {
-    result = result.concat(body.metafields);
+  return this.request(options).then(response => {
+    result = result.concat(response.body.metafields);
 
-    if (body.metafields.length === pageSize) {
-      return this.getMetafieldsWithPaging(uri, ++page, result);
+    let linkHeader = this.parseLinkHeader(response.headers['link']);
+
+    if (linkHeader && linkHeader.next && linkHeader.next.url) {
+      return this.getMetafieldsWithPaging(linkHeader.next.url, result);
     } else {
       return result;
     }

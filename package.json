@@ -5,7 +5,8 @@
   "dependencies": {
     "@nchannel/endpoint-sdk": "1.0.12",
     "jsonata": "^1.4.1",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "parse-link-header": "^1.0.1"
   },
   "scripts": {
     "test": "npx nchannel-sdk test"

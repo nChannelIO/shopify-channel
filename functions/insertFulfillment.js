@@ -6,9 +6,7 @@ module.exports = function (flowContext, payload) {
 
   //First get the corresponding sales order
   let queryPayload = {
-    remoteIDs: [payload.salesOrderRemoteID],
-    page: 1,
-    pageSize: 2  //Using page size 2 so that GetSalesOrder will return 206 if more than one order is returned
+    remoteIDs: [payload.salesOrderRemoteID]
   };
 
   let invalid;
@@ -16,7 +14,7 @@ module.exports = function (flowContext, payload) {
   let fulfillment = payload.doc.fulfillment;
 
   return this.getSalesOrderById(flowContext, queryPayload).then(getSalesOrderResponse => {
-    if (getSalesOrderResponse.statusCode === 200) {
+    if (getSalesOrderResponse.payload.length === 1) {
       // Save the synthetic business references so we can add them to the output doc
       let fulfillmentBusinessRef = fulfillment.fulfillment_business_ref;
       let salesOrderBusinessRef = fulfillment.sales_order_business_ref;
@@ -127,12 +125,11 @@ module.exports = function (flowContext, payload) {
         };
       }
     } else {
-      if (getSalesOrderResponse.statusCode === 204) {
-        getSalesOrderResponse.statusCode = 400;
-        getSalesOrderResponse.errors = ["unable to retrieve the corresponding sales order"];
-      } else if (getSalesOrderResponse.statusCode === 206) {
-        getSalesOrderResponse.statusCode = 400;
+      getSalesOrderResponse.statusCode = 400;
+      if (getSalesOrderResponse.payload.length > 1) {
         getSalesOrderResponse.errors = ["salesOrderRemoteID does not map to a unique sales order -- more than one found"];
+      } else {
+        getSalesOrderResponse.errors = ["unable to retrieve the corresponding sales order"];
       }
       return getSalesOrderResponse;
     }

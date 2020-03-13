@@ -4,7 +4,7 @@ module.exports = {
   queryForSalesOrders
 };
 
-function queryForSalesOrders(uri, pageSize) {
+function queryForSalesOrders(uri) {
   let options = {
     method: 'GET',
     uri: uri,
@@ -20,6 +20,6 @@ function queryForSalesOrders(uri, pageSize) {
       return {order: salesOrder};
     });
 
-    return this.formatGetResponse(salesOrders, pageSize, response.statusCode);
+    return this.formatGetResponse(salesOrders, response, response.statusCode);
   }).catch(this.handleRejection.bind(this));
 }

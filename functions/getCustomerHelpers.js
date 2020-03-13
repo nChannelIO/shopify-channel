@@ -4,7 +4,7 @@ module.exports = {
   queryForCustomers
 };
 
-function queryForCustomers(uri, pageSize) {
+function queryForCustomers(uri) {
   let options = {
     method: 'GET',
     uri: uri,
@@ -19,7 +19,7 @@ function queryForCustomers(uri, pageSize) {
     customers = customers.map(customer => {
       return {customer: customer};
     });
-
-    return this.formatGetResponse(customers, pageSize, response.statusCode);
+console.log(JSON.stringify(response,null,2));
+    return this.formatGetResponse(customers, response, response.statusCode);
   }).catch(this.handleRejection.bind(this));
 }

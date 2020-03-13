@@ -9,7 +9,8 @@ module.exports = {
 
 function updateProductMetafields(payload) {
   // Get existing product metafields
-  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/metafields.json`;
+  let pageSize = 250; //Max page size supported
+  let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/metafields.json?limit=${pageSize}`;
 
   return this.getMetafieldsWithPaging(uri).then(metafields => {
     // Determine which metafields need updated/inserted
@@ -85,7 +86,8 @@ function updateVariantMetafields(payload) {
     return Promise.all(payload.doc.product.variants.map(variant => {
       if (variant.id && variant.metafields && variant.metafields.length > 0) {
         // Get existing variant metafields
-        let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json`;
+        let pageSize = 250; //Max page size supported
+        let uri = `${this.baseUri}/admin/api/${this.apiVersion}/products/${payload.productRemoteID}/variants/${variant.id}/metafields.json?limit=${pageSize}`;
 
         return this.getMetafieldsWithPaging(uri).then(metafields => {
           // Determine which metafields need updated/inserted

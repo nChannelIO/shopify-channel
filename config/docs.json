@@ -208,7 +208,9 @@
             {
               "uri": "/admin/api/2019-10/customers.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/customers.json?limit=2&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "customers": [
@@ -307,7 +309,9 @@
             {
               "uri": "/admin/api/2019-10/customers.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/customers.json?limit=2&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "customers": [
@@ -362,7 +366,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -407,16 +411,17 @@
           "statusCode": 206,
           "payload": {
             "remoteIDs": ["12020548676"],
-            "page": 1,
             "pageSize": 5
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/products.json?ids=12020548676&page=1&limit=5",
+              "uri": "/admin/api/2019-10/products.json?ids=12020548676&limit=5",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/products.json?limit=5&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "products": [
@@ -479,7 +484,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -494,7 +499,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -509,7 +514,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -524,7 +529,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -539,7 +544,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -662,7 +667,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -721,7 +726,9 @@
             {
               "uri": "/admin/api/2019-10/products.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=5",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/products.json?limit=5&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "products": [
@@ -784,7 +791,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -799,7 +806,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -814,7 +821,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -829,7 +836,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -844,7 +851,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -901,7 +908,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -960,7 +967,9 @@
             {
               "uri": "/admin/api/2019-10/products.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=5",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/products.json?limit=5&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "products": [
@@ -1023,7 +1032,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1038,7 +1047,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1053,7 +1062,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1068,7 +1077,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1083,7 +1092,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1159,16 +1168,17 @@
           "statusCode": 206,
           "payload": {
             "remoteIDs": ["4571292613"],
-            "page": 1,
             "pageSize": 2
           },
           "baseUri": "https://mystore.myshopify.com",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/orders.json?ids=4571292613&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=4571292613&limit=2",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/orders.json?limit=2&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "orders": [
@@ -1326,7 +1336,9 @@
             {
               "uri": "/admin/api/2019-10/orders.json?updated_at_min=2017-05-12T09:59:59.999Z&updated_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/orders.json?limit=2&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "orders": [
@@ -1418,7 +1430,9 @@
             {
               "uri": "/admin/api/2019-10/orders.json?created_at_min=2017-05-12T09:59:59.999Z&created_at_max=2017-05-19T12:00:00.001Z&limit=2",
               "method": "GET",
-              "replyHeaders": {},
+              "replyHeaders": {
+                "link": "<https://mystore.myshopify.com/admin/api/2019-10/orders.json?limit=2&page_info=eyJsYXN0>; rel=\"next\""
+              },
               "statusCode": 200,
               "responsePayload": {
                 "orders": [
@@ -1577,7 +1591,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -1784,7 +1798,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1979,7 +1993,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2174,7 +2188,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/orders.json?ids=1073459964&page=1&limit=2",
+              "uri": "/admin/api/2019-10/orders.json?ids=1073459964",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
@@ -2390,7 +2404,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2845,7 +2859,7 @@
               }
             },
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
@@ -2885,7 +2899,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
@@ -2917,7 +2931,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
@@ -2949,7 +2963,7 @@
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?page=1&limit=250",
+              "uri": "/admin/api/2019-10/products/12020548676/metafields.json?limit=250",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
