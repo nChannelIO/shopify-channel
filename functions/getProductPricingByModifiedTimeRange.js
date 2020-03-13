@@ -9,9 +9,6 @@ module.exports = function (flowContext, query) {
   queryParams.push("updated_at_min=" + new Date(Date.parse(query.modifiedDateRange.startDateGMT) - 1).toISOString());
   queryParams.push("updated_at_max=" + new Date(Date.parse(query.modifiedDateRange.endDateGMT) + 1).toISOString());
 
-  if (query.page) {
-    queryParams.push("page=" + query.page);
-  }
   if (query.pageSize) {
     queryParams.push("limit=" + query.pageSize);
   }
@@ -25,24 +22,33 @@ module.exports = function (flowContext, query) {
    * 2) Filter out variants which were updated in the time range
    */
 
-    // 1) Get all products which were modified in the time range
+  let nextPage;
+  if (query.pagingContext && query.pagingContext.next) {
+    nextPage = query.pagingContext.next.url;
+  } else {
+    nextPage = `${this.baseUri}/admin/api/${this.apiVersion}/products.json?${queryParams.join('&')}`;
+  }
+
   let options = {
     method: 'GET',
-    uri: `${this.baseUri}/admin/products.json?${queryParams.join('&')}`
+    uri: nextPage,
+    resolveWithFullResponse: true
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
 
   let out = {};
 
-  return this.request(options).then(body => {
-    if (body.products && body.products.length > 0) {
-      if (body.products.length === pageSize) {
+  return this.request(options).then(response => {
+    if (response.body.products && response.body.products.length > 0) {
+      let linkHeader = this.parseLinkHeader(response.headers['link']);
+
+      if (linkHeader && linkHeader.next) {
         out.statusCode = 206;
       }
 
       // 2) Filter out variants which were updated in the time range
-      return Promise.all(body.products.map(product => {
+      return Promise.all(response.body.products.map(product => {
         return Promise.all(product.variants.filter(variant => {
           return withinTimeRange(variant.updated_at, startTime, endTime);
         }));

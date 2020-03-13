@@ -2,7 +2,7 @@
 
 module.exports = function (flowContext, payload) {
   let options = {
-    uri: `${this.baseUri}/admin/orders.json`,
+    uri: `${this.baseUri}/admin/api/${this.apiVersion}/orders.json`,
     method: "POST",
     body: payload.doc,
     resolveWithFullResponse: true

@@ -29,22 +29,23 @@ module.exports = function (flowContext, query) {
   }
 
   /*
-   Add page to the query
-   */
-  if (query.page) {
-    queryParams.push("page=" + query.page);
-  }
-
-  /*
    Add pageSize (limit) to the query
    */
   if (query.pageSize) {
     queryParams.push("limit=" + query.pageSize);
   }
 
+  let nextPage;
+  if (query.pagingContext && query.pagingContext.next) {
+    nextPage = query.pagingContext.next.url;
+  } else {
+    nextPage = `${this.baseUri}/admin/api/${this.apiVersion}/orders/${query.salesOrderRemoteID}/fulfillments.json`;
+  }
+
   let options = {
     method: 'GET',
-    uri: `${this.baseUri}/admin/orders/${query.salesOrderRemoteID}/fulfillments.json`,
+    uri: nextPage,
+    resolveWithFullResponse: true
   };
 
   this.info(`Requesting [${options.method} ${options.uri}]`);
@@ -56,7 +57,7 @@ module.exports = function (flowContext, query) {
       return {fulfillment: fulfillment};
     });
 
-    return this.formatGetResponse(fulfillments, undefined, response.statusCode);
+    return this.formatGetResponse(fulfillments, response, response.statusCode);
   }).catch(this.handleRejection.bind(this));
 };
 
